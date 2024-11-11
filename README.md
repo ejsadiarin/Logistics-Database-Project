@@ -15,6 +15,6 @@
 ## Compile and Run
 
 ```bash
-javac -cp lib/mysql-connector-j-<version>.jar -d bin src/*.java
-java -cp bin;lib/mysql-connector-j-<version>.jar MySQLSelectExample
+javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java
+java -cp bin;lib/mysql-connector-j-9.1.0.jar Main
 ```
