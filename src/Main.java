@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MySQLSelectExample {
+public class Main {
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/ccinfom"; // NOTE: create database called "ccinfom" in your mysql
         // configure mysql to have user "root" with password: "12345"
