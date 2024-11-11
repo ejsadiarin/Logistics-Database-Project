@@ -18,3 +18,18 @@
 javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java
 java -cp bin;lib/mysql-connector-j-9.1.0.jar Main
 ```
+
+- other
+```bash
+sudo java -cp bin -p lib Main
+```
+
+## Access denied for user 'root'@'localhost' 
+
+- login to mysql/maridb
+- grant privileges
+    - `... IDENTIFIED BY '<password>'` - `12345` is the password
+
+```mysql
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '12345' WITH GRANT OPTION;
+```
