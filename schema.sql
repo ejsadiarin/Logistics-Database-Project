@@ -8,7 +8,7 @@ CREATE TABLE driver (
     rate DECIMAL(10,2) NOT NULL,
     contact_number VARCHAR(15) NOT NULL,
     license_restrictions ENUM('BE','CE') NOT NULL,
-    status ENUM('Available','In Transit', 'On Leave') NOT NULL
+    status ENUM('AVAILABLE','IN TRANSIT', 'ON LEAVE', 'UNAVAILABLE') NOT NULL
 );
 
 CREATE TABLE vehicle (
@@ -18,7 +18,7 @@ CREATE TABLE vehicle (
     fuel_economy FLOAT NOT NULL,
     last_maintenance_date DATETIME NOT NULL,
     max_load_weight FLOAT NOT NULL,
-    status ENUM('Available', 'In Transit', 'Needs Maintenance') NOT NULL
+    status ENUM('AVAILABLE', 'IN TRANSIT', 'NEEDS MAINTENANCE', 'UNAVAILABLE') NOT NULL
 );
 
 CREATE TABLE customer (
@@ -37,7 +37,7 @@ CREATE TABLE logistics (
     logisticsID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     distance DECIMAL(10, 2) NOT NULL,
     normalCost DECIMAL(10, 2) NOT NULL,
-    status ENUM('Arrived', 'In Transit', 'Cancelled', 'Pending') NOT NULL,
+    status ENUM('ARRIVED', 'IN TRANSIT', 'CANCELLED', 'PENDING') NOT NULL,
     schedule_id INT,
     FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id)
 );
