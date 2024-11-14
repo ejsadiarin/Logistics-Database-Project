@@ -2,53 +2,66 @@ CREATE DATABASE ccinfom;
 
 USE ccinfom;
 
-CREATE TABLE Vehicle (
-	VehicleID INT PRIMARY KEY,
-    PlateNumber VARCHAR(6) NOT NULL,
-    Type VARCHAR(20),
-    FuelEconomy FLOAT NOT NULL,
-    LastMaintenanceDate DATETIME NOT NULL,
-    MaxLoadWeight FLOAT NOT NULL,
-    Status ENUM('Available', 'Unavailable') NOT NULL,
-    DriverID INT,
-    FOREIGN KEY(DriverID) REFERENCES Driver(DriverID)
+CREATE TABLE driver (
+    driver_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    rate DECIMAL(10,2) NOT NULL,
+    contact_number VARCHAR(15) NOT NULL,
+    license_restrictions ENUM('BE','CE') NOT NULL,
+    status ENUM('Available','In Transit', 'On Leave') NOT NULL
 );
 
-CREATE TABLE Driver (
-    DriverID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    FullName VARCHAR(255) NOT NULL,
-    Rate DECIMAL(10,2) NOT NULL,
-    ContactNumber VARCHAR(15) NOT NULL,
-    LicenseRestrictions ENUM('BE','CE') NOT NULL,
-    Status ENUM('Available','Unavailable') NOT NULL,
-    VehicleID INT,
-    FOREIGN KEY (VehicleID) REFERENCES Vehicles(VehicleID)
+CREATE TABLE vehicle (
+	vehicle_id INT PRIMARY KEY,
+    plate_number VARCHAR(6) NOT NULL,
+    type VARCHAR(20),
+    fuel_economy FLOAT NOT NULL,
+    last_maintenance_date DATETIME NOT NULL,
+    max_load_weight FLOAT NOT NULL,
+    status ENUM('Available', 'In Transit', 'Needs Maintenance') NOT NULL
 );
 
-CREATE TABLE Customer (
-    CustomerID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    CompanyName VARCHAR(255) NOT NULL,
-    CustomerName VARCHAR(255) NOT NULL,
-    CompanyContract VARCHAR(255) NOT NULL,
-    BillingAddress VARCHAR(255) NOT NULL,
-    AmountPaid DECIMAL(10, 2) NOT NULL,
-    DatePaid DATETIME NOT NULL,
-    LogisticsID INT,
-    FOREIGN KEY (LogisticsID) REFERENCES Logistics(LogisticsID)
+CREATE TABLE customer (
+    customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+    company_contract VARCHAR(255) NOT NULL,
+    billing_address VARCHAR(255) NOT NULL,
+    amount_paid DECIMAL(10, 2) NOT NULL,
+    date_paid DATETIME NOT NULL,
+    request_id INT,
+    FOREIGN KEY (request_id) REFERENCES request(request_id)
 );
 
-CREATE TABLE Logistics (
-    LogisticsID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    Date DATETIME NOT NULL,
-    LoadType VARCHAR(50) NOT NULL,
-    LoadWeight DECIMAL(10, 2) NOT NULL,
-    Distance DECIMAL(10, 2) NOT NULL,
-    NormalCost DECIMAL(10, 2) NOT NULL,
-    Status ENUM('Assigned', 'Completed', 'Cancelled') NOT NULL,
-    DriverID INT,
-    VehicleID INT,
-    CustomerID INT,
-    FOREIGN KEY (DriverID) REFERENCES Driver(DriverID),
-    FOREIGN KEY (VehicleID) REFERENCES Vehicle(VehicleID),
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+CREATE TABLE logistics (
+    logisticsID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    distance DECIMAL(10, 2) NOT NULL,
+    normalCost DECIMAL(10, 2) NOT NULL,
+    status ENUM('Arrived', 'In Transit', 'Cancelled', 'Pending') NOT NULL,
+    schedule_id INT,
+    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id)
+);
+
+CREATE TABLE request (
+    request_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    requested_date DATETIME NOT NULL,
+    product VARCHAR(50) NOT NULL,
+    origin DECIMAL(10, 2) NOT NULL,
+    destination DECIMAL(10, 2) NOT NULL,
+    load_weight DECIMAL(10, 2) NOT NULL,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+CREATE TABLE schedule (
+    schedule_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    date DATETIME NOT NULL,
+    driver_id INT,
+    vehicle_id INT,
+    request_id INT,
+    logistics_id INT,
+    FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id),
+    FOREIGN KEY (request_id) REFERENCES request(request_id),
+    FOREIGN KEY (logistics_id) REFERENCES logistics(logistics_id)
 );
