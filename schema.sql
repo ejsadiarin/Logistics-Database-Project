@@ -7,14 +7,12 @@ CREATE TABLE driver (
     full_name VARCHAR(255) NOT NULL,
     rate DECIMAL(10,2) NOT NULL,
     contact_number VARCHAR(15) NOT NULL,
-    license_restrictions ENUM('BE','CE') NOT NULL,
     status ENUM('AVAILABLE','IN TRANSIT', 'ON LEAVE', 'UNAVAILABLE') NOT NULL
 );
 
 CREATE TABLE vehicle (
 	vehicle_id INT PRIMARY KEY,
     plate_number VARCHAR(6) NOT NULL,
-    type ENUM('BE','CE') NOT NULL,
     fuel_economy FLOAT NOT NULL,
     last_maintenance_date DATETIME NOT NULL,
     max_load_weight FLOAT NOT NULL,
