@@ -14,7 +14,7 @@ CREATE TABLE driver (
 CREATE TABLE vehicle (
 	vehicle_id INT PRIMARY KEY,
     plate_number VARCHAR(6) NOT NULL,
-    type VARCHAR(20),
+    type ENUM('BE','CE') NOT NULL,
     fuel_economy FLOAT NOT NULL,
     last_maintenance_date DATETIME NOT NULL,
     max_load_weight FLOAT NOT NULL,
