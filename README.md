@@ -4,6 +4,7 @@
 
 `Model`
 - schema objects of the project (records) - see schema.sql
+- model-specific functions
 
 `View`
 - all java swing related java files
@@ -15,8 +16,9 @@
 ## Compile and Run
 
 ```bash
-javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java
-java -cp bin;lib/mysql-connector-j-9.1.0.jar Main
+javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java src/**/*.java
+java -cp bin -p lib Main
+# or java -cp bin;lib/mysql-connector-j-9.1.0.jar Main
 ```
 
 - other
