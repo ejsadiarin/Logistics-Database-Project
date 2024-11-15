@@ -10,13 +10,19 @@ import Models.Customer;
 public class CustomerDAO {
     private Connection connection;
 
-    public CustomerDAO(Connection connection) {
-        this.connection = connection;
+    public CustomerDAO() {
+    }
+
+    private Connection getConnection() throws SQLException {
+       if (this.connection == null || this.connection.isClosed()) {
+            this.connection = DatabaseConnection.getConnection();
+        }
+        return this.connection;
     }
 
     public void addCustomer(Customer customer) throws SQLException {
         String query = "INSERT INTO customers (customerID, companyName, customerName, companyContact, billingAddress, amountPaid, datePaid) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, customer.getCustomerID());
             stmt.setString(2, customer.getCompanyName());
             stmt.setString(3, customer.getCustomerName());
@@ -30,7 +36,7 @@ public class CustomerDAO {
 
     public Customer getCustomer(int customerID) throws SQLException {
         String query = "SELECT * FROM customers WHERE customerID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, customerID);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -52,7 +58,7 @@ public class CustomerDAO {
     public List<Customer> getAllCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         String query = "SELECT * FROM customers";
-        try (Statement stmt = connection.createStatement();
+        try (Statement stmt = getConnection().createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 customers.add(new Customer(
@@ -71,7 +77,7 @@ public class CustomerDAO {
 
     public void updateCustomer(Customer customer) throws SQLException {
         String query = "UPDATE customers SET companyName = ?, customerName = ?, companyContact = ?, billingAddress = ?, amountPaid = ?, datePaid = ? WHERE customerID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setString(1, customer.getCompanyName());
             stmt.setString(2, customer.getCustomerName());
             stmt.setString(3, customer.getCompanyContact());
