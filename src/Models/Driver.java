@@ -1,5 +1,6 @@
+package Models;
+
 public class Driver {
-    
     private int driverID;
     private String fullName;
     private double rate;
@@ -9,7 +10,8 @@ public class Driver {
     public enum Status {
         AVAIALABLE,
         IN_TRANSIT,
-        ON_LEAVE
+        ON_LEAVE,
+        UNAVAILABLE
     }
 
     public Driver(int driverID, String fullName, double rate, String contactNumber, Status status) {

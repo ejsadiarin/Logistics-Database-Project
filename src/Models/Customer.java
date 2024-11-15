@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.Date;
 
 public class Customer {
@@ -8,9 +10,8 @@ public class Customer {
     private String billingAddress;
     private double amountPaid;
     private Date datePaid;
-    private int requestID;
 
-    public Customer(int customerID, String companyName, String customerName, String companyContact, String billingAddress, double amountPaid, Date datePaid, int requestID) {
+    public Customer(int customerID, String companyName, String customerName, String companyContact, String billingAddress, double amountPaid, Date datePaid) {
         this.customerID = customerID;
         this.companyName = companyName;
         this.customerName = customerName;
@@ -18,7 +19,6 @@ public class Customer {
         this.billingAddress = billingAddress;
         this.amountPaid = amountPaid;
         this.datePaid = datePaid;
-        this.requestID = requestID;
     }
 
     public int getCustomerID() {
@@ -49,9 +49,6 @@ public class Customer {
         return datePaid;
     }
 
-    public int getRequestID() {
-        return requestID;
-    }
 
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
@@ -80,10 +77,5 @@ public class Customer {
     public void setDatePaid(Date datePaid) {
         this.datePaid = datePaid;
     }
-
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
-    }
-
     
 }

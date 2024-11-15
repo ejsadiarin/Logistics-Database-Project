@@ -1,3 +1,5 @@
+package Models;
+
 public class Vehicle {
     private int vehicleID;
     private String plateNumber;

@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.Date;
 
 public class Schedule {
@@ -6,15 +8,13 @@ public class Schedule {
     private int driverID;
     private int vehicleID;
     private int requestID;
-    private int logisticsID;
 
-    public Schedule(int scheduleID, Date date, int driverID, int vehicleID, int requestID, int logisticsID) {
+    public Schedule(int scheduleID, Date date, int driverID, int vehicleID, int requestID) {
         this.scheduleID = scheduleID;
         this.date = date;
         this.driverID = driverID;
         this.vehicleID = vehicleID;
         this.requestID = requestID;
-        this.logisticsID = logisticsID;
     }
 
     public int getScheduleID() {
@@ -55,13 +55,5 @@ public class Schedule {
 
     public void setRequestID(int requestID) {
         this.requestID = requestID;
-    }
-
-    public int getLogisticsID() {
-        return logisticsID;
-    }
-
-    public void setLogisticsID(int logisticsID) {
-        this.logisticsID = logisticsID;
     }
 }

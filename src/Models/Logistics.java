@@ -1,3 +1,5 @@
+package Models;
+
 public class Logistics {
     private int logisticsID;
     private double distance;
