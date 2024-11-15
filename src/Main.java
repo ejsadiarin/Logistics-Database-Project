@@ -1,20 +1,16 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Database.DatabaseConnection;
+
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/ccinfom"; // NOTE: create database called "ccinfom" in your mysql
-        // configure mysql to have user "root" with password: "12345"
-        String username = "root";
-        String password = "12345";
-
         String query = "SELECT * FROM employee";
 
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             Statement statement = connection.createStatement();
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             System.out.println("Connected to the database.");
