@@ -1,6 +1,10 @@
+package Services;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import Database.DatabaseConnection;
 import Models.Customer;
 
 public class CustomerDAO {

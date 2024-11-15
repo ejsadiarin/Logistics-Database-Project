@@ -1,13 +1,22 @@
+package Services;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import Database.DatabaseConnection;
 import Models.Vehicle;
 
 public class VehicleDAO {
     private Connection connection;
 
     public VehicleDAO(Connection connection) {
-        this.connection = connection;
+        this.connection = DatabaseConnection.getConnection();
+        try {
+            this.connection = DatabaseConnection.getConnection();
+        } catch (SQLException e) {
+            throw new DatabaseInitializationException("Failed to initialize VehicleDAO due to database error", e);
+        }
     }
 
     public void addVehicle(Vehicle vehicle) throws SQLException {
