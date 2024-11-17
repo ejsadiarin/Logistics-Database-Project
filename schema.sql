@@ -41,7 +41,7 @@ CREATE TABLE requests (
     destination DECIMAL(10, 2) NOT NULL,
     load_weight DECIMAL(10, 2) NOT NULL,
     customer_id INT,
-    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
 
 DROP TABLE IF EXISTS `schedules`;
@@ -51,9 +51,9 @@ CREATE TABLE schedules (
     driver_id INT,
     vehicle_id INT,
     request_id INT,
-    FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id),
-    FOREIGN KEY (request_id) REFERENCES request(request_id)
+    FOREIGN KEY (driver_id) REFERENCES drivers(driver_id),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),
+    FOREIGN KEY (request_id) REFERENCES requests(request_id)
 );
 
 DROP TABLE IF EXISTS `logistics`;
@@ -63,5 +63,5 @@ CREATE TABLE logistics (
     normalCost DECIMAL(10, 2) NOT NULL,
     status ENUM('ARRIVED', 'IN TRANSIT', 'CANCELLED', 'PENDING') DEFAULT 'PENDING',
     schedule_id INT,
-    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id)
+    FOREIGN KEY (schedule_id) REFERENCES schedules(schedule_id)
 );
