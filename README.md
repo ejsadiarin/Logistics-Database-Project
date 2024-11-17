@@ -27,7 +27,7 @@ Get-ChildItem -Recurse -Path "src" -Filter "*.java" | ForEach-Object { javac -cp
 
 - run
 ```bash
-java -cp bin -p lib Views.HomeFrame
+java -cp bin -p lib Views.MainFrame
 
 # or run Main for testing: 
 java -cp bin -p lib Main

@@ -1,13 +1,12 @@
+import Database.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import Database.DatabaseConnection;
-
 public class Main {
     public static void main(String[] args) {
-        String query = "SELECT * FROM employee";
+        String query = "SELECT * FROM drivers";
 
         try (Connection conn = DatabaseConnection.getConnection();
              Statement statement = conn.createStatement();
