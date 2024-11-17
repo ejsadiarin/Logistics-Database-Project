@@ -31,17 +31,18 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
         selectRequest = new javax.swing.JButton();
         selectScheduling = new javax.swing.JButton();
         selectLogistics = new javax.swing.JButton();
+        viewReports = new javax.swing.JButton();
         MainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(724, 482));
-        setPreferredSize(new java.awt.Dimension(724, 482));
-        setSize(new java.awt.Dimension(724, 482));
+        setMinimumSize(new java.awt.Dimension(1080, 720));
+        setPreferredSize(new java.awt.Dimension(1080, 720));
+        setSize(new java.awt.Dimension(1080, 720));
 
         SidePanel.setMaximumSize(new java.awt.Dimension(100, 400));
         SidePanel.setMinimumSize(new java.awt.Dimension(100, 400));
         SidePanel.setPreferredSize(new java.awt.Dimension(100, 400));
-        SidePanel.setLayout(new java.awt.GridLayout(6, 1, 0, 10));
+        SidePanel.setLayout(new java.awt.GridLayout(7, 1, 0, 10));
 
         selectDriver.setText("<html>Driver<p>Records</html>");
         selectDriver.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -67,6 +68,10 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
         selectLogistics.setText("<html>Logistics<br>Records</html>");
         selectLogistics.addActionListener(this);
         SidePanel.add(selectLogistics);
+
+        viewReports.setText("<html>View<br>Reports</html>");
+        viewReports.addActionListener(this);
+        SidePanel.add(viewReports);
 
         MainPanel.setMinimumSize(new java.awt.Dimension(600, 472));
         MainPanel.setPreferredSize(new java.awt.Dimension(600, 472));
@@ -111,15 +116,21 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
             setMainPanel(new DriverPanel());
         }
         else if (event.getSource() == selectVehicle) {
-            setMainPanel(new javax.swing.JPanel());
+            setMainPanel(new VehiclePanel());
         }
         else if (event.getSource() == selectCustomer) {
+            setMainPanel(new CustomerPanel());
         }
         else if (event.getSource() == selectRequest) {
+            setMainPanel(new RequestPanel());
         }
         else if (event.getSource() == selectScheduling) {
+            setMainPanel(new SchedulingPanel());
         }
         else if (event.getSource() == selectLogistics) {
+            setMainPanel(new LogisticsPanel());
+        }
+        else if (event.getSource() == viewReports) {
         }
     }
 
@@ -156,12 +167,13 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
     // Variables declaration - do not modify                     
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel SidePanel;
-    private javax.swing.JPanel content = new DriverPanel();
+    private javax.swing.JPanel content = new JPanel();
     private javax.swing.JButton selectCustomer;
     private javax.swing.JButton selectDriver;
     private javax.swing.JButton selectLogistics;
     private javax.swing.JButton selectRequest;
     private javax.swing.JButton selectScheduling;
     private javax.swing.JButton selectVehicle;
+    private javax.swing.JButton viewReports;
     // End of variables declaration                   
 }
