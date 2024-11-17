@@ -1,15 +1,15 @@
 package Models;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Schedule {
     private int scheduleID;
-    private Date date;
+    private Timestamp date;
     private int driverID;
     private int vehicleID;
     private int requestID;
 
-    public Schedule(int scheduleID, Date date, int driverID, int vehicleID, int requestID) {
+    public Schedule(int scheduleID, Timestamp date, int driverID, int vehicleID, int requestID) {
         this.scheduleID = scheduleID;
         this.date = date;
         this.driverID = driverID;
@@ -25,11 +25,11 @@ public class Schedule {
         this.scheduleID = scheduleID;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
