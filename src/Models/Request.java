@@ -1,15 +1,17 @@
-import java.util.Date;
+package Models;
+
+import java.sql.Timestamp;
 
 public class Request {
     private int requestID;
-    private Date requestedDate;
+    private Timestamp requestedDate; // use java.sql.Timestamp for DATETIME
     private String product;
     private String origin;
     private String destination;
     private double loadWeight;
     private int customerID;
 
-    public Request(int requestID, Date requestedDate, String product, String origin, String destination, double loadWeight, int customerID) {
+    public Request(int requestID, Timestamp requestedDate, String product, String origin, String destination, double loadWeight, int customerID) {
         this.requestID = requestID;
         this.requestedDate = requestedDate;
         this.product = product;
@@ -19,7 +21,7 @@ public class Request {
         this.customerID = customerID;
     }
 
-
+    // Getters and Setters
     public int getRequestID() {
         return requestID;
     }
@@ -28,11 +30,11 @@ public class Request {
         this.requestID = requestID;
     }
 
-    public Date getRequestedDate() {
+    public Timestamp getRequestedDate() {
         return requestedDate;
     }
 
-    public void setRequestedDate(Date requestedDate) {
+    public void setRequestedDate(Timestamp requestedDate) {
         this.requestedDate = requestedDate;
     }
 
@@ -75,5 +77,4 @@ public class Request {
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
-
 }

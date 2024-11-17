@@ -18,6 +18,8 @@
 - compile
 ```bash
 javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java src/**/*.java
+# or
+javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java src/Models/*.java src/Views/*.java src/Controllers/*.java src/Database/*.java src/Services/*.java
 ```
 ```powershell
 Get-ChildItem -Recurse -Path "src" -Filter "*.java" | ForEach-Object { javac -cp "lib\mysql-connector-j-9.1.0.jar;bin" -d bin $_.FullName}
@@ -26,8 +28,12 @@ Get-ChildItem -Recurse -Path "src" -Filter "*.java" | ForEach-Object { javac -cp
 - run
 ```bash
 java -cp bin -p lib Views.HomeFrame
-# or run Main for testing: java -cp bin -p lib Main
-# or java -cp bin;lib/mysql-connector-j-9.1.0.jar Main
+
+# or run Main for testing: 
+java -cp bin -p lib Main
+
+# or 
+java -cp bin;lib/mysql-connector-j-9.1.0.jar Main
 ```
 
 ## Access denied for user 'root'@'localhost' 

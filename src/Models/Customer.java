@@ -1,4 +1,6 @@
-import java.util.Date;
+package Models;
+
+import java.sql.Timestamp;
 
 public class Customer {
     private int customerID;
@@ -7,10 +9,9 @@ public class Customer {
     private String companyContact;
     private String billingAddress;
     private double amountPaid;
-    private Date datePaid;
-    private int requestID;
+    private Timestamp datePaid;
 
-    public Customer(int customerID, String companyName, String customerName, String companyContact, String billingAddress, double amountPaid, Date datePaid, int requestID) {
+    public Customer(int customerID, String companyName, String customerName, String companyContact, String billingAddress, double amountPaid, Timestamp datePaid) {
         this.customerID = customerID;
         this.companyName = companyName;
         this.customerName = customerName;
@@ -18,7 +19,6 @@ public class Customer {
         this.billingAddress = billingAddress;
         this.amountPaid = amountPaid;
         this.datePaid = datePaid;
-        this.requestID = requestID;
     }
 
     public int getCustomerID() {
@@ -45,13 +45,10 @@ public class Customer {
         return amountPaid;
     }
 
-    public Date getDatePaid() {
+    public Timestamp getDatePaid() {
         return datePaid;
     }
 
-    public int getRequestID() {
-        return requestID;
-    }
 
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
@@ -77,13 +74,8 @@ public class Customer {
         this.amountPaid = amountPaid;
     }
 
-    public void setDatePaid(Date datePaid) {
+    public void setTimestampPaid(Timestamp datePaid) {
         this.datePaid = datePaid;
     }
-
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
-    }
-
     
 }

@@ -1,20 +1,20 @@
-import java.util.Date;
+package Models;
+
+import java.sql.Timestamp;
 
 public class Schedule {
     private int scheduleID;
-    private Date date;
+    private Timestamp date;
     private int driverID;
     private int vehicleID;
     private int requestID;
-    private int logisticsID;
 
-    public Schedule(int scheduleID, Date date, int driverID, int vehicleID, int requestID, int logisticsID) {
+    public Schedule(int scheduleID, Timestamp date, int driverID, int vehicleID, int requestID) {
         this.scheduleID = scheduleID;
         this.date = date;
         this.driverID = driverID;
         this.vehicleID = vehicleID;
         this.requestID = requestID;
-        this.logisticsID = logisticsID;
     }
 
     public int getScheduleID() {
@@ -25,11 +25,11 @@ public class Schedule {
         this.scheduleID = scheduleID;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -55,13 +55,5 @@ public class Schedule {
 
     public void setRequestID(int requestID) {
         this.requestID = requestID;
-    }
-
-    public int getLogisticsID() {
-        return logisticsID;
-    }
-
-    public void setLogisticsID(int logisticsID) {
-        this.logisticsID = logisticsID;
     }
 }
