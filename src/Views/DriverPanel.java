@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-public class DriverPanel extends JPanel implements ActionListener, ListSelectionListener {
+public class DriverPanel extends JPanel implements ActionListener {
     private JButton deleteRecordButton;
     private JTable driverTable;
     private JButton newRecordButton;
@@ -57,11 +57,6 @@ public class DriverPanel extends JPanel implements ActionListener, ListSelection
                 return canEdit [columnIndex];
             }
         });
-
-        // Set selection model then add listener
-        driverTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ListSelectionModel selectionModel = driverTable.getSelectionModel();
-        selectionModel.addListSelectionListener(this);
 
         driverTable.getTableHeader().setReorderingAllowed(false);
         tablePane.setViewportView(driverTable);
@@ -110,11 +105,6 @@ public class DriverPanel extends JPanel implements ActionListener, ListSelection
         initComponents();
         revalidate();
         repaint();
-    }
-
-    @Override
-    public void valueChanged(ListSelectionEvent event) {
-        // TODO add your handling code here (change of table selection):
     }
 
     @Override
