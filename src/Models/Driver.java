@@ -8,7 +8,7 @@ public class Driver {
     private Status status;
 
     public enum Status {
-        AVAIALABLE,
+        AVAILABLE,
         IN_TRANSIT,
         ON_LEAVE,
         UNAVAILABLE

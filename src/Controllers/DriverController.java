@@ -1,9 +1,10 @@
 package Controllers;
 
-import Models.Driver;
-import Services.DriverDAO;
 import java.sql.SQLException;
 import java.util.List;
+
+import Models.Driver;
+import Services.DriverDAO;
 
 public class DriverController {
     private final DriverDAO dao;
@@ -35,5 +36,43 @@ public class DriverController {
         }
 
         return tableData;
+    }
+
+    public boolean createRecord(String fullName, String rate, String contactNumber) {
+        try {
+            double dbRate = Double.parseDouble(rate);
+            Driver newRecord = new Driver(0, fullName, dbRate, contactNumber, Driver.Status.AVAILABLE);
+            dao.addDriver(newRecord);
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        } catch (Exception e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+    public boolean updateRecord(int driverID, String fullName, String rate, String contactNumber, int statusIndex) {
+        try {
+            double dbRate = Double.parseDouble(rate);
+            System.out.println(Driver.Status.values()[statusIndex]);
+            Driver newRecord = new Driver(driverID, fullName, dbRate, contactNumber, Driver.Status.values()[statusIndex]);
+            dao.updateDriver(newRecord);
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+    public boolean deleteRecord(int driverID) {
+        try {
+            dao.deleteDriver(driverID);
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
     }
 }

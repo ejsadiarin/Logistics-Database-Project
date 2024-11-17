@@ -37,7 +37,6 @@ public class DriverPanel extends JPanel implements ActionListener, ListSelection
 
         // Create Table Model and populate with Data
         driverTable.setModel(new DefaultTableModel(
-            //TODO: replace with actual table model
             controller.getDriverTableData(),
             new String [] {
                 "DriverID", "Full Name", "Rate (cost/km)", "Contact Number", "Status"
@@ -104,7 +103,14 @@ public class DriverPanel extends JPanel implements ActionListener, ListSelection
                     .addComponent(newRecordButton))
                 .addContainerGap())
         );
-    }                
+    }
+
+    public void refresh() {
+        removeAll();
+        initComponents();
+        revalidate();
+        repaint();
+    }
 
     @Override
     public void valueChanged(ListSelectionEvent event) {
@@ -112,13 +118,25 @@ public class DriverPanel extends JPanel implements ActionListener, ListSelection
     }
 
     @Override
+    // TODO: Add Confirm Prompts
     public void actionPerformed(ActionEvent event) {
-        // TODO: ADD IMPLEMENTATION
         if (event.getSource() == newRecordButton) {
+            NewDriverForm dialog = new NewDriverForm(new javax.swing.JFrame(), true);
+            dialog.setParentPanel(this);
+            dialog.setVisible(true);
         }
         else if (event.getSource() == updateRecordButton) {
+            UpdateDriverForm dialog = new UpdateDriverForm(new javax.swing.JFrame(), true);
+            dialog.setParentPanel(this);
+            dialog.setFields((int)driverTable.getValueAt(driverTable.getSelectedRow(), 0),
+                            (String)driverTable.getValueAt(driverTable.getSelectedRow(), 1),
+                            String.valueOf(driverTable.getValueAt(driverTable.getSelectedRow(), 2)),
+                            (String)driverTable.getValueAt(driverTable.getSelectedRow(), 3));
+            dialog.setVisible(true);
         }
         else if (event.getSource() == deleteRecordButton) {
+            controller.deleteRecord((int)driverTable.getValueAt(driverTable.getSelectedRow(), 0));
+            refresh();
         }
     }             
 }
