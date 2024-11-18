@@ -55,7 +55,26 @@ public class DriverDAO {
         List<Driver> drivers = new ArrayList<>();
         String query = "SELECT * FROM drivers";
         try (Statement stmt = getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+            ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                drivers.add(new Driver(
+                    rs.getInt("driver_id"),
+                    rs.getString("full_name"),
+                    rs.getDouble("rate"),
+                    rs.getString("contact_number"),
+                    Driver.Status.valueOf(rs.getString("status"))
+                ));
+            }
+        }
+        return drivers;
+    }
+
+    public List<Driver> getAllAvailableDrivers() throws SQLException {
+        // NOTE: driver availability indicator: status is "AVAILABLE"
+        List<Driver> drivers = new ArrayList<>();
+        String query = "SELECT * FROM drivers WHERE status = 'AVAILABLE'";
+        try (Statement stmt = getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 drivers.add(new Driver(
                     rs.getInt("driver_id"),

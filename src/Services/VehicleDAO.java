@@ -72,6 +72,25 @@ public class VehicleDAO {
         return vehicles;
     }
 
+    public List<Vehicle> getAllAvailableVehicles() throws SQLException {
+        List<Vehicle> vehicles = new ArrayList<>();
+        String query = "SELECT * FROM vehicles WHERE status = 'AVAILABLE'";
+        try (Statement stmt = getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                vehicles.add(new Vehicle(
+                    rs.getInt("vehicle_id"),
+                    rs.getString("plate_number"),
+                    rs.getDouble("fuel_economy"),
+                    rs.getDate("last_maintenance_date"),
+                    rs.getDouble("max_load_weight"),
+                    Vehicle.Status.valueOf(rs.getString("status"))
+                ));
+            }
+        }
+        return vehicles;
+    }
+
     public void updateVehicle(Vehicle vehicle) throws SQLException {
         String query = "UPDATE vehicles SET plate_number = ?, fuel_economy = ?, last_maintenance_date = ?, max_load_weight = ?, status = ? WHERE vehicle_id = ?";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
