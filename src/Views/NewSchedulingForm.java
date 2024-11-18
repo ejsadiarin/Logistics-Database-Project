@@ -172,7 +172,7 @@ public class NewSchedulingForm extends javax.swing.JDialog implements ActionList
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource() == confirmButton) {
-            boolean success = controller.createRecord(datetimeSpinner.getValue(),
+            boolean success = controller.createRecord((java.util.Date)datetimeSpinner.getValue(),
                             (int)driverIDTable.getValueAt(driverIDTable.getSelectedRow(), 0),
                             (int)vehicleIDTable.getValueAt(vehicleIDTable.getSelectedRow(), 0),
                             (int)requestIDTable.getValueAt(requestIDTable.getSelectedRow(), 0)

@@ -1,5 +1,9 @@
 package Controllers;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+
 import Models.Driver;
 import Models.Request;
 import Models.Schedule;
@@ -8,9 +12,6 @@ import Services.DriverDAO;
 import Services.RequestDAO;
 import Services.ScheduleDAO;
 import Services.VehicleDAO;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.List;
 
 public class ScheduleController{
     private final ScheduleDAO dao;
@@ -44,10 +45,10 @@ public class ScheduleController{
         return tableData;
     }
 
-    public boolean createRecord(String date, int driverID, int vehicleID, int requestID) {
+    public boolean createRecord(java.util.Date date, int driverID, int vehicleID, int requestID) {
         try {
-            Timestamp dbDate = Timestamp.valueOf(date);
-            Schedule newRecord = new Schedule(0, dbDate, driverID, vehicleID, requestID);
+            Timestamp sqlDate = new Timestamp(date.getTime());
+            Schedule newRecord = new Schedule(0, sqlDate, driverID, vehicleID, requestID);
             dao.addSchedule(newRecord);
             return true;
         } catch (SQLException e) {
