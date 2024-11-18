@@ -1,12 +1,11 @@
 package Controllers;
 
+import Models.Request;
+import Services.RequestDAO;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
 import java.util.List;
-
-import Services.RequestDAO;
-import Models.Request;
 
 public class RequestController {
     private final RequestDAO dao;
@@ -28,6 +27,7 @@ public class RequestController {
         Object[][] tableData = new Object[dataRows][1];
         
         for(int i = 0; i < data.size(); i++) {
+            System.out.println(data.get(i).getCustomerID());
             tableData[i] = new Object[] {
                 data.get(i).getCustomerID()
             };
