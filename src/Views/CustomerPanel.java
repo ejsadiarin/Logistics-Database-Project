@@ -1,13 +1,7 @@
 package Views;
 
-import java.sql.Date;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.text.html.parser.ContentModel;
-
 import Controllers.CustomerController;
+import javax.swing.JPanel;
 
 public class CustomerPanel extends JPanel {
     private CustomerController controller;
@@ -36,15 +30,13 @@ public class CustomerPanel extends JPanel {
         deleteRecordButton = new javax.swing.JButton();
 
         customerTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getCustomersTableData(),
             new String [] {
                 "CustomerID", "Company Name", "Customer Name", "Company Contact", "Billing Address", "Amount Paid", "Date Paid"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
