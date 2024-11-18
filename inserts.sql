@@ -58,7 +58,7 @@ INSERT INTO schedules (date, driver_id, vehicle_id, request_id) VALUES
 ('2024-01-09 16:00:00', 9, 9, 9),
 ('2024-01-10 17:00:00', 10, 10, 10);
 
-INSERT INTO logistics (distance, normalCost, status, schedule_id) VALUES
+INSERT INTO logistics (distance, normal_cost, status, schedule_id) VALUES
 (100.50, 200.00, 'ARRIVED', 1),
 (150.75, 300.00, 'IN_TRANSIT', 2),
 (200.25, 400.00, 'CANCELLED', 3),

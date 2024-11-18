@@ -17,7 +17,7 @@ CREATE TABLE vehicles (
     vehicle_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     plate_number VARCHAR(6) NOT NULL,
     fuel_economy FLOAT NOT NULL,
-    last_maintenance_date DATE NOT NULL,
+    last_maintenance_date DATE,
     max_load_weight FLOAT NOT NULL,
     status ENUM('AVAILABLE', 'IN_TRANSIT', 'NEEDS_MAINTENANCE', 'UNAVAILABLE') DEFAULT 'AVAILABLE'
 ) ENGINE=InnoDB;
@@ -59,9 +59,9 @@ CREATE TABLE schedules (
 
 DROP TABLE IF EXISTS `logistics`;
 CREATE TABLE logistics (
-    logisticsID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    logistics_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     distance DECIMAL(10, 2) NOT NULL,
-    normalCost DECIMAL(10, 2) NOT NULL,
+    normal_cost DECIMAL(10, 2) NOT NULL,
     status ENUM('ARRIVED', 'IN_TRANSIT', 'CANCELLED', 'PENDING') DEFAULT 'PENDING',
     schedule_id INT,
     FOREIGN KEY (schedule_id) REFERENCES schedules(schedule_id)
