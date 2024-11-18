@@ -8,7 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import Controllers.CustomerController;
 
@@ -174,7 +173,7 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
                 boolean success = controller.updateRecord(customerID, companyName, customerName, contactNumber, billingAddress, String.valueOf(amountPaid), datePaid);
 
                 if (success) {
-                        parentPanel.refresh();
+                    parentPanel.refresh();
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to update customer.", "Error", JOptionPane.ERROR_MESSAGE);

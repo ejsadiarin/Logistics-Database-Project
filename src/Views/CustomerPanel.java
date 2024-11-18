@@ -1,11 +1,6 @@
 package Views;
 
-import java.sql.Date;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.text.html.parser.ContentModel;
 
 import Controllers.CustomerController;
 
