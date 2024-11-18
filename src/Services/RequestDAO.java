@@ -23,7 +23,7 @@ public class RequestDAO {
     public void addRequest(Request request) throws SQLException {
         String query = "INSERT INTO requests (requested_date, product, origin, destination, load_weight, customer_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
-            stmt.setTimestamp(1, request.getRequestedDate());
+            stmt.setDate(1, request.getRequestedDate()); // Use java.sql.Date
             stmt.setString(2, request.getProduct());
             stmt.setString(3, request.getOrigin());
             stmt.setString(4, request.getDestination());
@@ -41,7 +41,7 @@ public class RequestDAO {
                 if (rs.next()) {
                     return new Request(
                         rs.getInt("request_id"),
-                        rs.getTimestamp("requested_date"), // Retrieve as java.sql.Timestamp
+                        rs.getDate("requested_date"), // Retrieve as java.sql.Date
                         rs.getString("product"),
                         rs.getString("origin"),
                         rs.getString("destination"),
@@ -62,7 +62,7 @@ public class RequestDAO {
             while (rs.next()) {
                 requests.add(new Request(
                     rs.getInt("request_id"),
-                    rs.getTimestamp("requested_date"), // Retrieve as java.sql.Timestamp
+                    rs.getDate("requested_date"), // Retrieve as java.sql.Date
                     rs.getString("product"),
                     rs.getString("origin"),
                     rs.getString("destination"),
@@ -77,7 +77,7 @@ public class RequestDAO {
     public void updateRequest(Request request) throws SQLException {
         String query = "UPDATE requests SET requested_date = ?, product = ?, origin = ?, destination = ?, load_weight = ?, customer_id = ? WHERE request_id = ?";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
-            stmt.setTimestamp(1, request.getRequestedDate());
+            stmt.setDate(1, request.getRequestedDate()); // Use java.sql.Date
             stmt.setString(2, request.getProduct());
             stmt.setString(3, request.getOrigin());
             stmt.setString(4, request.getDestination());

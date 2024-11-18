@@ -1,12 +1,12 @@
 package Models;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Vehicle {
     private int vehicleID;
     private String plateNumber;
     private double fuelEconomy;
-    private Timestamp lastMaintenanceDate;
+    private Date lastMaintenanceDate;
     private double maxLoadWeight;
     private Status status;
 
@@ -17,7 +17,7 @@ public class Vehicle {
         NEEDS_MAINTENANCE
     }
 
-    public Vehicle(int vehicleID, String plateNumber, double fuelEconomy, Timestamp lastMaintenanceDate, double maxLoadWeight, Status status) {
+    public Vehicle(int vehicleID, String plateNumber, double fuelEconomy, Date lastMaintenanceDate, double maxLoadWeight, Status status) {
         this.vehicleID = vehicleID;
         this.plateNumber = plateNumber;
         this.fuelEconomy = fuelEconomy;
@@ -50,11 +50,11 @@ public class Vehicle {
         this.fuelEconomy = fuelEconomy;
     }
 
-    public Timestamp getLastMaintenanceDate() {
+    public Date getLastMaintenanceDate() {
         return lastMaintenanceDate;
     }
 
-    public void setLastMaintenanceDate(Timestamp lastMaintenanceDate) {
+    public void setLastMaintenanceDate(Date lastMaintenanceDate) {
         this.lastMaintenanceDate = lastMaintenanceDate;
     }
 

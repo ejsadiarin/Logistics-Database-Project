@@ -26,7 +26,7 @@ public class VehicleDAO {
             stmt.setInt(1, vehicle.getVehicleID());
             stmt.setString(2, vehicle.getPlateNumber());
             stmt.setDouble(3, vehicle.getFuelEconomy());
-            stmt.setTimestamp(4, vehicle.getLastMaintenanceDate());
+            stmt.setDate(4, vehicle.getLastMaintenanceDate());
             stmt.setDouble(5, vehicle.getMaxLoadWeight());
             stmt.setString(6, vehicle.getStatus().name());
             stmt.executeUpdate();
@@ -43,7 +43,7 @@ public class VehicleDAO {
                         rs.getInt("vehicle_id"),
                         rs.getString("plate_number"),
                         rs.getDouble("fuel_economy"),
-                        rs.getTimestamp("last_maintenance_date"),
+                        rs.getDate("last_maintenance_date"),
                         rs.getDouble("max_load_weight"),
                         Vehicle.Status.valueOf(rs.getString("status"))
                     );
@@ -63,7 +63,7 @@ public class VehicleDAO {
                     rs.getInt("vehicle_id"),
                     rs.getString("plate_number"),
                     rs.getDouble("fuel_economy"),
-                    rs.getTimestamp("last_maintenance_date"),
+                    rs.getDate("last_maintenance_date"),
                     rs.getDouble("max_load_weight"),
                     Vehicle.Status.valueOf(rs.getString("status"))
                 ));
@@ -77,7 +77,7 @@ public class VehicleDAO {
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setString(1, vehicle.getPlateNumber());
             stmt.setDouble(2, vehicle.getFuelEconomy());
-            stmt.setTimestamp(3, vehicle.getLastMaintenanceDate());
+            stmt.setDate(3, vehicle.getLastMaintenanceDate());
             stmt.setDouble(4, vehicle.getMaxLoadWeight());
             stmt.setString(5, vehicle.getStatus().name());
             stmt.setInt(6, vehicle.getVehicleID());

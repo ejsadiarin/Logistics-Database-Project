@@ -1,17 +1,17 @@
 package Models;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Request {
     private int requestID;
-    private Timestamp requestedDate; // use java.sql.Timestamp for DATETIME
+    private Date requestedDate; // use java.sql.Date for DATETIME
     private String product;
     private String origin;
     private String destination;
     private double loadWeight;
     private int customerID;
 
-    public Request(int requestID, Timestamp requestedDate, String product, String origin, String destination, double loadWeight, int customerID) {
+    public Request(int requestID, Date requestedDate, String product, String origin, String destination, double loadWeight, int customerID) {
         this.requestID = requestID;
         this.requestedDate = requestedDate;
         this.product = product;
@@ -30,11 +30,11 @@ public class Request {
         this.requestID = requestID;
     }
 
-    public Timestamp getRequestedDate() {
+    public Date getRequestedDate() {
         return requestedDate;
     }
 
-    public void setRequestedDate(Timestamp requestedDate) {
+    public void setRequestedDate(Date requestedDate) {
         this.requestedDate = requestedDate;
     }
 

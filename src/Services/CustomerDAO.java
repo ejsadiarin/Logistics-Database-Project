@@ -21,7 +21,7 @@ public class CustomerDAO {
     }
 
     public void addCustomer(Customer customer) throws SQLException {
-        String query = "INSERT INTO customers (customer_id, company_name, customer_name, company_contract, billing_address, amount_paid, date_paid) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO customers (customer_id, company_name, customer_name, company_contact, billing_address, amount_paid, date_paid) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, customer.getCustomerID());
             stmt.setString(2, customer.getCompanyName());
@@ -29,7 +29,7 @@ public class CustomerDAO {
             stmt.setString(4, customer.getCompanyContact());
             stmt.setString(5, customer.getBillingAddress());
             stmt.setDouble(6, customer.getAmountPaid());
-            stmt.setTimestamp(7, customer.getDatePaid());
+            stmt.setDate(7, customer.getDatePaid()); // Use java.sql.Date
             stmt.executeUpdate();
         }
     }
@@ -44,10 +44,10 @@ public class CustomerDAO {
                         rs.getInt("customer_id"),
                         rs.getString("company_name"),
                         rs.getString("customer_name"),
-                        rs.getString("company_contract"),
+                        rs.getString("company_contact"),
                         rs.getString("billing_address"),
                         rs.getDouble("amount_paid"),
-                        rs.getTimestamp("date_paid")
+                        rs.getDate("date_paid") // Retrieve as java.sql.Date
                     );
                 }
             }
@@ -65,10 +65,10 @@ public class CustomerDAO {
                     rs.getInt("customer_id"),
                     rs.getString("company_name"),
                     rs.getString("customer_name"),
-                    rs.getString("company_contract"),
+                    rs.getString("company_contact"),
                     rs.getString("billing_address"),
                     rs.getDouble("amount_paid"),
-                    rs.getTimestamp("date_paid")
+                    rs.getDate("date_paid") // Retrieve as java.sql.Date
                 ));
             }
         }
@@ -76,14 +76,14 @@ public class CustomerDAO {
     }
 
     public void updateCustomer(Customer customer) throws SQLException {
-        String query = "UPDATE customers SET company_name = ?, customer_name = ?, company_contract = ?, billing_address = ?, amount_paid = ?, date_paid = ? WHERE customer_id = ?";
+        String query = "UPDATE customers SET company_name = ?, customer_name = ?, company_contact = ?, billing_address = ?, amount_paid = ?, date_paid = ? WHERE customer_id = ?";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setString(1, customer.getCompanyName());
             stmt.setString(2, customer.getCustomerName());
             stmt.setString(3, customer.getCompanyContact());
             stmt.setString(4, customer.getBillingAddress());
             stmt.setDouble(5, customer.getAmountPaid());
-            stmt.setTimestamp(6, customer.getDatePaid());
+            stmt.setDate(6, customer.getDatePaid()); // Use java.sql.Date
             stmt.setInt(7, customer.getCustomerID());
             stmt.executeUpdate();
         }
