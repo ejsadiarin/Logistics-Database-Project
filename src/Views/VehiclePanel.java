@@ -118,20 +118,25 @@ public class VehiclePanel extends javax.swing.JPanel {
 
     private void updateRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         int selectedRow = vehicleTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            UpdateVehicleForm dialog = new UpdateVehicleForm(new javax.swing.JFrame(), true);
-            dialog.setParentPanel(this);
-            dialog.setFields(
-                (int) vehicleTable.getValueAt(selectedRow, 0),
-                (String) vehicleTable.getValueAt(selectedRow, 1),
-                (String) vehicleTable.getValueAt(selectedRow, 2),
-                (String) vehicleTable.getValueAt(selectedRow, 3),
-                (String) vehicleTable.getValueAt(selectedRow, 4)
+        if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, 
+                "Please select a record to update.", 
+                "No Selection", 
+                javax.swing.JOptionPane.WARNING_MESSAGE
             );
-            dialog.setVisible(true);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please select a record to update.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
         }
+        UpdateVehicleForm dialog = new UpdateVehicleForm(new javax.swing.JFrame(), true);
+        dialog.setParentPanel(this);
+        dialog.setFields(
+            (int) vehicleTable.getValueAt(selectedRow, 0), // vehicleID
+            (String) vehicleTable.getValueAt(selectedRow, 1), // plate number
+            String.valueOf(vehicleTable.getValueAt(selectedRow, 2)), // fuel economy
+            vehicleTable.getValueAt(selectedRow, 3).toString(), // last maintenance date converted to String
+            String.valueOf(vehicleTable.getValueAt(selectedRow, 4)) // max load weight
+        );
+        dialog.setVisible(true);
     }                                                  
 
     private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
