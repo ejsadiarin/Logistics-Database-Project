@@ -1,6 +1,8 @@
 package Controllers;
 
+import Models.Customer;
 import Models.Request;
+import Services.CustomerDAO;
 import Services.RequestDAO;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -9,16 +11,18 @@ import java.util.List;
 
 public class RequestController {
     private final RequestDAO dao;
+    private final CustomerDAO formDAO;
 
     public RequestController() {
         dao = new RequestDAO();
+        formDAO = new CustomerDAO();
     }
 
     public Object[][] getFormTableData() {
-        List<Request> data;
+        List<Customer> data;
         int dataRows;
         try {
-            data = dao.getAllRequests();
+            data = formDAO.getAllCustomers();
             dataRows = data.size();
         } catch (SQLException e) {
             System.err.println(e);

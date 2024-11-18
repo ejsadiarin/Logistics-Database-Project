@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.CustomerController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -8,12 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-<<<<<<< HEAD
-import javax.swing.SwingConstants;
-=======
->>>>>>> dda97e189221f87c3847016e5967f4341512b4f3
 import javax.swing.WindowConstants;
-import Controllers.CustomerController;
 
 public class UpdateCustomerForm extends JDialog implements ActionListener {
 

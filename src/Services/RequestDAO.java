@@ -72,6 +72,8 @@ public class RequestDAO {
                     rs.getDouble("load_weight"),
                     rs.getInt("customer_id")
                 ));
+                int i = 0;
+                System.out.println(requests.get(i++));
             }
         }
         return requests;
