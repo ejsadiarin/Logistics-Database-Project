@@ -11,7 +11,6 @@ import Controllers.CustomerController;
 
 public class CustomerPanel extends JPanel {
     private CustomerController controller;
-    private JTable customerTable;
 
     /**
      * Creates new form CustomerPanel
@@ -31,12 +30,12 @@ public class CustomerPanel extends JPanel {
 
         controller = new CustomerController();
         tablePane = new javax.swing.JScrollPane();
-        vehicleTable = new javax.swing.JTable();
+        customerTable = new javax.swing.JTable();
         newRecordButton = new javax.swing.JButton();
         updateRecordButton = new javax.swing.JButton();
         deleteRecordButton = new javax.swing.JButton();
 
-        vehicleTable.setModel(new javax.swing.table.DefaultTableModel(
+        customerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -59,8 +58,8 @@ public class CustomerPanel extends JPanel {
                 return canEdit [columnIndex];
             }
         });
-        vehicleTable.getTableHeader().setReorderingAllowed(false);
-        tablePane.setViewportView(vehicleTable);
+        customerTable.getTableHeader().setReorderingAllowed(false);
+        tablePane.setViewportView(customerTable);
 
         newRecordButton.setText("New Record");
         newRecordButton.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +78,7 @@ public class CustomerPanel extends JPanel {
         deleteRecordButton.setText("Delete Record");
         deleteRecordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteRecordButtonDriverTableActions(evt);
+                deleteRecordButtonActionPerformed(evt);
             }
         });
 
@@ -126,22 +125,36 @@ public class CustomerPanel extends JPanel {
         dialog.setVisible(true);
     }                                                  
 
-    // TODO: update customer form
     private void updateRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {
-            UpdateDriverForm dialog = new UpdateDriverForm(new javax.swing.JFrame(), true);
+        int selectedRow = customerTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            UpdateCustomerForm dialog = new UpdateCustomerForm(new javax.swing.JFrame(), true);
             dialog.setParentPanel(this);
             dialog.setFields(
-                    (int)customerTable.getValueAt(customerTable.getSelectedRow(), 0),
-                    (String)customerTable.getValueAt(customerTable.getSelectedRow(), 1),
-                    String.valueOf(customerTable.getValueAt(customerTable.getSelectedRow(), 2)),
-                    (String)customerTable.getValueAt(customerTable.getSelectedRow(), 3));
+                (int) customerTable.getValueAt(selectedRow, 0),
+                (String) customerTable.getValueAt(selectedRow, 1),
+                (String) customerTable.getValueAt(selectedRow, 2),
+                (String) customerTable.getValueAt(selectedRow, 3),
+                (String) customerTable.getValueAt(selectedRow, 4),
+                String.valueOf(customerTable.getValueAt(selectedRow, 5)),
+                (String) customerTable.getValueAt(selectedRow, 6)
+            );
             dialog.setVisible(true);
-    }                                                  
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a record to update.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }
 
-    private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {
-            controller.deleteRecord((int)customerTable.getValueAt(customerTable.getSelectedRow(), 0));
+    private void deleteRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        int selectedRow = customerTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            int customerID = (int) customerTable.getValueAt(selectedRow, 0);
+            controller.deleteRecord(customerID);
             refresh();
-    }                                                     
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a record to delete.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }
 
 
     // Variables declaration - do not modify                     
@@ -149,6 +162,6 @@ public class CustomerPanel extends JPanel {
     private javax.swing.JButton newRecordButton;
     private javax.swing.JScrollPane tablePane;
     private javax.swing.JButton updateRecordButton;
-    private javax.swing.JTable vehicleTable;
+    private javax.swing.JTable customerTable;
     // End of variables declaration                   
 }

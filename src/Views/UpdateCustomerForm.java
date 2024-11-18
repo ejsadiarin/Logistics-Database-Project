@@ -2,75 +2,83 @@ package Views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.Date;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import Controllers.CustomerController;
 
-import Controllers.DriverController;
+public class UpdateCustomerForm extends JDialog implements ActionListener {
 
-/**
- *
- * @author Rafael
- */
-public class UpdateDriverForm extends JDialog implements ActionListener {
     private JButton cancelButton;
     private JButton confirmButton;
+    private JTextField companyField;
+    private JTextField customerField;
     private JTextField contactField;
+    private JTextField billingField;
+    private JTextField amountField;
+    private JTextField dateField;
+    private JLabel companyLabel;
+    private JLabel customerLabel;
     private JLabel contactLabel;
-    private JTextField nameField;
-    private JLabel nameLabel;
-    private JTextField rateField;
-    private JLabel rateLabel;
-    private DriverController controller;
-    private DriverPanel parentPanel;
-    private JLabel statusLabel;
-    private JComboBox<String> statusComboBox;
+    private JLabel billingLabel;
+    private JLabel amountLabel;
+    private JLabel dateLabel;
+    private CustomerController controller;
+    private CustomerPanel parentPanel;
+    private int customerID;
 
-    private int driverID;
-
-
-    public UpdateDriverForm(java.awt.Frame parent, boolean modal) {
+    public UpdateCustomerForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    public void setParentPanel(DriverPanel panel) {
+    public void setParentPanel(CustomerPanel panel) {
         this.parentPanel = panel;
     }
 
-    public void setFields(int driverID, String name, String rate, String contactNumber) {
-        this.driverID = driverID;
-        nameField.setText(name);
+    public void setFields(int customerID, String companyName, String customerName, String contactNumber, String billingAddress, String amountPaid, String datePaid) {
+        this.customerID = customerID;
+        companyField.setText(companyName);
+        customerField.setText(customerName);
         contactField.setText(contactNumber);
-        rateField.setText(rate);
+        billingField.setText(billingAddress);
+        amountField.setText(amountPaid);
+        dateField.setText(datePaid);
     }
 
     private void initComponents() {
-        controller = new DriverController();
+        controller = new CustomerController();
         confirmButton = new JButton();
-        nameField = new JTextField();
-        contactField = new JTextField();
-        rateField = new JTextField();
-        nameLabel = new JLabel();
-        contactLabel = new JLabel();
-        rateLabel = new JLabel();
         cancelButton = new JButton();
-        statusLabel = new JLabel();
-        statusComboBox = new JComboBox<>(new String[] { "AVAILABLE", "IN_TRANSIT", "ON_LEAVE", "UNAVAILABLE" });
+        companyField = new JTextField();
+        customerField = new JTextField();
+        contactField = new JTextField();
+        billingField = new JTextField();
+        amountField = new JTextField();
+        dateField = new JTextField();
+        companyLabel = new JLabel();
+        customerLabel = new JLabel();
+        contactLabel = new JLabel();
+        billingLabel = new JLabel();
+        amountLabel = new JLabel();
+        dateLabel = new JLabel();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Update Driver Record");
+        setTitle("Update Customer Record");
         setModal(true);
         setResizable(false);
 
-        statusLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        statusLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        statusLabel.setText("Status");
+        companyLabel.setText("Company Name:");
+        customerLabel.setText("Customer Name:");
+        contactLabel.setText("Contact No:");
+        billingLabel.setText("Billing Address:");
+        amountLabel.setText("Amount Paid:");
+        dateLabel.setText("Date Paid (yyyy-MM-dd):");
 
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(this);
@@ -78,68 +86,71 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(this);
 
-        nameLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        nameLabel.setText("Full Name");
-
-        contactLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        contactLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        contactLabel.setText("Contact No.");
-
-        rateLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        rateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        rateLabel.setText("Rate");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(contactLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(contactField, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(rateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rateField, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(confirmButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton)
-                        .addGap(1, 1, 1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(statusComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(confirmButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(dateField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(amountField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(billingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(billingField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(contactLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(contactField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(customerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(customerField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(companyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(companyField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameLabel))
+                    .addComponent(companyLabel)
+                    .addComponent(companyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contactLabel))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rateLabel))
+                    .addComponent(customerLabel)
+                    .addComponent(customerField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(statusLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                    .addComponent(contactLabel)
+                    .addComponent(contactField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(billingLabel)
+                    .addComponent(billingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(amountLabel)
+                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dateLabel)
+                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(confirmButton)
                     .addComponent(cancelButton))
@@ -147,20 +158,32 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
         );
 
         pack();
-    }                    
+    }
 
     @Override
-    // TODO: Add Prompts
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == confirmButton) {
-            boolean success = controller.updateRecord(driverID, nameField.getText(), rateField.getText(), contactField.getText(), statusComboBox.getSelectedIndex());
-            if(success) {
-                parentPanel.refresh();
-                dispose();
+            try {
+                String companyName = companyField.getText();
+                String customerName = customerField.getText();
+                String contactNumber = contactField.getText();
+                String billingAddress = billingField.getText();
+                double amountPaid = Double.parseDouble(amountField.getText());
+                Date datePaid = Date.valueOf(dateField.getText().trim()); // Parse date (yyyy-MM-dd)
+
+                boolean success = controller.updateRecord(customerID, companyName, customerName, contactNumber, billingAddress, String.valueOf(amountPaid), datePaid);
+
+                if (success) {
+                    parentPanel.refresh();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to update customer.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Invalid input. Please check your data and try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }
-        else if (event.getSource() == cancelButton) {
+        } else if (event.getSource() == cancelButton) {
             dispose();
         }
-    }               
+    }
 }
