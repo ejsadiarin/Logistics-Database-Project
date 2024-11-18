@@ -109,7 +109,29 @@ public class LogisticsPanel extends javax.swing.JPanel {
     }                                                  
 
     private void updateRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {
-        // TODO this is the "Change Status" button event
+        int selectedRow = logisticsTable.getSelectedRow();
+        if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, 
+                "Please select a record to update.", 
+                "No Selection", 
+                javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // WARN: how will we do the UI for this "form" or popup for "Change Status" since we only need to change the status and nothing else?
+        // UpdateLogisticsForm dialog = new UpdateLogisticsForm(new javax.swing.JFrame(), true);
+        // dialog.setParentPanel(this);
+        // dialog.setFields(
+        //     (int)logisticsTable.getValueAt(selectedRow, 0), // logistics_id
+        //     String.valueOf(logisticsTable.getValueAt(selectedRow, 1)), // distance
+        //     String.valueOf(logisticsTable.getValueAt(selectedRow, 2)), // normal cost
+        //     logisticsTable.getValueAt(selectedRow, 3).toString(), // status
+        //     (int)logisticsTable.getValueAt(selectedRow, 4), // schedule_id
+        // );
+        // dialog.setVisible(true);
+        
     }                                                     
 
 
