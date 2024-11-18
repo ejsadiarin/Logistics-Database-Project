@@ -1,7 +1,7 @@
 package Views;
 
-import Controllers.CustomerController;
 import javax.swing.JPanel;
+import Controllers.CustomerController;
 
 public class CustomerPanel extends JPanel {
     private CustomerController controller;
