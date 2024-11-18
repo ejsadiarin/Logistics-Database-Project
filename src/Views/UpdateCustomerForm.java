@@ -174,7 +174,7 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
                 boolean success = controller.updateRecord(customerID, companyName, customerName, contactNumber, billingAddress, String.valueOf(amountPaid), datePaid);
 
                 if (success) {
-                    parentPanel.refresh();
+                        parentPanel.refresh();
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to update customer.", "Error", JOptionPane.ERROR_MESSAGE);
