@@ -26,7 +26,7 @@ CREATE TABLE customers (
     customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     company_name VARCHAR(255) NOT NULL,
     customer_name VARCHAR(255) NOT NULL,
-    company_contract VARCHAR(255) NOT NULL,
+    company_contact VARCHAR(255) NOT NULL,
     billing_address VARCHAR(255) NOT NULL,
     amount_paid DECIMAL(10, 2) NOT NULL,
     date_paid DATETIME NOT NULL
