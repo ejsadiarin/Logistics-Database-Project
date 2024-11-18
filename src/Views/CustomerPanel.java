@@ -123,13 +123,13 @@ public class CustomerPanel extends JPanel {
             UpdateCustomerForm dialog = new UpdateCustomerForm(new javax.swing.JFrame(), true);
             dialog.setParentPanel(this);
             dialog.setFields(
-                (int) customerTable.getValueAt(selectedRow, 0),
-                (String) customerTable.getValueAt(selectedRow, 1),
-                (String) customerTable.getValueAt(selectedRow, 2),
-                (String) customerTable.getValueAt(selectedRow, 3),
-                (String) customerTable.getValueAt(selectedRow, 4),
-                String.valueOf(customerTable.getValueAt(selectedRow, 5)),
-                (String) customerTable.getValueAt(selectedRow, 6)
+                (int) customerTable.getValueAt(selectedRow, 0), // customerID
+                (String) customerTable.getValueAt(selectedRow, 1), // company name
+                (String) customerTable.getValueAt(selectedRow, 2), // customer name
+                (String) customerTable.getValueAt(selectedRow, 3), // company contact
+                (String) customerTable.getValueAt(selectedRow, 4), // billing address
+                String.valueOf(customerTable.getValueAt(selectedRow, 5)), // amount paid
+                customerTable.getValueAt(selectedRow, 6).toString() // date paid
             );
             dialog.setVisible(true);
         } else {

@@ -140,7 +140,6 @@ public class NewVehicleForm extends javax.swing.JDialog {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
         if (evt.getSource() == confirmButton) {
             try {
-
                 String maintenanceDateString = maintenanceField.getText();
                 Date maintenanceDate = Date.valueOf(maintenanceDateString);
 

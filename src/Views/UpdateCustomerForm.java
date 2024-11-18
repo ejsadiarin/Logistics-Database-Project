@@ -168,7 +168,7 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
                 String contactNumber = contactField.getText();
                 String billingAddress = billingField.getText();
                 double amountPaid = Double.parseDouble(amountField.getText());
-                Date datePaid = Date.valueOf(dateField.getText().trim()); // Parse date (yyyy-MM-dd)
+                Date datePaid = Date.valueOf(dateField.getText()); // Parse date (yyyy-MM-dd)
 
                 boolean success = controller.updateRecord(customerID, companyName, customerName, contactNumber, billingAddress, String.valueOf(amountPaid), datePaid);
 

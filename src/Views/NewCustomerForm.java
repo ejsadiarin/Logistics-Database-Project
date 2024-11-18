@@ -37,7 +37,7 @@ public class NewCustomerForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        controller = new CustomerController();
+        this.controller = new CustomerController();
         confirmButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         companyField = new javax.swing.JTextField();
@@ -179,9 +179,8 @@ public class NewCustomerForm extends javax.swing.JDialog {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
         if (evt.getSource() == confirmButton) {
             try {
-                String dateText = dateField.getText().trim();
-                java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateText);
-                java.sql.Date dateParsed = new java.sql.Date(date.getTime());
+                String dateText = dateField.getText();
+                Date dateParsed = Date.valueOf(dateText);
 
                 boolean success = controller.createRecord(companyField.getText(), customerField.getText(), companyField.getText(), billingField.getText(), amountField.getText(), dateParsed);
                 if (success) {
@@ -199,7 +198,7 @@ public class NewCustomerForm extends javax.swing.JDialog {
     }                                             
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO cancel button
+        dispose();
     }                                            
 
     /**
