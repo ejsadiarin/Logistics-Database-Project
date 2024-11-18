@@ -1,5 +1,7 @@
 package Views;
 
+import java.sql.Date;
+
 import javax.swing.JOptionPane;
 
 import Controllers.VehicleController;
@@ -29,6 +31,7 @@ public class NewVehicleForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+        this.controller = new VehicleController();
         confirmButton = new javax.swing.JButton();
         plateField = new javax.swing.JTextField();
         economyField = new javax.swing.JTextField();
@@ -137,11 +140,11 @@ public class NewVehicleForm extends javax.swing.JDialog {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
         if (evt.getSource() == confirmButton) {
             try {
-                String dateText = maintenanceField.getText().trim();
-                java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateText);
-                java.sql.Date dateParsed = new java.sql.Date(date.getTime());
 
-                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), dateParsed, weightField.getText());
+                String maintenanceDateString = maintenanceField.getText();
+                Date maintenanceDate = Date.valueOf(maintenanceDateString);
+
+                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), maintenanceDate, weightField.getText());
                 if (success) {
                     if (parentPanel != null) {
                         parentPanel.refresh();
@@ -157,7 +160,7 @@ public class NewVehicleForm extends javax.swing.JDialog {
     }                                             
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        dispose();
     }                                            
 
     /**

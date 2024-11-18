@@ -1,5 +1,7 @@
 package Views;
 
+import java.sql.Date;
+
 import Controllers.VehicleController;
 
 public class UpdateVehicleForm extends javax.swing.JDialog {
@@ -36,6 +38,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+        this.controller = new VehicleController();
         confirmButton = new javax.swing.JButton();
         plateField = new javax.swing.JTextField();
         economyField = new javax.swing.JTextField();
@@ -55,12 +58,6 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);
-            }
-        });
-
-        plateField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                plateFieldActionPerformed(evt);
             }
         });
 
@@ -166,15 +163,30 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     }// </editor-fold>                        
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
+        String plateNumber = plateField.getText();
+        String fuelEconomy = economyField.getText();
+        String maintenanceDateString = maintenanceField.getText();
+        String maxLoadWeight = weightField.getText();
+        int statusIndex = statusComboBox.getSelectedIndex();
+
+        Date maintenanceDate = Date.valueOf(maintenanceDateString);
+
+        boolean success = controller.updateRecord(vehicleID, plateNumber, fuelEconomy, maintenanceDate, maxLoadWeight, statusIndex);
+        if (success) {
+            parentPanel.refresh();
+            dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Failed to update vehicle record.",
+                "Update Failed",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
     }                                             
 
-    private void plateFieldActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
-
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        dispose();
     }                                            
 
     /**
