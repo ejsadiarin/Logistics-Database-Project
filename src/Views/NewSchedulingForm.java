@@ -98,9 +98,7 @@ public class NewSchedulingForm extends javax.swing.JDialog implements ActionList
         scrollPane1.setViewportView(driverIDTable);
 
         vehicleIDTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getAvailableVehicles(),
             new String [] {
                 "VehicleID"
             }
@@ -123,6 +121,7 @@ public class NewSchedulingForm extends javax.swing.JDialog implements ActionList
         scrollPane2.setViewportView(vehicleIDTable);
 
         confirmButton.setText("Confirm");
+        confirmButton.addActionListener(this);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,7 +172,7 @@ public class NewSchedulingForm extends javax.swing.JDialog implements ActionList
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource() == confirmButton) {
-            boolean success = controller.createRecord((String)datetimeSpinner.getValue(),
+            boolean success = controller.createRecord(datetimeSpinner.getValue(),
                             (int)driverIDTable.getValueAt(driverIDTable.getSelectedRow(), 0),
                             (int)vehicleIDTable.getValueAt(vehicleIDTable.getSelectedRow(), 0),
                             (int)requestIDTable.getValueAt(requestIDTable.getSelectedRow(), 0)
