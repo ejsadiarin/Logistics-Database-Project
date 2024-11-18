@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Views;
 
-/**
- *
- * @author Rafael
- */
+import Controllers.VehicleController;
+
 public class VehiclePanel extends javax.swing.JPanel {
+    private VehicleController controller;
 
     /**
      * Creates new form VehiclePanel
@@ -26,6 +21,7 @@ public class VehiclePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+        controller = new VehicleController();
         tablePane = new javax.swing.JScrollPane();
         vehicleTable = new javax.swing.JTable();
         newRecordButton = new javax.swing.JButton();
@@ -33,9 +29,7 @@ public class VehiclePanel extends javax.swing.JPanel {
         deleteRecordButton = new javax.swing.JButton();
 
         vehicleTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getVehicleTableData(),
             new String [] {
                 "VehicleID", "Plate Number", "Fuel Economy (cost/km)", "Last Maintenance Date", "Max Load Weight", "Status"
             }
@@ -109,16 +103,40 @@ public class VehiclePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>                        
 
+    public void refresh() {
+        removeAll();
+        initComponents();
+        revalidate();
+        repaint();
+    }
+
     private void newRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+        NewVehicleForm dialog = new NewVehicleForm(new javax.swing.JFrame(), true);
+        dialog.setParentPanel(this);
+        dialog.setVisible(true);
     }                                                  
 
     private void updateRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+        int selectedRow = vehicleTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            UpdateVehicleForm dialog = new UpdateVehicleForm(new javax.swing.JFrame(), true);
+            dialog.setParentPanel(this);
+            dialog.setFields(
+                (int) vehicleTable.getValueAt(selectedRow, 0),
+                (String) vehicleTable.getValueAt(selectedRow, 1),
+                (String) vehicleTable.getValueAt(selectedRow, 2),
+                (String) vehicleTable.getValueAt(selectedRow, 3),
+                (String) vehicleTable.getValueAt(selectedRow, 4)
+            );
+            dialog.setVisible(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a record to update.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
     }                                                  
 
     private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+            controller.deleteRecord((int)vehicleTable.getValueAt(vehicleTable.getSelectedRow(), 0));
+            refresh();
     }                                                     
 
 

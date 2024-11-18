@@ -1,14 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Views;
 
-/**
- *
- * @author Rafael
- */
+import javax.swing.JOptionPane;
+
+import Controllers.VehicleController;
+
 public class NewVehicleForm extends javax.swing.JDialog {
+    private VehicleController controller;
+    private VehiclePanel parentPanel;
 
     /**
      * Creates new form NewVehicleForm
@@ -16,6 +14,10 @@ public class NewVehicleForm extends javax.swing.JDialog {
     public NewVehicleForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    public void setParentPanel(VehiclePanel parentPanel) {
+        this.parentPanel = parentPanel;
     }
 
     /**
@@ -44,12 +46,6 @@ public class NewVehicleForm extends javax.swing.JDialog {
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);
-            }
-        });
-
-        plateField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                plateFieldActionPerformed(evt);
             }
         });
 
@@ -139,12 +135,26 @@ public class NewVehicleForm extends javax.swing.JDialog {
     }// </editor-fold>                        
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
+        if (evt.getSource() == confirmButton) {
+            try {
+                String dateText = maintenanceField.getText().trim();
+                java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateText);
+                java.sql.Date dateParsed = new java.sql.Date(date.getTime());
 
-    private void plateFieldActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
+                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), dateParsed, weightField.getText());
+                if (success) {
+                    if (parentPanel != null) {
+                        parentPanel.refresh();
+                    }
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to create customer.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }                                             
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:

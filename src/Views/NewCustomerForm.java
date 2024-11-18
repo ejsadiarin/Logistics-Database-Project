@@ -69,12 +69,6 @@ public class NewCustomerForm extends javax.swing.JDialog {
             }
         });
 
-        companyField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                companyFieldActionPerformed(evt);
-            }
-        });
-
         companyLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         companyLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         companyLabel.setText("Company Name");
@@ -204,12 +198,8 @@ public class NewCustomerForm extends javax.swing.JDialog {
         }
     }                                             
 
-    private void companyFieldActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
-    }                                            
-
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        // TODO cancel button
     }                                            
 
     /**
