@@ -1,9 +1,9 @@
 package Views;
 
-import Controllers.RequestController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,6 +17,8 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
+
+import Controllers.RequestController;
 
 public class NewRequestForm extends JDialog implements ActionListener {
     private JButton confirmButton;
@@ -177,7 +179,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
             originField.getText(),
             destinationField.getText(),
             weightField.getText(),
-            customerIDTable.getSelectedRow());
+            (int)customerIDTable.getValueAt(customerIDTable.getSelectedRow(), 0));
             if(success) {
                 this.parentPanel.refresh();
                 dispose();
