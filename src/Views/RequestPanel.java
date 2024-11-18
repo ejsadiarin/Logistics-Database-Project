@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.RequestController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
@@ -13,8 +14,10 @@ public class RequestPanel extends JPanel implements ActionListener {
     private JButton newRequestButton;
     private JTable requestTable;
     private JScrollPane tablePane;
+    private RequestController controller;
 
     public RequestPanel() {
+        controller = new RequestController();
         initComponents();
     }
                          
@@ -24,9 +27,7 @@ public class RequestPanel extends JPanel implements ActionListener {
         newRequestButton = new JButton();
 
         requestTable.setModel(new DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getRequestTableData(),
             new String [] {
                 "RequestID", "Requested Date", "Product", "Origin", "Destination", "Load Weight", "CustomerID"
             }
@@ -76,18 +77,18 @@ public class RequestPanel extends JPanel implements ActionListener {
         );
     }
     
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == newRequestButton) {
+            NewRequestForm dialog = new NewRequestForm(new javax.swing.JFrame(), true);
+            dialog.setParent(this);
+            dialog.setVisible(true);
+        }
+    }
+
     public void refresh() {
         removeAll();
         initComponents();
         revalidate();
         repaint();
     }
-
-    public void actionPerformed(ActionEvent event) {
-        if (event.getSource() == newRequestButton) {
-            NewRequestForm dialog = new NewRequestForm(new javax.swing.JFrame(), true);
-            dialog.setParentPanel(this);
-            dialog.setVisible(true);
-        }
-    }                                        
 }

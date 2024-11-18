@@ -37,8 +37,8 @@ CREATE TABLE requests (
     request_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     requested_date DATE NOT NULL,
     product VARCHAR(50) NOT NULL,
-    origin DECIMAL(10, 2) NOT NULL,
-    destination DECIMAL(10, 2) NOT NULL,
+    origin VARCHAR(50) NOT NULL,
+    destination VARCHAR(50) NOT NULL,
     load_weight DECIMAL(10, 2) NOT NULL,
     customer_id INT,
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id)

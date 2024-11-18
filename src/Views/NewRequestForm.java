@@ -87,17 +87,16 @@ public class NewRequestForm extends JDialog implements ActionListener {
 
         dateField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(new SimpleDateFormat("yyyy-MM-dd"))));
 
-        productField.addActionListener(this);
-
+        
         dateLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         dateLabel.setText("Requested Delivery Date");
-
+        
         productLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         productLabel.setText("Product");
-
+        
         originLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         originLabel.setText("Origin");
-
+        
         destinationLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         destinationLabel.setText("Destination");
 
@@ -105,6 +104,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
         weightLabel.setText("Load Weight");
 
         confirmButton.setText("Confirm");
+        confirmButton.addActionListener(this);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -163,17 +163,25 @@ public class NewRequestForm extends JDialog implements ActionListener {
         );
 
         pack();
-    }                    
-
-    public void setParentPanel(RequestPanel panel) {
-        this.parentPanel = panel;
+    }
+    
+    public void setParent(RequestPanel parentPanel) {
+        this.parentPanel = parentPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource() == confirmButton) {
-            parentPanel.refresh();
-            dispose();
+            boolean success = controller.createRecord(  dateField.getText(),
+            productField.getText(),
+            originField.getText(),
+            destinationField.getText(),
+            weightField.getText(),
+            customerIDTable.getSelectedRow());
+            if(success) {
+                this.parentPanel.refresh();
+                dispose();
+            }
         }
     }                
 }
