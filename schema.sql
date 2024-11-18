@@ -16,7 +16,7 @@ CREATE TABLE vehicles (
 	vehicle_id INT PRIMARY KEY,
     plate_number VARCHAR(6) NOT NULL,
     fuel_economy FLOAT NOT NULL,
-    last_maintenance_date DATETIME NOT NULL,
+    last_maintenance_date DATE NOT NULL,
     max_load_weight FLOAT NOT NULL,
     status ENUM('AVAILABLE', 'IN_TRANSIT', 'NEEDS_MAINTENANCE', 'UNAVAILABLE') DEFAULT 'AVAILABLE'
 );
@@ -29,13 +29,13 @@ CREATE TABLE customers (
     company_contact VARCHAR(255) NOT NULL,
     billing_address VARCHAR(255) NOT NULL,
     amount_paid DECIMAL(10, 2) NOT NULL,
-    date_paid DATETIME NOT NULL
+    date_paid DATE NOT NULL
 );
 
 DROP TABLE IF EXISTS `requests`;
 CREATE TABLE requests (
     request_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    requested_date DATETIME NOT NULL,
+    requested_date DATE NOT NULL,
     product VARCHAR(50) NOT NULL,
     origin DECIMAL(10, 2) NOT NULL,
     destination DECIMAL(10, 2) NOT NULL,
