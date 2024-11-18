@@ -37,6 +37,7 @@ public class NewCustomerForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+        controller = new CustomerController();
         confirmButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         companyField = new javax.swing.JTextField();
