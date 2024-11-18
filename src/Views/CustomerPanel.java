@@ -1,14 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Views;
 
-/**
- *
- * @author Rafael
- */
-public class CustomerPanel extends javax.swing.JPanel {
+import java.sql.Date;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.text.html.parser.ContentModel;
+
+import Controllers.CustomerController;
+
+public class CustomerPanel extends JPanel {
+    private CustomerController controller;
+    private JTable customerTable;
 
     /**
      * Creates new form CustomerPanel
@@ -26,6 +29,7 @@ public class CustomerPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+        controller = new CustomerController();
         tablePane = new javax.swing.JScrollPane();
         vehicleTable = new javax.swing.JTable();
         newRecordButton = new javax.swing.JButton();
@@ -109,16 +113,34 @@ public class CustomerPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>                        
 
-    private void newRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    public void refresh() {
+        removeAll();
+        initComponents();
+        revalidate();
+        repaint();
+    }
+
+    private void newRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {
+        NewCustomerForm dialog = new NewCustomerForm(new javax.swing.JFrame(), true);
+        dialog.setParentPanel(this);
+        dialog.setVisible(true);
     }                                                  
 
-    private void updateRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    // TODO: update customer form
+    private void updateRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {
+            UpdateDriverForm dialog = new UpdateDriverForm(new javax.swing.JFrame(), true);
+            dialog.setParentPanel(this);
+            dialog.setFields(
+                    (int)customerTable.getValueAt(customerTable.getSelectedRow(), 0),
+                    (String)customerTable.getValueAt(customerTable.getSelectedRow(), 1),
+                    String.valueOf(customerTable.getValueAt(customerTable.getSelectedRow(), 2)),
+                    (String)customerTable.getValueAt(customerTable.getSelectedRow(), 3));
+            dialog.setVisible(true);
     }                                                  
 
-    private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+    private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {
+            controller.deleteRecord((int)customerTable.getValueAt(customerTable.getSelectedRow(), 0));
+            refresh();
     }                                                     
 
 
