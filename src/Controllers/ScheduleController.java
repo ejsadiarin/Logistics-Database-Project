@@ -1,19 +1,16 @@
 package Controllers;
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.List;
-
-import Models.Schedule;
 import Models.Driver;
-import Models.Vehicle;
 import Models.Request;
+import Models.Schedule;
+import Models.Vehicle;
+import Services.DriverDAO;
+import Services.RequestDAO;
 import Services.ScheduleDAO;
 import Services.VehicleDAO;
-import Services.DriverDAO; 
-import Services.RequestDAO;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
 
 public class ScheduleController{
     private final ScheduleDAO dao;
@@ -47,13 +44,10 @@ public class ScheduleController{
         return tableData;
     }
 
-    public boolean createRecord(String date, String driverID, String vehicleID, String requestID) {
+    public boolean createRecord(String date, int driverID, int vehicleID, int requestID) {
         try {
-            int dbDriverID = Integer.parseInt(driverID);
-            int dbVehicleID = Integer.parseInt(vehicleID);
-            int dbRequestID = Integer.parseInt(requestID);
             Timestamp dbDate = Timestamp.valueOf(date);
-            Schedule newRecord = new Schedule(0, dbDate, dbDriverID, dbVehicleID, dbRequestID);
+            Schedule newRecord = new Schedule(0, dbDate, driverID, vehicleID, requestID);
             dao.addSchedule(newRecord);
             return true;
         } catch (SQLException e) {
@@ -75,23 +69,66 @@ public class ScheduleController{
         }
     }
 
-    public List<Driver> getAvailableDrivers() {
+    public Object[][] getRequestID() {
+        List<Request> data;
+        int dataRows;
         try {
-            DriverDAO driverDAO = new DriverDAO();
-            return driverDAO.getAllAvailableDrivers();
-        } catch (SQLException e) {
+            RequestDAO requestDAO = new RequestDAO();
+            data = requestDAO.getAllRequests(); // TODO: Get all requests without schedules
+            dataRows = data.size();
+        } catch (Exception e) {
             System.err.println(e);
-            return Collections.emptyList();
+            return null;
         }
+
+        Object[][] tableData = new Object[dataRows][1];
+        for (int i = 0; i < data.size(); i++) {
+            tableData[i] = new Object[]{
+                data.get(i).getRequestID()
+            };
+        }
+        return tableData;
     }
 
-    public List<Vehicle> getAvailableVehicles() {
+    public Object[][] getAvailableDrivers() {
+        List<Driver> data;
+        int dataRows;
+        try {
+            DriverDAO driverDAO = new DriverDAO();
+            data = driverDAO.getAllAvailableDrivers();
+            dataRows = data.size();
+        } catch (Exception e) {
+            System.err.println(e);
+            return null;
+        }
+
+        Object[][] tableData = new Object[dataRows][1];
+        for (int i = 0; i < data.size(); i++) {
+            tableData[i] = new Object[]{
+                data.get(i).getDriverID()
+            };
+        }
+        return tableData;
+    }
+
+    public Object[][] getAvailableVehicles() {
+        List<Vehicle> data;
+        int dataRows;
         try {
             VehicleDAO vehicleDAO = new VehicleDAO();
-            return vehicleDAO.getAllAvailableVehicles();
-        } catch (SQLException e) {
+            data = vehicleDAO.getAllAvailableVehicles();
+            dataRows = data.size();
+        } catch (Exception e) {
             System.err.println(e);
-            return Collections.emptyList();
+            return null;
         }
+
+        Object[][] tableData = new Object[dataRows][1];
+        for (int i = 0; i < data.size(); i++) {
+            tableData[i] = new Object[]{
+                data.get(i).getVehicleID()
+            };
+        }
+        return tableData;
     }
 }

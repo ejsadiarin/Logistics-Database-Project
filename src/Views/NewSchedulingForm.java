@@ -4,17 +4,24 @@
  */
 package Views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import Controllers.ScheduleController;
+
 /**
  *
  * @author Rafael
  */
-public class NewSchedulingForm extends javax.swing.JDialog {
-
+public class NewSchedulingForm extends javax.swing.JDialog implements ActionListener {
+    private SchedulingPanel parentPanel;
+    private ScheduleController controller;
     /**
      * Creates new form NewSchedulingForm
      */
     public NewSchedulingForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        controller = new ScheduleController();
         initComponents();
     }
 
@@ -45,9 +52,7 @@ public class NewSchedulingForm extends javax.swing.JDialog {
         datetimeSpinner.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1731893728449L), null, null, java.util.Calendar.HOUR));
 
         requestIDTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getRequestID(),
             new String [] {
                 "RequestID"
             }
@@ -70,9 +75,7 @@ public class NewSchedulingForm extends javax.swing.JDialog {
         scrollPane.setViewportView(requestIDTable);
 
         driverIDTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getAvailableDrivers(),
             new String [] {
                 "DriverID"
             }
@@ -161,48 +164,25 @@ public class NewSchedulingForm extends javax.swing.JDialog {
         );
 
         pack();
-    }// </editor-fold>                        
+    }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    public void setParentPanel(SchedulingPanel panel) {
+        this.parentPanel = panel;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if(event.getSource() == confirmButton) {
+            boolean success = controller.createRecord((String)datetimeSpinner.getValue(),
+                            (int)driverIDTable.getValueAt(driverIDTable.getSelectedRow(), 0),
+                            (int)vehicleIDTable.getValueAt(vehicleIDTable.getSelectedRow(), 0),
+                            (int)requestIDTable.getValueAt(requestIDTable.getSelectedRow(), 0)
+            );
+            if(success) {
+                this.parentPanel.refresh();
+                dispose();
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewSchedulingForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewSchedulingForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewSchedulingForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewSchedulingForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                NewSchedulingForm dialog = new NewSchedulingForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify                     
