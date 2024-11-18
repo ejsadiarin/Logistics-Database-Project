@@ -2,6 +2,7 @@ package Controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ScheduleController{
             int dbDriverID = Integer.parseInt(driverID);
             int dbVehicleID = Integer.parseInt(vehicleID);
             int dbRequestID = Integer.parseInt(requestID);
-            Date dbDate = Date.valueOf(date);
+            Timestamp dbDate = Timestamp.valueOf(date);
             Schedule newRecord = new Schedule(0, dbDate, dbDriverID, dbVehicleID, dbRequestID);
             dao.addSchedule(newRecord);
             return true;
