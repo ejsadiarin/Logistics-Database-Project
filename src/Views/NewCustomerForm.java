@@ -1,13 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Views;
-/**
- *
- * @author Rafael
- */
+
+import java.sql.Date;
+import java.text.ParseException;
+
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import Controllers.CustomerController;
+
 public class NewCustomerForm extends javax.swing.JDialog {
+    private CustomerController controller;
+    private CustomerPanel parentPanel;
 
     /**
      * Creates new form NewCustomerForm
@@ -15,6 +21,11 @@ public class NewCustomerForm extends javax.swing.JDialog {
     public NewCustomerForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+
+    public void setParentPanel(CustomerPanel parentPanel) {
+        this.parentPanel = parentPanel;
     }
 
     /**
@@ -171,7 +182,25 @@ public class NewCustomerForm extends javax.swing.JDialog {
     }// </editor-fold>                        
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
+        if (evt.getSource() == confirmButton) {
+            try {
+                String dateText = dateField.getText().trim();
+                java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateText);
+                java.sql.Date dateParsed = new java.sql.Date(date.getTime());
+
+                boolean success = controller.createRecord(companyField.getText(), customerField.getText(), companyField.getText(), billingField.getText(), amountField.getText(), dateParsed);
+                if (success) {
+                    if (parentPanel != null) {
+                        parentPanel.refresh();
+                    }
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to create customer.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
     }                                             
 
     private void companyFieldActionPerformed(java.awt.event.ActionEvent evt) {                                             
