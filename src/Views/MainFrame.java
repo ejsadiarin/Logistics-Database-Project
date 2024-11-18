@@ -13,9 +13,11 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
     private javax.swing.JButton selectScheduling;
     private javax.swing.JButton selectVehicle;
     private javax.swing.JButton viewReports;
+    private ReportPanel reportPanel;
     
     public MainFrame() {
         initComponents();
+        
     }
 
     private void initComponents() {
@@ -98,9 +100,8 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
     }
 
     public void setMainPanel(JPanel panel) {
-        MainPanel.remove(content);
-        content = panel;
-        MainPanel.add(content);
+        MainPanel.removeAll();
+        MainPanel.add(panel);
         MainPanel.revalidate();
         MainPanel.repaint();
     }
@@ -126,7 +127,7 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
             setMainPanel(new LogisticsPanel());
         }
         else if (event.getSource() == viewReports) {
-            // TODO: Add Reports Panel
+            setMainPanel(new ReportPanel());
         }
     }
 
