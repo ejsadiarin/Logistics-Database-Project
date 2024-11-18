@@ -167,14 +167,14 @@ public class NewRequestForm extends JDialog implements ActionListener {
         pack();
     }
     
-    public void setParent(RequestPanel parentPanel) {
+    public void setParentPanel(RequestPanel parentPanel) {
         this.parentPanel = parentPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource() == confirmButton) {
-            boolean success = controller.createRecord(  dateField.getText(),
+            boolean success = controller.createRecord(dateField.getText(),
             productField.getText(),
             originField.getText(),
             destinationField.getText(),

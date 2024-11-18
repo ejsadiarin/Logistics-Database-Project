@@ -22,7 +22,7 @@ public class CustomerPanel extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        controller = new CustomerController();
+        this.controller = new CustomerController();
         tablePane = new javax.swing.JScrollPane();
         customerTable = new javax.swing.JTable();
         newRecordButton = new javax.swing.JButton();

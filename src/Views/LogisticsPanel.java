@@ -1,19 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Views;
 
-/**
- *
- * @author Rafael
- */
+import Controllers.LogisticsController;
+
 public class LogisticsPanel extends javax.swing.JPanel {
+    private LogisticsController controller;
 
     /**
      * Creates new form LogisticsPanel
      */
     public LogisticsPanel() {
+        this.controller = new LogisticsController();
         initComponents();
     }
 
@@ -32,9 +28,7 @@ public class LogisticsPanel extends javax.swing.JPanel {
         updateRecordButton = new javax.swing.JButton();
 
         logisticsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            controller.getLogisticsTableData(),
             new String [] {
                 "LogisticsID", "Distance (km)", "Normal Cost", "Status", "ScheduleID"
             }
@@ -101,12 +95,21 @@ public class LogisticsPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>                        
 
-    private void newRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    public void refresh() {
+        removeAll();
+        initComponents();
+        revalidate();
+        repaint();
+    }
+
+    private void newRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {
+        NewLogisticsForm dialog = new NewLogisticsForm(new javax.swing.JFrame(), true);
+        dialog.setParentPanel(this);
+        dialog.setVisible(true);
     }                                                  
 
-    private void updateRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+    private void updateRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {
+        // TODO this is the "Change Status" button event
     }                                                     
 
 

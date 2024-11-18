@@ -80,7 +80,7 @@ public class RequestPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == newRequestButton) {
             NewRequestForm dialog = new NewRequestForm(new javax.swing.JFrame(), true);
-            dialog.setParent(this);
+            dialog.setParentPanel(this);
             dialog.setVisible(true);
         }
     }

@@ -1,19 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Views;
-/**
- *
- * @author Rafael
- */
-public class NewLogisticsForm extends javax.swing.JDialog {
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import Controllers.LogisticsController;
+
+public class NewLogisticsForm extends javax.swing.JDialog implements ActionListener {
+    private LogisticsController controller;
+    private LogisticsPanel parentPanel;
 
     /**
      * Creates new form NewLogisticsForm
      */
     public NewLogisticsForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.controller = new LogisticsController();
         initComponents();
     }
 
@@ -38,6 +38,7 @@ public class NewLogisticsForm extends javax.swing.JDialog {
         setTitle("New Logistics Record");
 
         schedulingIDTable.setModel(new javax.swing.table.DefaultTableModel(
+            // TODO: display scheduling table here
             new Object [][] {
 
             },
@@ -64,12 +65,6 @@ public class NewLogisticsForm extends javax.swing.JDialog {
 
         distanceLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         distanceLabel.setText("Distance (km)");
-
-        distanceField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                distanceFieldActionPerformed(evt);
-            }
-        });
 
         normalcostLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         normalcostLabel.setText("Calculated Normal Cost");
@@ -120,9 +115,21 @@ public class NewLogisticsForm extends javax.swing.JDialog {
         pack();
     }// </editor-fold>                        
 
-    private void distanceFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
+    public void setParentPanel(LogisticsPanel panel) {
+        this.parentPanel = panel;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == confirmButton) {
+            boolean success = controller.createRecord(distanceField.getText(), normalcostField.getText(), (int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0));
+            if (success) {
+                this.parentPanel.refresh();
+                dispose();
+            }
+        }
+    }                
+
 
     /**
      * @param args the command line arguments
