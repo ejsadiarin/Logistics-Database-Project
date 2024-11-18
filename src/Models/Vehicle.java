@@ -11,7 +11,7 @@ public class Vehicle {
     private Status status;
 
     public enum Status {
-        AVAIALABLE,
+        AVAILABLE,
         IN_TRANSIT,
         UNAVAILABLE,
         NEEDS_MAINTENANCE

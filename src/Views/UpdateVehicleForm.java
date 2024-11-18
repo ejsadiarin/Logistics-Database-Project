@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Views;
 
-/**
- *
- * @author Rafael
- */
+import Controllers.VehicleController;
+
 public class UpdateVehicleForm extends javax.swing.JDialog {
+    private VehicleController controller;
+    private VehiclePanel parentPanel;
+    private int vehicleID;
 
     /**
      * Creates new form NewVehicleForm
@@ -16,6 +13,18 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     public UpdateVehicleForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    public void setParentPanel(VehiclePanel panel) {
+        this.parentPanel = panel;
+    }
+
+    public void setFields(int vehicleID, String plateNumber, String fuelEconomy, String lastMaintenanceDate, String maxLoadWeight) {
+        this.vehicleID = vehicleID;
+        plateField.setText(plateNumber);
+        economyField.setText(fuelEconomy);
+        maintenanceField.setText(lastMaintenanceDate);
+        weightField.setText(maxLoadWeight);
     }
 
     /**
