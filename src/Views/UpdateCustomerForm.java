@@ -8,7 +8,10 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+<<<<<<< HEAD
 import javax.swing.SwingConstants;
+=======
+>>>>>>> dda97e189221f87c3847016e5967f4341512b4f3
 import javax.swing.WindowConstants;
 import Controllers.CustomerController;
 
