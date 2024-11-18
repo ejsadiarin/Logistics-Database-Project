@@ -126,9 +126,7 @@ public class VehiclePanel extends javax.swing.JPanel {
                 (String) vehicleTable.getValueAt(selectedRow, 1),
                 (String) vehicleTable.getValueAt(selectedRow, 2),
                 (String) vehicleTable.getValueAt(selectedRow, 3),
-                (String) vehicleTable.getValueAt(selectedRow, 4),
-                String.valueOf(vehicleTable.getValueAt(selectedRow, 5)),
-                (String) vehicleTable.getValueAt(selectedRow, 6)
+                (String) vehicleTable.getValueAt(selectedRow, 4)
             );
             dialog.setVisible(true);
         } else {
@@ -137,7 +135,8 @@ public class VehiclePanel extends javax.swing.JPanel {
     }                                                  
 
     private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+            controller.deleteRecord((int)vehicleTable.getValueAt(vehicleTable.getSelectedRow(), 0));
+            refresh();
     }                                                     
 
 
