@@ -82,25 +82,19 @@ public class ReportPanel extends JPanel implements ActionListener {
             for (Object[] row : data) {
                 model.addRow(row);
             }
-            addSummaryRow(model, columnNames);
+            addSummaryRow(model, columnNames, year, month, reportType);
             reportTable.setModel(model);
         } else {
             JOptionPane.showMessageDialog(this, "Error generating report", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void addSummaryRow(DefaultTableModel model, String[] columnNames) {
-        double totalAmount = 0;
-        int totalCount = 0;
-        for (int i = 0; i < model.getRowCount(); i++) {
-            for (int j = 0; j < columnNames.length; j++) {
-                if (columnNames[j].equalsIgnoreCase("TotalSales")) {
-                    totalAmount += model.getValueAt(i, j) != null ? ((Number) model.getValueAt(i, j)).doubleValue() : 0;
-                }
-                if (columnNames[j].equalsIgnoreCase("SalesCount")) {
-                    totalCount += model.getValueAt(i, j) != null ? ((Number) model.getValueAt(i, j)).intValue() : 0;
-                }
-            }
+    private void addSummaryRow(DefaultTableModel model, String[] columnNames, String year, String month, String reportType) {
+        Object[] summaryData = null;
+        if (reportType.equals("Driver Completed Trips Report")) {
+            summaryData = reportController.getDriverSummary(year, month);
+        } else if (reportType.equals("Vehicle Completed Trips Report")) {
+            summaryData = reportController.getVehicleSummary(year, month);
         }
 
         Object[] summaryRow = new Object[columnNames.length];
@@ -108,9 +102,13 @@ public class ReportPanel extends JPanel implements ActionListener {
             if (j == 0) {
                 summaryRow[j] = "Total";
             } else if (columnNames[j].equalsIgnoreCase("TotalSales")) {
-                summaryRow[j] = totalAmount;
+                summaryRow[j] = null; // Not applicable for driver/vehicle reports
             } else if (columnNames[j].equalsIgnoreCase("SalesCount")) {
-                summaryRow[j] = totalCount;
+                summaryRow[j] = null; // Not applicable for driver/vehicle reports
+            } else if (columnNames[j].equalsIgnoreCase("TotalKilometers")) {
+                summaryRow[j] = summaryData != null ? summaryData[0] : 0;
+            } else if (columnNames[j].equalsIgnoreCase("TotalTrips")) {
+                summaryRow[j] = summaryData != null ? summaryData[1] : 0;
             } else {
                 summaryRow[j] = null;
             }
