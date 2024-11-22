@@ -1,10 +1,6 @@
 package Views;
 
-import java.sql.Date;
-
 import Controllers.VehicleController;
-import Models.Vehicle;
-import Views.VehiclePanel;
 
 public class UpdateVehicleForm extends javax.swing.JDialog {
     private VehicleController controller;
@@ -26,9 +22,9 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     public void setFields(int vehicleID, String plateNumber, String fuelEconomy, String lastMaintenanceDate, String maxLoadWeight) {
         this.vehicleID = vehicleID;
         plateField.setText(plateNumber);
-        economyField.setText(fuelEconomy);
+        economyField.setValue(Double.parseDouble(fuelEconomy));
         maintenanceField.setText(lastMaintenanceDate);
-        weightField.setText(maxLoadWeight);
+        weightField.setValue(Double.parseDouble(maxLoadWeight));
     }
 
     /**
@@ -43,14 +39,14 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         this.controller = new VehicleController();
         confirmButton = new javax.swing.JButton();
         plateField = new javax.swing.JTextField();
-        economyField = new javax.swing.JTextField();
+        economyField = new javax.swing.JFormattedTextField();
         plateLabel = new javax.swing.JLabel();
         economyLabel = new javax.swing.JLabel();
         maintenanceLabel = new javax.swing.JLabel();
         cancelButton = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
         statusComboBox = new javax.swing.JComboBox<>();
-        weightField = new javax.swing.JTextField();
+        weightField = new javax.swing.JFormattedTextField();
         weightLabel = new javax.swing.JLabel();
         maintenanceField = new javax.swing.JFormattedTextField();
 
@@ -71,6 +67,8 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         economyLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         economyLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         economyLabel.setText("Fuel Economy");
+
+        economyField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         maintenanceLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         maintenanceLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -95,6 +93,8 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         weightLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         weightLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         weightLabel.setText("Max Load Weight");
+
+        weightField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         maintenanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
         maintenanceField.setText("yyyy-MM-dd");
@@ -169,9 +169,9 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
         String plateNumber = plateField.getText();
-        String fuelEconomy = economyField.getText();
+        double fuelEconomy = ((Number)economyField.getValue()).doubleValue();
         String maintenanceDateString = maintenanceField.getText();
-        String maxLoadWeight = weightField.getText();
+        double maxLoadWeight = ((Number)weightField.getValue()).doubleValue();
         int statusIndex = statusComboBox.getSelectedIndex();
 
         boolean success = controller.updateRecord(vehicleID, plateNumber, fuelEconomy, maintenanceDateString, maxLoadWeight, statusIndex);
@@ -192,53 +192,10 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         dispose();
     }                                            
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UpdateVehicleForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UpdateVehicleForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UpdateVehicleForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UpdateVehicleForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                UpdateVehicleForm dialog = new UpdateVehicleForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify                     
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton confirmButton;
-    private javax.swing.JTextField economyField;
+    private javax.swing.JFormattedTextField economyField;
     private javax.swing.JLabel economyLabel;
     private javax.swing.JFormattedTextField maintenanceField;
     private javax.swing.JLabel maintenanceLabel;
@@ -246,7 +203,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     private javax.swing.JLabel plateLabel;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JLabel statusLabel;
-    private javax.swing.JTextField weightField;
+    private javax.swing.JFormattedTextField weightField;
     private javax.swing.JLabel weightLabel;
     // End of variables declaration                   
 }
