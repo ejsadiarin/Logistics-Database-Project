@@ -64,7 +64,7 @@ public class ScheduleDAO {
             }
             int availableDriverID = driverResultSet.getInt("driver_id");
 
-            // insert as new schedule record if 'AVAILABLE' driver and vehicle
+            // insert as new schedule record if "AVAILABLE" driver and vehicle
             newScheduleQueryStmt = connection.prepareStatement(newScheduleQuery);
             newScheduleQueryStmt.setInt(1, schedule.getScheduleID());
             newScheduleQueryStmt.setTimestamp(2, schedule.getDate());
