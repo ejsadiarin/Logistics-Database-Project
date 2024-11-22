@@ -36,6 +36,7 @@ public class UpdateLogisticsForm extends javax.swing.JDialog {
         statusLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("New Logistics Record");
 
         distanceLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         distanceLabel.setText("Distance (km)");

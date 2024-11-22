@@ -116,11 +116,11 @@ public class LogisticsPanel extends javax.swing.JPanel {
         UpdateLogisticsForm dialog = new UpdateLogisticsForm(new javax.swing.JFrame(), true);
         dialog.setParentPanel(this);
         dialog.setFields(
-            (int)logisticsTable.getValueAt(selectedRow, 1), // logisticsid
-            (int)logisticsTable.getValueAt(selectedRow, 5), // scheduleid
-            (double)logisticsTable.getValueAt(selectedRow, 2), // distance
-            (double)logisticsTable.getValueAt(selectedRow, 3), // normal cost
-            (String)logisticsTable.getValueAt(selectedRow, 4).toString() // status
+            (int)logisticsTable.getValueAt(selectedRow, 0), // logisticsid
+            (int)logisticsTable.getValueAt(selectedRow, 4), // scheduleid
+            (double)logisticsTable.getValueAt(selectedRow, 1), // distance
+            (double)logisticsTable.getValueAt(selectedRow, 2), // normal cost
+            (String)logisticsTable.getValueAt(selectedRow, 3).toString() // status
         );
         dialog.setVisible(true);
         
