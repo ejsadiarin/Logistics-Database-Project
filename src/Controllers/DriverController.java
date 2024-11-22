@@ -1,10 +1,9 @@
 package Controllers;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import Models.Driver;
 import Services.DriverDAO;
+import java.sql.SQLException;
+import java.util.List;
 
 public class DriverController {
     private final DriverDAO dao;
@@ -28,8 +27,8 @@ public class DriverController {
         for(int i = 0; i < data.size(); i++) {
             tableData[i] = new Object[] {
                 data.get(i).getDriverID(),
-                data.get(i).getLastname(),
                 data.get(i).getFirstname(),
+                data.get(i).getLastname(),
                 data.get(i).getRate(),
                 data.get(i).getContactNumber(),
                 data.get(i).getStatus()

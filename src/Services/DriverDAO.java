@@ -1,11 +1,10 @@
 package Services;
 
+import Database.DatabaseConnection;
+import Models.Driver;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import Database.DatabaseConnection;
-import Models.Driver;
 
 public class DriverDAO {
     private Connection connection;
@@ -21,14 +20,14 @@ public class DriverDAO {
     }
 
     public void addDriver(Driver driver) throws SQLException {
-        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, driver.getDriverID());
             stmt.setString(2, driver.getLastname());
-            stmt.setString(2, driver.getFirstname());
-            stmt.setDouble(3, driver.getRate());
-            stmt.setString(4, driver.getContactNumber());
-            stmt.setString(5, driver.getStatus().name());
+            stmt.setString(3, driver.getFirstname());
+            stmt.setDouble(4, driver.getRate());
+            stmt.setString(5, driver.getContactNumber());
+            stmt.setString(6, driver.getStatus().name());
             stmt.executeUpdate();
         }
     }
@@ -96,11 +95,11 @@ public class DriverDAO {
         String query = "UPDATE drivers SET lastname = ?, firstname = ?, rate = ?, contact_number = ?, status = ? WHERE driver_id = ?";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setString(1, driver.getLastname());
-            stmt.setString(1, driver.getFirstname());
-            stmt.setDouble(2, driver.getRate());
-            stmt.setString(3, driver.getContactNumber());
-            stmt.setString(4, driver.getStatus().name());
-            stmt.setInt(5, driver.getDriverID());
+            stmt.setString(2, driver.getFirstname());
+            stmt.setDouble(3, driver.getRate());
+            stmt.setString(4, driver.getContactNumber());
+            stmt.setString(5, driver.getStatus().name());
+            stmt.setInt(6, driver.getDriverID());
             stmt.executeUpdate();
         }
     }

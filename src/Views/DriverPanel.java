@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
-import javax.swing.table.DefaultTableModel;
 
 public class DriverPanel extends JPanel implements ActionListener {
     private JButton deleteRecordButton;
@@ -32,18 +31,17 @@ public class DriverPanel extends JPanel implements ActionListener {
         updateRecordButton = new JButton();
         deleteRecordButton = new JButton();
 
-        // Create Table Model and populate with Data
-        driverTable.setModel(new DefaultTableModel(
+        driverTable.setModel(new javax.swing.table.DefaultTableModel(
             controller.getDriverTableData(),
             new String [] {
-                "DriverID", "Full Name", "Rate (cost/km)", "Contact Number", "Status"
+                "DriverID", "First Name", "Last Name", "Rate (cost/km)", "Contact Number", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -117,8 +115,9 @@ public class DriverPanel extends JPanel implements ActionListener {
             dialog.setParentPanel(this);
             dialog.setFields((int)driverTable.getValueAt(driverTable.getSelectedRow(), 0),
                             (String)driverTable.getValueAt(driverTable.getSelectedRow(), 1),
-                            String.valueOf(driverTable.getValueAt(driverTable.getSelectedRow(), 2)),
-                            (String)driverTable.getValueAt(driverTable.getSelectedRow(), 3));
+                            (String)driverTable.getValueAt(driverTable.getSelectedRow(), 2),
+                            String.valueOf(driverTable.getValueAt(driverTable.getSelectedRow(), 3)),
+                            (String)driverTable.getValueAt(driverTable.getSelectedRow(), 4));
             dialog.setVisible(true);
         }
         else if (event.getSource() == deleteRecordButton) {
