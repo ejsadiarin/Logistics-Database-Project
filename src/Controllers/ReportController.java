@@ -18,7 +18,7 @@ public class ReportController {
     }
 
     public List<Object[]> getDriverCompletedTripsReport(String year, String month) {
-        String query = "SELECT d.driver_id, CONCAT(d.full_name, ' (', d.driver_id, ')') AS DriverName, MONTH(s.date) AS Month, COUNT(l.logisticsID) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? GROUP BY d.driver_id, MONTH(s.date) ORDER BY d.driver_id, Month";
+        String query = "SELECT d.driver_id, CONCAT(d.firstname, d.lastname) AS DriverName, MONTH(s.date) AS Month, COUNT(l.logisticsID) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? GROUP BY d.driver_id, MONTH(s.date) ORDER BY d.driver_id, Month";
         return executeQuery(query, year, month);
     }
 

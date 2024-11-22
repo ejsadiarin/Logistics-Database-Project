@@ -1,14 +1,14 @@
-INSERT INTO drivers (full_name, rate, contact_number, status) VALUES
-('John Doe', 150.00, '1234567890', 'AVAILABLE'),
-('Jane Smith', 200.00, '0987654321', 'IN_TRANSIT'),
-('Tom Brown', 175.00, '1112223333', 'ON_LEAVE'),
-('Emily Davis', 160.00, '4445556666', 'AVAILABLE'),
-('Michael Johnson', 185.00, '7778889999', 'UNAVAILABLE'),
-('Chris Lee', 190.00, '3334445555', 'AVAILABLE'),
-('Sarah Wilson', 170.00, '6667778888', 'IN_TRANSIT'),
-('Daniel Taylor', 155.00, '8889990000', 'AVAILABLE'),
-('Sophia Harris', 180.00, '1113335555', 'ON_LEAVE'),
-('Ryan Martinez', 165.00, '2224446666', 'AVAILABLE');
+INSERT INTO drivers (lastname, firstname, rate, contact_number, status) VALUES
+('Doe', 'John', 150.00, '1234567890', 'AVAILABLE'),
+('Smith', 'Jane', 200.00, '0987654321', 'IN_TRANSIT'),
+('Brown', 'Tom', 175.00, '1112223333', 'ON_LEAVE'),
+('Davis', 'Emily', 160.00, '4445556666', 'AVAILABLE'),
+('Johnson', 'Michael', 185.00, '7778889999', 'UNAVAILABLE'),
+('Lee', 'Chris', 190.00, '3334445555', 'AVAILABLE'),
+('Wilson', 'Sarah', 170.00, '6667778888', 'IN_TRANSIT'),
+('Taylor', 'Daniel', 155.00, '8889990000', 'AVAILABLE'),
+('Harris', 'Sophia', 180.00, '1113335555', 'ON_LEAVE'),
+('Martinez', 'Ryan', 165.00, '2224446666', 'AVAILABLE');
 
 INSERT INTO vehicles (vehicle_id, plate_number, fuel_economy, last_maintenance_date, max_load_weight, status) VALUES
 (1, 'ABC123', 12.5, '2024-01-15', 1000.0, 'AVAILABLE'),

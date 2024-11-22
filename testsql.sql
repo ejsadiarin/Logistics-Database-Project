@@ -8,7 +8,7 @@ SELECT * FROM requests;
 SELECT * FROM drivers WHERE status = 'AVAILABLE';
 SELECT * FROM vehicles WHERE status = 'AVAILABLE';
 
-SELECT s.date, s.driver_id, d.full_name, d.status FROM logistics l
+SELECT s.date, s.driver_id, d.lastname, d.firstname, d.status FROM logistics l
 JOIN schedules s ON l.schedule_id = s.schedule_id
 JOIN drivers d ON s.driver_id = d.driver_id
 WHERE d.status = 'AVAILABLE';

@@ -1,69 +1,69 @@
 
 -- Sales Report by MONTH
 SELECT 
-    DATE(DatePaid) AS SalesDate,
-    SUM(AmountPaid) AS TotalSales,
-    AVG(AmountPaid) AS AverageSales
+    DATE(date_paid) AS SalesDate,
+    SUM(amount_paid) AS TotalSales,
+    AVG(amount_paid) AS AverageSales
 FROM 
-    Customer
+    customer
 WHERE 
-    YEAR(DatePaid) = ? AND MONTH(DatePaid) = ?
+    YEAR(date_paid) = ? AND MONTH(date_paid) = ?
 GROUP BY 
-    DATE(DatePaid)
+    DATE(date_paid)
 ORDER BY 
-    SalesDate;
+    sales_date;
 
 -- Sales Report by YEAR
 SELECT 
-    DATE(DatePaid) AS SalesDate,
-    SUM(AmountPaid) AS TotalSales,
-    AVG(AmountPaid) AS AverageSales
+    DATE(date_paid) AS SalesDate,
+    SUM(amount_paid) AS TotalSales,
+    AVG(amount_paid) AS AverageSales
 FROM
-    Customer
+    customer
 WHERE 
-    YEAR(DatePaid) = ?
+    YEAR(date_paid) = ?
 GROUP BY
-    DATE(DatePaid)
+    DATE(date_paid)
 ORDER BY
-    SalesDate;
+    sales_date;
 
 -- Driver Completed Trips Report
 SELECT 
-    d.DriverID,
-    CONCAT(d.FullName, ' (', d.DriverID, ')') AS DriverName,
-    MONTH(s.Date) AS Month,
-    COUNT(l.LogisticsID) AS TotalTrips,
-    SUM(l.Distance) AS TotalKilometers
+    d.driver_id,
+    CONCAT(d.lastname, d.firstname) AS DriverName,
+    MONTH(s.date) AS Month,
+    COUNT(l.logistics_id) AS TotalTrips,
+    SUM(l.distance) AS TotalKilometers
 FROM 
-    Logistics l
+    logistics l
 JOIN 
-    Schedule s ON l.ScheduleID = s.ScheduleID
+    schedule s ON l.schedule_id = s.schedule_id
 JOIN 
-    Driver d ON s.DriverID = d.DriverID
+    driver d ON s.driver_id = d.driver_id
 WHERE 
-    YEAR(s.Date) = ?
+    YEAR(s.date) = ?
 GROUP BY 
-    d.DriverID, MONTH(s.Date)
+    d.driver_id, MONTH(s.date)
 ORDER BY 
-    d.DriverID, Month;
+    d.driver_id, Month;
 
 -- Vehicle Completed Trips Report
 SELECT 
-    v.VehicleID,
-    CONCAT(v.PlateNumber, ' (', v.VehicleID, ')') AS VehicleName,
-    MONTH(s.Date) AS Month,
-    COUNT(l.LogisticsID) AS TotalTrips,
-    SUM(l.Distance) AS TotalKilometers
+    v.vehicle_id,
+    CONCAT(v.plate_number, ' (', v.vehicle_id, ')') AS VehicleName,
+    MONTH(s.date) AS Month,
+    COUNT(l.logistics_id) AS TotalTrips,
+    SUM(l.distance) AS TotalKilometers
 FROM 
-    Logistics l
+    logistics l
 JOIN 
-    Schedule s ON l.ScheduleID = s.ScheduleID
+    schedules s ON l.schedule_id = s.schedule_id
 JOIN 
-    Vehicle v ON s.VehicleID = v.VehicleID
+    vehicles v ON s.vehicle_id = v.vehicle_id
 WHERE 
-    YEAR(Schedule.Date) = ?
+    YEAR(schedule.date) = ?
 GROUP BY 
-    v.VehicleID, MONTH(s.Date)
+    v.vehicle_id, MONTH(s.date)
 ORDER BY 
-    v.VehicleID, Month;
+    v.vehicle_id, Month;
 

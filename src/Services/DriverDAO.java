@@ -21,10 +21,11 @@ public class DriverDAO {
     }
 
     public void addDriver(Driver driver) throws SQLException {
-        String query = "INSERT INTO drivers (driver_id, full_name, rate, contact_number, status) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, driver.getDriverID());
-            stmt.setString(2, driver.getFullName());
+            stmt.setString(2, driver.getLastname());
+            stmt.setString(2, driver.getFirstname());
             stmt.setDouble(3, driver.getRate());
             stmt.setString(4, driver.getContactNumber());
             stmt.setString(5, driver.getStatus().name());
@@ -40,7 +41,8 @@ public class DriverDAO {
                 if (rs.next()) {
                     return new Driver(
                         rs.getInt("driver_id"),
-                        rs.getString("full_name"),
+                        rs.getString("lastname"),
+                        rs.getString("firstname"),
                         rs.getDouble("rate"),
                         rs.getString("contact_number"),
                         Driver.Status.valueOf(rs.getString("status"))
@@ -59,7 +61,8 @@ public class DriverDAO {
             while (rs.next()) {
                 drivers.add(new Driver(
                     rs.getInt("driver_id"),
-                    rs.getString("full_name"),
+                    rs.getString("lastname"),
+                    rs.getString("firstname"),
                     rs.getDouble("rate"),
                     rs.getString("contact_number"),
                     Driver.Status.valueOf(rs.getString("status"))
@@ -78,7 +81,8 @@ public class DriverDAO {
             while (rs.next()) {
                 drivers.add(new Driver(
                     rs.getInt("driver_id"),
-                    rs.getString("full_name"),
+                    rs.getString("lastname"),
+                    rs.getString("firstname"),
                     rs.getDouble("rate"),
                     rs.getString("contact_number"),
                     Driver.Status.valueOf(rs.getString("status"))
@@ -89,9 +93,10 @@ public class DriverDAO {
     }
 
     public void updateDriver(Driver driver) throws SQLException {
-        String query = "UPDATE drivers SET full_name = ?, rate = ?, contact_number = ?, status = ? WHERE driver_id = ?";
+        String query = "UPDATE drivers SET lastname = ?, firstname = ?, rate = ?, contact_number = ?, status = ? WHERE driver_id = ?";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
-            stmt.setString(1, driver.getFullName());
+            stmt.setString(1, driver.getLastname());
+            stmt.setString(1, driver.getFirstname());
             stmt.setDouble(2, driver.getRate());
             stmt.setString(3, driver.getContactNumber());
             stmt.setString(4, driver.getStatus().name());

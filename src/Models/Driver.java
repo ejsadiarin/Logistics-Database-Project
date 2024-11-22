@@ -2,7 +2,8 @@ package Models;
 
 public class Driver {
     private int driverID;
-    private String fullName;
+    private String lastname;
+    private String firstname;
     private double rate;
     private String contactNumber;
     private Status status;
@@ -14,9 +15,10 @@ public class Driver {
         UNAVAILABLE
     }
 
-    public Driver(int driverID, String fullName, double rate, String contactNumber, Status status) {
+    public Driver(int driverID, String lastname, String firstname, double rate, String contactNumber, Status status) {
         this.driverID = driverID;
-        this.fullName = fullName;
+        this.lastname = lastname;
+        this.firstname = firstname;
         this.rate = rate;
         this.contactNumber = contactNumber;
         this.status = status;
@@ -30,12 +32,20 @@ public class Driver {
         this.driverID = driverID;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+   }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public double getRate() {

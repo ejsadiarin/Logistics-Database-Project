@@ -6,7 +6,8 @@ USE `ccinfom`;
 DROP TABLE IF EXISTS `drivers`;
 CREATE TABLE drivers (
     driver_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
+    lastname VARCHAR(45) NOT NULL,
+    firstname VARCHAR(45) NOT NULL,
     rate DECIMAL(10,2) NOT NULL,
     contact_number VARCHAR(15) NOT NULL,
     status ENUM('AVAILABLE','IN_TRANSIT', 'ON_LEAVE', 'UNAVAILABLE') DEFAULT 'AVAILABLE'
@@ -15,7 +16,7 @@ CREATE TABLE drivers (
 DROP TABLE IF EXISTS `vehicles`;
 CREATE TABLE vehicles (
     vehicle_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    plate_number VARCHAR(6) NOT NULL,
+    plate_number VARCHAR(7) NOT NULL,
     fuel_economy FLOAT NOT NULL,
     last_maintenance_date DATE,
     max_load_weight FLOAT NOT NULL,

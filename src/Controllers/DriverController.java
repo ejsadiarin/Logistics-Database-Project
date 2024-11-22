@@ -28,7 +28,8 @@ public class DriverController {
         for(int i = 0; i < data.size(); i++) {
             tableData[i] = new Object[] {
                 data.get(i).getDriverID(),
-                data.get(i).getFullName(),
+                data.get(i).getLastname(),
+                data.get(i).getFirstname(),
                 data.get(i).getRate(),
                 data.get(i).getContactNumber(),
                 data.get(i).getStatus()
@@ -38,10 +39,10 @@ public class DriverController {
         return tableData;
     }
 
-    public boolean createRecord(String fullName, String rate, String contactNumber) {
+    public boolean createRecord(String lastname, String firstname, String rate, String contactNumber) {
         try {
             double dbRate = Double.parseDouble(rate);
-            Driver newRecord = new Driver(0, fullName, dbRate, contactNumber, Driver.Status.AVAILABLE);
+            Driver newRecord = new Driver(0, lastname, firstname, dbRate, contactNumber, Driver.Status.AVAILABLE);
             dao.addDriver(newRecord);
             return true;
         } catch (SQLException e) {
@@ -53,11 +54,11 @@ public class DriverController {
         }
     }
 
-    public boolean updateRecord(int driverID, String fullName, String rate, String contactNumber, int statusIndex) {
+    public boolean updateRecord(int driverID, String lastname, String firstname, String rate, String contactNumber, int statusIndex) {
         try {
             double dbRate = Double.parseDouble(rate);
             System.out.println(Driver.Status.values()[statusIndex]);
-            Driver newRecord = new Driver(driverID, fullName, dbRate, contactNumber, Driver.Status.values()[statusIndex]);
+            Driver newRecord = new Driver(driverID, lastname, firstname, dbRate, contactNumber, Driver.Status.values()[statusIndex]);
             dao.updateDriver(newRecord);
             return true;
         } catch (SQLException e) {
