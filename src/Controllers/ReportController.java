@@ -8,33 +8,64 @@ import java.util.List;
 public class ReportController {
 
     public List<Object[]> getSalesReportByYear(String year) {
-        String query = "SELECT DATE(date_paid) AS SalesDate, SUM(amount_paid) AS TotalSales, COUNT(amount_paid) AS SalesCount FROM customers WHERE YEAR(date_paid) = ? GROUP BY DATE(date_paid) ORDER BY SalesDate";
+        String query = "SELECT DATE(c.date_paid) AS SalesDate, SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? GROUP BY DATE(c.date_paid) ORDER BY SalesDate";
         return executeQuery(query, year);
+
     }
 
     public List<Object[]> getSalesReportByMonth(String year, String month) {
-        String query = "SELECT DATE(date_paid) AS SalesDate, SUM(amount_paid) AS TotalSales, COUNT(amount_paid) AS SalesCount FROM customers WHERE YEAR(date_paid) = ? AND MONTH(date_paid) = ? GROUP BY DATE(date_paid) ORDER BY SalesDate";
+        String query = "SELECT DATE(c.date_paid) AS SalesDate, SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? AND MONTH(c.date_paid) = ? GROUP BY DATE(c.date_paid) ORDER BY SalesDate";
         return executeQuery(query, year, month);
     }
 
-    public List<Object[]> getDriverCompletedTripsReport(String year, String month) {
-        String query = "SELECT d.driver_id, CONCAT(d.firstname, ' ', d.lastname) AS DriverName, MONTH(s.date) AS Month, COUNT(l.logistics_id) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? GROUP BY d.driver_id, MONTH(s.date) ORDER BY d.driver_id, Month";
+    public Object[] getSalesSummaryByYear(String year) {
+        String query = "SELECT SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ?";
+        return executeSummarySalesQuery(query, year);
+    }
+
+    public Object[] getSalesSummaryByMonth(String year, String month) {
+        String query = "SELECT SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? AND MONTH(c.date_paid) = ?";
+        return executeSummarySalesQuery(query, year, month);
+    }
+
+    public List<Object[]> getDriverCompletedTripsReportByYear(String year) {
+        String query = "SELECT d.driver_id, CONCAT(d.firstname, ' ', d.lastname) AS DriverName, YEAR(s.date) AS Year, COUNT(l.logistics_id) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE YEAR(s.date) = ? AND l.status = 'ARRIVED' GROUP BY d.driver_id, YEAR(s.date) ORDER BY d.driver_id, Year";
+        return executeQuery(query, year);
+    }
+
+    public List<Object[]> getDriverCompletedTripsReportByMonth(String year, String month) {
+        String query = "SELECT d.driver_id, CONCAT(d.firstname, ' ', d.lastname) AS DriverName, MONTH(s.date) AS Month, COUNT(l.logistics_id) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? AND l.status = 'ARRIVED' GROUP BY d.driver_id, MONTH(s.date) ORDER BY d.driver_id, Month";
         return executeQuery(query, year, month);
     }
 
-    public List<Object[]> getVehicleCompletedTripsReport(String year, String month) {
-        String query = "SELECT v.vehicle_id, CONCAT(v.plate_number, ' (', v.vehicle_id, ')') AS VehicleName, MONTH(s.date) AS Month, COUNT(l.logistics_id) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN vehicles v ON s.vehicle_id = v.vehicle_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? GROUP BY v.vehicle_id, MONTH(s.date) ORDER BY v.vehicle_id, Month";
+    public List<Object[]> getVehicleCompletedTripsReportByYear(String year) {
+        String query = "SELECT v.vehicle_id, CONCAT(v.plate_number, ' (', v.vehicle_id, ')') AS VehicleName, YEAR(s.date) AS Year, COUNT(l.logistics_id) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN vehicles v ON s.vehicle_id = v.vehicle_id WHERE YEAR(s.date) = ? AND l.status = 'ARRIVED' GROUP BY v.vehicle_id, YEAR(s.date) ORDER BY v.vehicle_id, Year";
+        return executeQuery(query, year);
+    }
+
+    public List<Object[]> getVehicleCompletedTripsReportByMonth(String year, String month) {
+        String query = "SELECT v.vehicle_id, CONCAT(v.plate_number, ' (', v.vehicle_id, ')') AS VehicleName, MONTH(s.date) AS Month, COUNT(l.logistics_id) AS TotalTrips, SUM(l.distance) AS TotalKilometers FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN vehicles v ON s.vehicle_id = v.vehicle_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? AND l.status = 'ARRIVED' GROUP BY v.vehicle_id, MONTH(s.date) ORDER BY v.vehicle_id, Month";
         return executeQuery(query, year, month);
     }
 
-    public Object[] getDriverSummary(String year, String month) {
-        String query = "SELECT SUM(l.distance) AS TotalKilometers, COUNT(l.logistics_id) AS TotalTrips FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ?";
+    public Object[] getDriverSummaryMonth(String year, String month) {
+        String query = "SELECT SUM(l.distance) AS TotalKilometers, COUNT(l.logistics_id) AS TotalTrips FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? AND l.status = 'ARRIVED'";
         return executeSummaryQuery(query, year, month);
     }
 
-    public Object[] getVehicleSummary(String year, String month) {
-        String query = "SELECT SUM(l.distance) AS TotalKilometers, COUNT(l.logistics_id) AS TotalTrips FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ?";
+    public Object[] getDriverSummaryYear(String year) {
+        String query = "SELECT SUM(l.distance) AS TotalKilometers, COUNT(l.logistics_id) AS TotalTrips FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id WHERE YEAR(s.date) = ? AND l.status = 'ARRIVED'";
+        return executeSummaryQuery(query, year);
+    }
+
+    public Object[] getVehicleSummaryMonth(String year, String month) {
+        String query = "SELECT SUM(l.distance) AS TotalKilometers, COUNT(l.logistics_id) AS TotalTrips FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id WHERE YEAR(s.date) = ? AND MONTH(s.date) = ? AND l.status = 'ARRIVED'";
         return executeSummaryQuery(query, year, month);
+    }
+
+    public Object[] getVehicleSummaryYear(String year) {
+        String query = "SELECT SUM(l.distance) AS TotalKilometers, COUNT(l.logistics_id) AS TotalTrips FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id WHERE YEAR(s.date) = ? AND l.status = 'ARRIVED'";
+        return executeSummaryQuery(query, year);
     }
 
     private List<Object[]> executeQuery(String query, String... params) {
@@ -60,6 +91,26 @@ public class ReportController {
         return data;
     }
 
+    private Object[] executeSummarySalesQuery(String query, String... params) {
+        Object[] summary = new Object[3];
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                stmt.setString(i + 1, params[i]);
+            }
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                summary[0] = rs.getObject("TotalSales");
+                summary[1] = rs.getObject("SalesCount");
+                summary[2] = rs.getObject("TotalProfit");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return summary;
+    }
+
+
     private Object[] executeSummaryQuery(String query, String... params) {
         Object[] summary = new Object[2];
         try (Connection conn = DatabaseConnection.getConnection();
@@ -77,4 +128,5 @@ public class ReportController {
         }
         return summary;
     }
+
 }
