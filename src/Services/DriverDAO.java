@@ -20,7 +20,7 @@ public class DriverDAO {
     }
 
     public void addDriver(Driver driver) throws SQLException {
-        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?, ?e)";
+        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, driver.getDriverID());
             stmt.setString(2, driver.getLastname());
@@ -105,10 +105,27 @@ public class DriverDAO {
     }
 
     public void deleteDriver(int driverID) throws SQLException {
-        String query = "DELETE FROM drivers WHERE driver_id = ?";
-        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
-            stmt.setInt(1, driverID);
-            stmt.executeUpdate();
+        String checkQuery = "SELECT * FROM schedules WHERE driver_id = ?";
+        String deleteQuery = "DELETE FROM drivers WHERE driver_id = ?";
+        try (
+            PreparedStatement checkStmt = getConnection().prepareStatement(checkQuery);
+            PreparedStatement deleteStmt = getConnection().prepareStatement(deleteQuery)
+        ) {
+            // BEGIN TRANSACTION
+            connection.setAutoCommit(false);
+            checkStmt.setInt(1, driverID);
+
+            ResultSet resultSet = checkStmt.executeQuery();
+            if(!resultSet.next()) {
+                deleteStmt.setInt(1, driverID);
+                deleteStmt.executeUpdate();
+                connection.commit();  // Commit the transaction
+            }
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 }
