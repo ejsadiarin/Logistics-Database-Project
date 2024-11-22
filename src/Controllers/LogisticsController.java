@@ -58,8 +58,28 @@ public class LogisticsController {
 
     public boolean updateRecord(int logisticsID, double distance, String normalCost, int scheduleID, int statusIndex) {
         try {
-            Logistics record = new Logistics(logisticsID, distance, Double.valueOf(normalCost), Logistics.Status.values()[statusIndex], scheduleID);
-            dao.updateLogistics(record);
+            Logistics.Status newStatus = Logistics.Status.values()[statusIndex];
+            Logistics currentRecord = dao.getLogistics(logisticsID);
+
+            System.out.println("Received statusIndex: " + statusIndex);
+            System.out.println("Mapped to Status: " + Logistics.Status.values()[statusIndex]);
+
+            if (currentRecord == null) {
+                throw new SQLException("Logistics record not found.");
+            }
+
+            if (currentRecord.getStatus() == Logistics.Status.PENDING && newStatus == Logistics.Status.CANCELLED) {
+                Logistics recordToCancel = new Logistics(
+                    logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
+                );
+                dao.cancelLogisticsTransaction(recordToCancel);
+            } else {
+                Logistics updatedRecord = new Logistics(
+                    logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
+                );
+                dao.updateLogistics(updatedRecord);
+            }
+
             return true;
         } catch (SQLException e) {
             System.err.println(e);
@@ -76,19 +96,5 @@ public class LogisticsController {
             return -1;
         }
     }
-    // public boolean changeLogisticStatus(int statusIndex) {
-    //     try {
-    //         Logistics newRecord = new Logistics(0, dbDistance, dbNormalCost, Logistics.Status.PENDING, scheduleID);
-    //         dao.addLogistics(newRecord);
-    //         return true;
-    //     } catch (SQLException e) {
-    //         System.err.println(e);
-    //         return false;
-    //     } catch (Exception e) {
-    //         System.err.println(e);
-    //         return false;
-    //     }
-    // }
-
 
 }

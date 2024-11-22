@@ -67,95 +67,63 @@ public class LogisticsDAO {
         return logisticsList;
     }
 
+
     public void updateLogistics(Logistics logistics) throws SQLException {
-        String checkIfPendingLogisticsQuery = "SELECT logistics_id FROM logistics WHERE status = 'PENDING' AND logistics_id = ? LIMIT 1";
-        PreparedStatement checkPendingLogisticsStmt = null;
-        ResultSet pendingLogisticsResultSet = null;
-
-        String updateDriverStatusQuery = "UPDATE drivers SET status = 'AVAILABLE' WHERE driver_id = (SELECT d.driver_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE l.schedule_id = ?)";
-        PreparedStatement updateDriverStatusStmt = null;
-
-        String updateVehicleStatusQuery = "UPDATE vehicles SET status = 'AVAILABLE' WHERE vehicle_id = (SELECT v.vehicle_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN vehicles v ON s.vehicle_id = v.vehicle_id WHERE l.schedule_id = ?)";
-        PreparedStatement updateVehicleStatusStmt = null;
-
-        String updateStatusQuery = "UPDATE logistics SET status = ? WHERE logistics_id = ?";
-        PreparedStatement updateStatusStmt = null;
-
-        String updateLogisticScheduleQuery = "UPDATE logistics SET schedule_id = NULL WHERE logistics_id = ?";
-        PreparedStatement updateLogisticsScheduleStmt = null;
-
         String updateLogisticsQuery = "UPDATE logistics SET distance = ?, normal_cost = ?, status = ?, schedule_id = ? WHERE logistics_id = ?";
-        PreparedStatement updateLogisticsStmt = null;
 
-        String deleteRequestQuery = "DELETE FROM requests WHERE request_id = (SELECT r.request_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN requests r ON s.request_id = r.request_id WHERE l.schedule_id = ?)";
-        PreparedStatement deleteRequestStmt = null;
-
-        String deleteScheduleQuery = "DELETE FROM schedules WHERE schedule_id = (SELECT s.schedule_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id)";
-        PreparedStatement deleteScheduleStmt = null;
-
-        Connection connection = null;
-
-        try {
-            connection = getConnection();
-            // only activate cancelling logistics transaction if status is changed to "CANCELLED"
-            if (logistics.getStatus().name() == "CANCELLED") {
-                connection.setAutoCommit(false);
-
-                // check specific logistics order (if exists) && if status is "PENDING"
-                checkPendingLogisticsStmt = getConnection().prepareStatement(checkIfPendingLogisticsQuery);
-                checkPendingLogisticsStmt.setInt(1, logistics.getLogisticsID());
-                pendingLogisticsResultSet = checkPendingLogisticsStmt.executeQuery();
-                if (!pendingLogisticsResultSet.next()) {
-                    throw new SQLException("Logistics status is not PENDING.");
-                }
-
-                // update driver status to "AVAILABLE"
-                updateDriverStatusStmt = getConnection().prepareStatement(updateDriverStatusQuery);
-                updateDriverStatusStmt.setInt(1, logistics.getScheduleID());
-                updateDriverStatusStmt.executeQuery();
-                
-                // update vehicle status to "AVAILABLE"
-                updateVehicleStatusStmt = getConnection().prepareStatement(updateVehicleStatusQuery);
-                updateVehicleStatusStmt.setInt(1, logistics.getScheduleID());
-                updateVehicleStatusStmt.executeQuery();
-                
-                // update logistics status to "CANCELLED"
-                updateStatusStmt = getConnection().prepareStatement(updateStatusQuery);
-                updateStatusStmt.setString(1, logistics.getStatus().name());
-                updateStatusStmt.setInt(2, logistics.getLogisticsID());
-                updateStatusStmt.executeQuery();
-
-                // delete request and schedule records attached
-                deleteRequestStmt = getConnection().prepareStatement(deleteRequestQuery);
-                deleteRequestStmt.setInt(1, logistics.getScheduleID());
-                deleteRequestStmt.executeQuery();
-                deleteScheduleStmt = getConnection().prepareStatement(deleteScheduleQuery);
-                deleteScheduleStmt.setInt(1, logistics.getScheduleID());
-                deleteScheduleStmt.executeQuery();
-                
-                // set schedule_id FK of this to NULL
-                updateLogisticsScheduleStmt = getConnection().prepareStatement(updateLogisticScheduleQuery);
-                updateLogisticsScheduleStmt.setInt(1, logistics.getLogisticsID());
-                updateLogisticsScheduleStmt.executeQuery();
-
-                connection.commit();
-            }
-            updateLogisticsStmt = getConnection().prepareStatement(updateLogisticsQuery);
+        try (PreparedStatement updateLogisticsStmt = getConnection().prepareStatement(updateLogisticsQuery); ) {
             updateLogisticsStmt.setDouble(1, logistics.getDistance());
             updateLogisticsStmt.setDouble(2, logistics.getNormalCost());
             updateLogisticsStmt.setString(3, logistics.getStatus().name());
             updateLogisticsStmt.setInt(4, logistics.getScheduleID());
             updateLogisticsStmt.setInt(5, logistics.getLogisticsID());
             updateLogisticsStmt.executeUpdate();
-        } catch (SQLException err) {
-            if (connection != null && logistics.getStatus().name() == "CANCELLED") {
+        }
+    }
+
+
+    public void cancelLogisticsTransaction(Logistics logistics) throws SQLException {
+        String updateLogisticsScheduleQuery =
+            "UPDATE logistics SET schedule_id = NULL WHERE logistics_id = ?";
+        String deleteRequestQuery =
+            "DELETE FROM requests WHERE request_id = (SELECT request_id FROM schedules WHERE schedule_id = ?)";
+        String deleteScheduleQuery =
+            "DELETE FROM schedules WHERE schedule_id = ?";
+
+        Connection connection = null;
+        PreparedStatement updateLogisticsScheduleStmt = null;
+        PreparedStatement deleteRequestStmt = null;
+        PreparedStatement deleteScheduleStmt = null;
+
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+
+            // set schedule_id in logistics to NULL
+            updateLogisticsScheduleStmt = connection.prepareStatement(updateLogisticsScheduleQuery);
+            updateLogisticsScheduleStmt.setInt(1, logistics.getLogisticsID());
+            updateLogisticsScheduleStmt.executeUpdate();
+
+            // delete the associated request
+            deleteRequestStmt = connection.prepareStatement(deleteRequestQuery);
+            deleteRequestStmt.setInt(1, logistics.getScheduleID());
+            deleteRequestStmt.executeUpdate();
+
+            // delete the associated schedule
+            deleteScheduleStmt = connection.prepareStatement(deleteScheduleQuery);
+            deleteScheduleStmt.setInt(1, logistics.getScheduleID());
+            deleteScheduleStmt.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            if (connection != null) {
                 connection.rollback();
             }
-            throw err;
+            throw e;
         } finally {
-            if (checkPendingLogisticsStmt != null) checkPendingLogisticsStmt.close();
-            if (updateStatusStmt != null) updateStatusStmt.close();
-            if (updateLogisticsStmt != null) updateLogisticsStmt.close();
+            if (updateLogisticsScheduleStmt != null) updateLogisticsScheduleStmt.close();
+            if (deleteRequestStmt != null) deleteRequestStmt.close();
+            if (deleteScheduleStmt != null) deleteScheduleStmt.close();
             if (connection != null) connection.setAutoCommit(true);
         }
     }

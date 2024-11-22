@@ -8,10 +8,10 @@ public class Logistics {
     private int scheduleID;
 
     public enum Status {
-        PENDING,
-        IN_TRANSIT,
         ARRIVED,
-        CANCELLED
+        IN_TRANSIT,
+        CANCELLED,
+        PENDING
     }
 
     public Logistics(int logisticsID, double distance, double normalCost, Status status, int scheduleID) {
