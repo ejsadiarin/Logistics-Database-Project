@@ -1,5 +1,23 @@
 # Logistics Database Project
 
+## TODO NOTES
+-
+
+> [!IMPORTANT]
+ - when creating a Customer, how is amount/date_paid filled? (assume since they are customer already, they "paid", so request is created simultaeneously?)
+ - test the triggers
+   - [ ] implement schedules' date should ..., 
+ - implement the other transactions (put all in DAO)
+   - [ ] create new request record (requests table)
+   - [x] create new schedule record (schedules table)
+   - [ ] create new logistics record (logistics table)
+   - [x] cancelling existing logistics record (logistics table)
+   - [x] removing vehicle
+   - [ ] firing driver
+   - [ ] deleting customer
+
+
+
 ## Project Structure
 
 `Model`
