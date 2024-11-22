@@ -55,6 +55,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         maintenanceField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Update Vehicle Record");
 
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
