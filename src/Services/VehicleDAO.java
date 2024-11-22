@@ -1,11 +1,10 @@
 package Services;
 
+import Database.DatabaseConnection;
+import Models.Vehicle;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import Database.DatabaseConnection;
-import Models.Vehicle;
 
 public class VehicleDAO {
     private Connection connection;
@@ -105,10 +104,27 @@ public class VehicleDAO {
     }
 
     public void deleteVehicle(int vehicleID) throws SQLException {
-        String query = "DELETE FROM vehicles WHERE vehicle_id = ?";
-        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
-            stmt.setInt(1, vehicleID);
-            stmt.executeUpdate();
+        String checkQuery = "SELECT * FROM schedules WHERE vehicle_id = ?";
+        String deleteQuery = "DELETE FROM vehicles WHERE vehicle_id = ?";
+        try (
+            PreparedStatement checkStmt = getConnection().prepareStatement(checkQuery);
+            PreparedStatement deleteStmt = getConnection().prepareStatement(deleteQuery)
+        ) {
+            // BEGIN TRANSACTION
+            connection.setAutoCommit(false);
+            checkStmt.setInt(1, vehicleID);
+
+            ResultSet resultSet = checkStmt.executeQuery();
+            if(!resultSet.next()) {
+                deleteStmt.setInt(1, vehicleID);
+                deleteStmt.executeUpdate();
+                connection.commit();  // Commit the transaction
+            }
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 }
