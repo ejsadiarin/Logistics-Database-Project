@@ -38,10 +38,9 @@ public class DriverController {
         return tableData;
     }
 
-    public boolean createRecord(String lastname, String firstname, String rate, String contactNumber) {
+    public boolean createRecord(String lastname, String firstname, double rate, String contactNumber) {
         try {
-            double dbRate = Double.parseDouble(rate);
-            Driver newRecord = new Driver(0, lastname, firstname, dbRate, contactNumber, Driver.Status.AVAILABLE);
+            Driver newRecord = new Driver(0, lastname, firstname, rate, contactNumber, Driver.Status.AVAILABLE);
             dao.addDriver(newRecord);
             return true;
         } catch (SQLException e) {
@@ -53,11 +52,10 @@ public class DriverController {
         }
     }
 
-    public boolean updateRecord(int driverID, String lastname, String firstname, String rate, String contactNumber, int statusIndex) {
+    public boolean updateRecord(int driverID, String lastname, String firstname, double rate, String contactNumber, int statusIndex) {
         try {
-            double dbRate = Double.parseDouble(rate);
             System.out.println(Driver.Status.values()[statusIndex]);
-            Driver newRecord = new Driver(driverID, lastname, firstname, dbRate, contactNumber, Driver.Status.values()[statusIndex]);
+            Driver newRecord = new Driver(driverID, lastname, firstname, rate, contactNumber, Driver.Status.values()[statusIndex]);
             dao.updateDriver(newRecord);
             return true;
         } catch (SQLException e) {

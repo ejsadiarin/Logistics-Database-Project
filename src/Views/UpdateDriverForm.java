@@ -1,15 +1,18 @@
 package Views;
 
-import Controllers.DriverController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+
+import Controllers.DriverController;
 
 /**
  *
@@ -24,7 +27,7 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
     private JTextField lastnameField;
     private JLabel firstnameLabel;
     private JLabel lastnameLabel;
-    private JTextField rateField;
+    private JFormattedTextField rateField;
     private JLabel rateLabel;
     private DriverController controller;
     private DriverPanel parentPanel;
@@ -48,7 +51,7 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
         firstnameField.setText(firstname);
         lastnameField.setText(lastname);
         contactField.setText(contactNumber);
-        rateField.setText(rate);
+        rateField.setValue(Double.parseDouble(rate));
     }
 
     private void initComponents() {
@@ -57,7 +60,7 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
         firstnameField = new JTextField();
         lastnameField = new JTextField();
         contactField = new JTextField();
-        rateField = new JTextField();
+        rateField = new JFormattedTextField();
         firstnameLabel = new JLabel();
         lastnameLabel = new JLabel();
         contactLabel = new JLabel();
@@ -97,6 +100,8 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
         rateLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         rateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         rateLabel.setText("Rate");
+        
+        rateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,7 +175,7 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
     // TODO: Add Prompts
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == confirmButton) {
-            boolean success = controller.updateRecord(driverID, lastnameField.getText(), firstnameField.getText(), rateField.getText(), contactField.getText(), statusComboBox.getSelectedIndex());
+            boolean success = controller.updateRecord(driverID, lastnameField.getText(), firstnameField.getText(), ((Number)rateField.getValue()).doubleValue(), contactField.getText(), statusComboBox.getSelectedIndex());
             if(success) {
                 parentPanel.refresh();
                 dispose();

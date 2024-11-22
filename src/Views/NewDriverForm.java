@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -23,7 +24,7 @@ public class NewDriverForm extends JDialog implements ActionListener {
     private JTextField lastnameField;
     private JLabel firstnameLabel;
     private JLabel lastnameLabel;
-    private JTextField rateField;
+    private JFormattedTextField rateField;
     private JLabel rateLabel;
     private DriverController controller;
     private DriverPanel parentPanel;
@@ -44,7 +45,7 @@ public class NewDriverForm extends JDialog implements ActionListener {
         firstnameField = new JTextField();
         lastnameField = new JTextField();
         contactField = new JTextField();
-        rateField = new JTextField();
+        rateField = new JFormattedTextField();
         firstnameLabel = new JLabel();
         lastnameLabel = new JLabel();
         contactLabel = new JLabel();
@@ -77,6 +78,8 @@ public class NewDriverForm extends JDialog implements ActionListener {
         rateLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         rateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         rateLabel.setText("Rate");
+
+        rateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,7 +144,7 @@ public class NewDriverForm extends JDialog implements ActionListener {
     // TODO: Add Prompts
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == confirmButton) {
-            boolean success = controller.createRecord(lastnameField.getText(), firstnameField.getText(), rateField.getText(), contactField.getText());
+            boolean success = controller.createRecord(lastnameField.getText(), firstnameField.getText(), ((Number)rateField.getValue()).doubleValue(), contactField.getText());
             if(success) {
                 parentPanel.refresh();
                 dispose();
