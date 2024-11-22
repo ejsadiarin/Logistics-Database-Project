@@ -4,10 +4,9 @@
  */
 package Views;
 
+import Controllers.ScheduleController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import Controllers.ScheduleController;
 
 /**
  *
@@ -45,6 +44,7 @@ public class NewSchedulingForm extends javax.swing.JDialog implements ActionList
         confirmButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("New Scheduling Record");
 
         datetimeLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         datetimeLabel.setText("Date and Time Of Delivery");
