@@ -73,7 +73,7 @@ public class RequestController {
             java.util.Date date = sdf.parse(requestedDate);
             java.sql.Date sqlDate = new Date(date.getTime());
             Request newRecord = new Request(0, sqlDate, product, origin, destination, Double.parseDouble(loadWeight), customerID);
-            dao.addRequest(newRecord);
+            dao.addRequestWithTransaction(newRecord);
             return true;
         } catch (SQLException e) {
             System.err.println(e);

@@ -70,7 +70,7 @@ public class ScheduleController{
         try {
             Timestamp sqlDate = new Timestamp(date.getTime());
             Schedule newRecord = new Schedule(0, sqlDate, driverID, vehicleID, requestID);
-            dao.addSchedule(newRecord);
+            dao.addScheduleTransaction(newRecord);
             return true;
         } catch (SQLException e) {
             System.err.println(e);

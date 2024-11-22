@@ -17,7 +17,7 @@ BEGIN
     END IF;
 END;
 
--- Trigger to update the logistics status to "Delivered" when the scheduled time is past
+-- Trigger to update the logistics status to "In Transit" when the scheduled time is past
 CREATE TRIGGER update_in_transit_status
 AFTER UPDATE ON Schedule
 FOR EACH ROW
@@ -26,17 +26,17 @@ BEGIN
     IF NEW.Date <= NOW() THEN
         -- Update the status of the logistics order to "In Transit"
         UPDATE Logistics
-        SET Status = 'In Transit'
-        WHERE ScheduleID = NEW.ScheduleID AND Status = 'Pending';
+        SET Status = 'IN_TRANSIT'
+        WHERE ScheduleID = NEW.ScheduleID AND Status = 'PENDING';
         
         -- Update the driver status to "In Transit"
         UPDATE Driver
-        SET Status = 'In Transit'
+        SET Status = 'IN_TRANSIT'
         WHERE DriverID = NEW.DriverID;
 
         -- Update the vehicle status to "In Transit"
         UPDATE Vehicle
-        SET Status = 'In Transit'
+        SET Status = 'IN_TRANSIT'
         WHERE VehicleID = NEW.VehicleID;
     END IF;
 END;
