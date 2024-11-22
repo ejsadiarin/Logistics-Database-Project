@@ -20,7 +20,7 @@ public class DriverDAO {
     }
 
     public void addDriver(Driver driver) throws SQLException {
-        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO drivers (driver_id, lastname, firstname, rate, contact_number, status) VALUES (?, ?, ?, ?, ?, ?e)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
             stmt.setInt(1, driver.getDriverID());
             stmt.setString(2, driver.getLastname());

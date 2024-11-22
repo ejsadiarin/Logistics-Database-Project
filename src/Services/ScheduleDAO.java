@@ -1,11 +1,10 @@
 package Services;
 
+import Database.DatabaseConnection;
+import Models.Schedule;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import Database.DatabaseConnection;
-import Models.Schedule;
 
 public class ScheduleDAO {
     private Connection connection;
