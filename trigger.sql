@@ -40,3 +40,30 @@ BEGIN
         WHERE VehicleID = NEW.VehicleID;
     END IF;
 END;
+
+
+-- Trigger to update a vehicles status to "In_maintenance" when the last maintenance date was 6 months ago
+CREATE TRIGGER check_vehicle_maintenance_date
+AFTER UPDATE ON Logistics
+FOR EACH ROW
+BEGIN
+    -- Check if the logistics order was marked as "Completed"
+    IF NEW.Status = 'Completed' THEN
+        DECLARE last_maintenance_date DATE;
+        
+        -- Retrieve the latest maintenance date for the assigned vehicle
+        SELECT LastMaintenanceDate
+        INTO last_maintenance_date
+        FROM Vehicle
+        WHERE VehicleID = (SELECT VehicleID FROM Schedule WHERE ScheduleID = NEW.ScheduleID);
+        
+        -- Check if the last maintenance was more than 6 months ago
+        IF last_maintenance_date <= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) THEN
+            -- Update the vehicle's status to "In Maintenance"
+            UPDATE Vehicle
+            SET Status = 'In Maintenance'
+            WHERE VehicleID = (SELECT VehicleID FROM Schedule WHERE ScheduleID = NEW.ScheduleID);
+        END IF;
+    END IF;
+END;
+
