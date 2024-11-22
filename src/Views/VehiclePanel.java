@@ -31,7 +31,7 @@ public class VehiclePanel extends javax.swing.JPanel {
         vehicleTable.setModel(new javax.swing.table.DefaultTableModel(
             controller.getVehicleTableData(),
             new String [] {
-                "VehicleID", "Plate Number", "Fuel Economy (cost/km)", "Last Maintenance Date", "Max Load Weight", "Status"
+                "VehicleID", "Plate Number", "Fuel Economy (cost/km)", "Last Maintenance Date", "Max Load Weight (kg)", "Status"
             }
         ) {
             Class[] types = new Class [] {

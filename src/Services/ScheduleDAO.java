@@ -19,6 +19,21 @@ public class ScheduleDAO {
         return this.connection;
     }
 
+    public double[] getRateAndEconomy(int scheduleID) throws SQLException {
+        String query = "SELECT drivers.rate, vehicles.fuel_economy FROM schedules JOIN drivers ON schedules.driver_id = drivers.driver_id JOIN vehicles ON schedules.vehicle_id = vehicles.vehicle_id WHERE schedule_id = ?";
+        double[] result = new double[2];
+        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
+            stmt.setInt(1, scheduleID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    result[0] = rs.getDouble("drivers.rate");
+                    result[1] = rs.getDouble("vehicles.fuel_economy");
+                }
+            }
+        }
+        return result;
+    }
+
     public void addSchedule(Schedule schedule) throws SQLException {
         String query = "INSERT INTO schedules (schedule_id, date, driver_id, vehicle_id, request_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {

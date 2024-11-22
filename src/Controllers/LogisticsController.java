@@ -5,12 +5,15 @@ import java.util.List;
 
 import Models.Logistics;
 import Services.LogisticsDAO;
+import Services.ScheduleDAO;
 
 public class LogisticsController {
     private final LogisticsDAO dao;
+    private final ScheduleDAO schedDAO;
     
     public LogisticsController() {
         dao = new LogisticsDAO();
+        schedDAO = new ScheduleDAO();
     }
 
     public Object[][] getLogisticsTableData() {
@@ -38,11 +41,10 @@ public class LogisticsController {
         return tableData;
     }
 
-    public boolean createRecord(String distance, String normalCost, int scheduleID ) {
+    public boolean createRecord(double distance, String normalCost, int scheduleID ) {
         try {
-            double dbDistance = Double.parseDouble(distance); 
             double dbNormalCost = Double.parseDouble(normalCost);
-            Logistics newRecord = new Logistics(0, dbDistance, dbNormalCost, Logistics.Status.PENDING, scheduleID);
+            Logistics newRecord = new Logistics(0, distance, dbNormalCost, Logistics.Status.PENDING, scheduleID);
             dao.addLogistics(newRecord);
             return true;
         } catch (SQLException e) {
@@ -54,6 +56,26 @@ public class LogisticsController {
         }
     }
 
+    public boolean updateRecord(int logisticsID, double distance, String normalCost, int scheduleID, int statusIndex) {
+        try {
+            Logistics record = new Logistics(logisticsID, distance, Double.valueOf(normalCost), Logistics.Status.values()[statusIndex], scheduleID);
+            dao.updateLogistics(record);
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+    public double calculateNormalCost(int scheduleID, double distance) {
+        try {
+            double[] ratesPerKM = schedDAO.getRateAndEconomy(scheduleID);
+            return (distance * ratesPerKM[0]) + (distance * ratesPerKM[1]);
+        } catch (Exception e) {
+            System.err.println(e);
+            return -1;
+        }
+    }
     // public boolean changeLogisticStatus(int statusIndex) {
     //     try {
     //         Logistics newRecord = new Logistics(0, dbDistance, dbNormalCost, Logistics.Status.PENDING, scheduleID);

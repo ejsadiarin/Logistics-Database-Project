@@ -20,6 +20,27 @@ public class ScheduleController{
         dao = new ScheduleDAO();
     }
 
+    public Object[][] getScheduleTableID() {
+        List<Schedule> data;
+        int dataRows;
+        try {
+            data = dao.getAllSchedules();
+            dataRows = data.size();
+        } catch (SQLException e) {
+            System.err.println(e);
+            return null;
+        }
+        Object[][] tableData = new Object[dataRows][1];
+        
+        for(int i = 0; i < data.size(); i++) {
+            tableData[i] = new Object[] {
+                data.get(i).getScheduleID()
+            };
+        }
+
+        return tableData;
+    }
+
     public Object[][] getScheduleTableData() {
         List<Schedule> data;
         int dataRows;

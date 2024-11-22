@@ -2,6 +2,12 @@ package Views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import Controllers.LogisticsController;
 import Controllers.ScheduleController;
 
@@ -20,6 +26,10 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
         initComponents();
     }
 
+    private void setNormalCost(double cost) {
+        normalcostField.setText(String.valueOf(cost));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,7 +42,7 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
         scrollPane = new javax.swing.JScrollPane();
         schedulingIDTable = new javax.swing.JTable();
         distanceLabel = new javax.swing.JLabel();
-        distanceField = new javax.swing.JTextField();
+        distanceField = new javax.swing.JFormattedTextField();
         normalcostLabel = new javax.swing.JLabel();
         normalcostField = new javax.swing.JTextField();
         confirmButton = new javax.swing.JButton();
@@ -41,11 +51,8 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
         setTitle("New Logistics Record");
 
         schedulingIDTable.setModel(new javax.swing.table.DefaultTableModel(
-            // TODO: display scheduling table here
+            scheduleController.getScheduleTableID(),
             // scheduleController.getScheduleTableData -- filter to display only ids
-            new Object [][] {
-
-            },
             new String [] {
                 "SchedulingID"
             }
@@ -75,7 +82,17 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
 
         normalcostField.setEditable(false);
 
+        distanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        // Add PropertyChangeListener to listen for changes in the formatted value
+        distanceField.addPropertyChangeListener("value", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                setNormalCost(logisticsController.calculateNormalCost((int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0), ((Number)distanceField.getValue()).doubleValue()));
+            }
+        });
+        
         confirmButton.setText("Confirm");
+        confirmButton.addActionListener(this);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,60 +143,19 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == confirmButton) {
-            boolean success = logisticsController.createRecord(distanceField.getText(), normalcostField.getText(), (int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0));
+            boolean success = logisticsController.createRecord(((Number)distanceField.getValue()).doubleValue(),
+                                                                normalcostField.getText(),
+                                                                (int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0));
             if (success) {
                 this.parentPanel.refresh();
                 dispose();
             }
         }
-    }                
-
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewLogisticsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewLogisticsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewLogisticsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewLogisticsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                NewLogisticsForm dialog = new NewLogisticsForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify
     private javax.swing.JButton confirmButton;
-    private javax.swing.JTextField distanceField;
+    private javax.swing.JFormattedTextField distanceField;
     private javax.swing.JLabel distanceLabel;
     private javax.swing.JTextField normalcostField;
     private javax.swing.JLabel normalcostLabel;
