@@ -31,7 +31,7 @@ CREATE TABLE customers (
     company_contact VARCHAR(255) NOT NULL,
     billing_address VARCHAR(255) NOT NULL,
     amount_paid DECIMAL(10, 2) NOT NULL,
-    date_paid DATE NOT NULL
+    date_paid DATE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `requests`;
@@ -43,7 +43,7 @@ CREATE TABLE requests (
     destination VARCHAR(50) NOT NULL,
     load_weight DECIMAL(10, 2) NOT NULL,
     customer_id INT,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `schedules`;
@@ -53,9 +53,9 @@ CREATE TABLE schedules (
     driver_id INT,
     vehicle_id INT,
     request_id INT,
-    FOREIGN KEY (driver_id) REFERENCES drivers(driver_id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),
-    FOREIGN KEY (request_id) REFERENCES requests(request_id)
+    FOREIGN KEY (driver_id) REFERENCES drivers(driver_id) ON DELETE SET NULL,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id) ON DELETE SET NULL,
+    FOREIGN KEY (request_id) REFERENCES requests(request_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `logistics`;
@@ -65,7 +65,7 @@ CREATE TABLE logistics (
     normal_cost DECIMAL(10, 2) NOT NULL,
     status ENUM('ARRIVED', 'IN_TRANSIT', 'CANCELLED', 'PENDING') DEFAULT 'PENDING',
     schedule_id INT,
-    FOREIGN KEY (schedule_id) REFERENCES schedules(schedule_id)
+    FOREIGN KEY (schedule_id) REFERENCES schedules(schedule_id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 SET FOREIGN_KEY_CHECKS = 1;

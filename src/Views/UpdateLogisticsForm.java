@@ -102,7 +102,6 @@ public class UpdateLogisticsForm extends javax.swing.JDialog {
     }                               
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
         boolean success = this.controller.updateRecord(logisticsID,
                                                         ((Number)distanceField.getValue()).doubleValue(),
                                                         normalcostField.getText(),

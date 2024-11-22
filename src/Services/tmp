@@ -1,0 +1,381 @@
+
+Views/LogisticsPanel.java:
+package Views;
+
+import Controllers.LogisticsController;
+
+public class LogisticsPanel extends javax.swing.JPanel {
+    private LogisticsController controller;
+
+    /**
+     * Creates new form LogisticsPanel
+     */
+    public LogisticsPanel() {
+        this.controller = new LogisticsController();
+        initComponents();
+    }
+                    
+    private void initComponents() {
+
+        tablePane = new javax.swing.JScrollPane();
+        logisticsTable = new javax.swing.JTable();
+        newRecordButton = new javax.swing.JButton();
+        updateRecordButton = new javax.swing.JButton();
+
+        logisticsTable.setModel(new javax.swing.table.DefaultTableModel(
+            controller.getLogisticsTableData(),
+            new String [] {
+                "LogisticsID", "Distance (km)", "Normal Cost", "Status", "ScheduleID"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        logisticsTable.getTableHeader().setReorderingAllowed(false);
+        tablePane.setViewportView(logisticsTable);
+        if (logisticsTable.getColumnModel().getColumnCount() > 0) {
+            logisticsTable.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        newRecordButton.setText("New Record");
+        newRecordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newRecordButton(evt);
+            }
+        });
+
+        updateRecordButton.setText("Update Record");
+        updateRecordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateRecordButton(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(newRecordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(updateRecordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateRecordButton)
+                    .addComponent(newRecordButton))
+                .addContainerGap())
+        );
+    }                     
+
+    public void refresh() {
+        removeAll();
+        initComponents();
+        revalidate();
+        repaint();
+    }
+
+    private void newRecordButton(java.awt.event.ActionEvent evt) {
+        NewLogisticsForm dialog = new NewLogisticsForm(new javax.swing.JFrame(), true);
+        dialog.setParentPanel(this);
+        dialog.setVisible(true);
+    }                                                  
+
+    private void updateRecordButton(java.awt.event.ActionEvent evt) {
+        int selectedRow = logisticsTable.getSelectedRow();
+        if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, 
+                "Please select a record to update.", 
+                "No Selection", 
+                javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        UpdateLogisticsForm dialog = new UpdateLogisticsForm(new javax.swing.JFrame(), true);
+        dialog.setParentPanel(this);
+        dialog.setFields(
+            (int)logisticsTable.getValueAt(selectedRow, 1), // logisticsid
+            (int)logisticsTable.getValueAt(selectedRow, 5), // scheduleid
+            (double)logisticsTable.getValueAt(selectedRow, 2), // distance
+            (double)logisticsTable.getValueAt(selectedRow, 3), // normal cost
+            (String)logisticsTable.getValueAt(selectedRow, 4).toString() // status
+        );
+        dialog.setVisible(true);
+        
+    }                                                     
+
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JTable logisticsTable;
+    private javax.swing.JButton newRecordButton;
+    private javax.swing.JScrollPane tablePane;
+    private javax.swing.JButton updateRecordButton;
+    // End of variables declaration                   
+}
+
+Views/UpdateLogisticsForm.java:
+
+package Views;
+
+import Controllers.LogisticsController;
+
+public class UpdateLogisticsForm extends javax.swing.JDialog {
+
+    /**
+     * Creates new form UpdateLogisticsForm
+     */
+    public UpdateLogisticsForm(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        this.controller = new LogisticsController();
+        initComponents();
+    }
+
+    public void setFields(int logisticsID, int scheduleID, double distance, double normalCost, String status) {
+        this.logisticsID = logisticsID;
+        this.scheduleID = scheduleID;
+        distanceField.setValue(distance);
+        normalcostField.setText(String.valueOf(normalCost));
+        statusComboBox.setSelectedItem(status);
+    }
+
+    public void setParentPanel(LogisticsPanel panel) {
+        this.parentPanel = panel;
+    }
+                    
+    private void initComponents() {
+
+        distanceLabel = new javax.swing.JLabel();
+        distanceField = new javax.swing.JFormattedTextField();
+        normalcostLabel = new javax.swing.JLabel();
+        normalcostField = new javax.swing.JTextField();
+        confirmButton = new javax.swing.JButton();
+        statusComboBox = new javax.swing.JComboBox<>();
+        statusLabel = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        distanceLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        distanceLabel.setText("Distance (km)");
+
+        normalcostLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        normalcostLabel.setText("Calculated Normal Cost");
+
+        normalcostField.setEditable(false);
+
+        distanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+
+        confirmButton.setText("Confirm");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
+
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ARRIVED", "IN_TRANSIT", "CANCELLED", "PENDING" }));
+
+        statusLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        statusLabel.setText("Status");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(distanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(confirmButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(normalcostField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(statusComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(normalcostLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(distanceField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(statusLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(distanceLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(distanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(normalcostLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(normalcostField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statusLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(confirmButton)
+                .addContainerGap())
+        );
+
+        pack();
+    }                               
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        boolean success = this.controller.updateRecord(logisticsID,
+                                                        ((Number)distanceField.getValue()).doubleValue(),
+                                                        normalcostField.getText(),
+                                                        scheduleID,
+                                                        statusComboBox.getSelectedIndex());
+        if (success) {
+            this.parentPanel.refresh();
+            dispose();
+        }
+    }                                             
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JFormattedTextField distanceField;
+    private javax.swing.JLabel distanceLabel;
+    private javax.swing.JTextField normalcostField;
+    private javax.swing.JLabel normalcostLabel;
+    private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JLabel statusLabel;
+    private LogisticsPanel parentPanel;
+    private int scheduleID;
+    private int logisticsID;
+    private LogisticsController controller;
+    // End of variables declaration                   
+}
+
+Controllers/LogisticsController.java:
+
+    public boolean updateRecord(int logisticsID, double distance, String normalCost, int scheduleID, int statusIndex) {
+        try {
+            Logistics record = new Logistics(logisticsID, distance, Double.valueOf(normalCost), Logistics.Status.values()[statusIndex], scheduleID);
+            dao.updateLogistics(record);
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+Services/LogisticsDAO.java:
+    public void updateLogistics(Logistics logistics) throws SQLException {
+        String checkIfPendingLogisticsQuery = "SELECT logistics_id FROM logistics WHERE status = 'PENDING' AND logistics_id = ? LIMIT 1";
+        PreparedStatement checkPendingLogisticsStmt = null;
+        ResultSet pendingLogisticsResultSet = null;
+
+        String updateDriverStatusQuery = "UPDATE drivers SET status = 'AVAILABLE' WHERE driver_id = (SELECT d.driver_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN drivers d ON s.driver_id = d.driver_id WHERE l.schedule_id = ?)";
+        PreparedStatement updateDriverStatusStmt = null;
+
+        String updateVehicleStatusQuery = "UPDATE vehicles SET status = 'AVAILABLE' WHERE vehicle_id = (SELECT v.vehicle_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN vehicles v ON s.vehicle_id = v.vehicle_id WHERE l.schedule_id = ?)";
+        PreparedStatement updateVehicleStatusStmt = null;
+
+        String updateStatusQuery = "UPDATE logistics SET status = ? WHERE logistics_id = ?";
+        PreparedStatement updateStatusStmt = null;
+
+        String updateLogisticScheduleQuery = "UPDATE logistics SET schedule_id = NULL WHERE logistics_id = ?";
+        PreparedStatement updateLogisticsScheduleStmt = null;
+
+        String updateLogisticsQuery = "UPDATE logistics SET distance = ?, normal_cost = ?, status = ?, schedule_id = ? WHERE logistics_id = ?";
+        PreparedStatement updateLogisticsStmt = null;
+
+        String deleteRequestQuery = "DELETE FROM requests WHERE request_id = (SELECT r.request_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id JOIN requests r ON s.request_id = r.request_id WHERE l.schedule_id = ?)";
+        PreparedStatement deleteRequestStmt = null;
+
+        String deleteScheduleQuery = "DELETE FROM schedules WHERE schedule_id = (SELECT s.schedule_id FROM logistics l JOIN schedules s ON l.schedule_id = s.schedule_id)";
+        PreparedStatement deleteScheduleStmt = null;
+
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            // only activate cancelling logistics transaction if status is changed to "CANCELLED"
+            if (logistics.getStatus().name() == "CANCELLED") {
+                connection.setAutoCommit(false);
+
+                // check specific logistics order (if exists) && if status is "PENDING"
+                checkPendingLogisticsStmt = getConnection().prepareStatement(checkIfPendingLogisticsQuery);
+                checkPendingLogisticsStmt.setInt(1, logistics.getLogisticsID());
+                pendingLogisticsResultSet = checkPendingLogisticsStmt.executeQuery();
+                if (!pendingLogisticsResultSet.next()) {
+                    throw new SQLException("Logistics status is not PENDING.");
+                }
+
+                // update driver status to "AVAILABLE"
+                updateDriverStatusStmt = getConnection().prepareStatement(updateDriverStatusQuery);
+                updateDriverStatusStmt.setInt(1, logistics.getScheduleID());
+                updateDriverStatusStmt.executeQuery();
+                
+                // update vehicle status to "AVAILABLE"
+                updateVehicleStatusStmt = getConnection().prepareStatement(updateVehicleStatusQuery);
+                updateVehicleStatusStmt.setInt(1, logistics.getScheduleID());
+                updateVehicleStatusStmt.executeQuery();
+                
+                // update logistics status to "CANCELLED"
+                updateStatusStmt = getConnection().prepareStatement(updateStatusQuery);
+                updateStatusStmt.setString(1, logistics.getStatus().name());
+                updateStatusStmt.setInt(2, logistics.getLogisticsID());
+                updateStatusStmt.executeQuery();
+
+                // delete request and schedule records attached
+                deleteRequestStmt = getConnection().prepareStatement(deleteRequestQuery);
+                deleteRequestStmt.setInt(1, logistics.getScheduleID());
+                deleteRequestStmt.executeQuery();
+                deleteScheduleStmt = getConnection().prepareStatement(deleteScheduleQuery);
+                deleteScheduleStmt.setInt(1, logistics.getScheduleID());
+                deleteScheduleStmt.executeQuery();
+                
+                // set schedule_id FK of this to NULL
+                updateLogisticsScheduleStmt = getConnection().prepareStatement(updateLogisticScheduleQuery);
+                updateLogisticsScheduleStmt.setInt(1, logistics.getLogisticsID());
+                updateLogisticsScheduleStmt.executeQuery();
+
+                connection.commit();
+            }
+            updateLogisticsStmt = getConnection().prepareStatement(updateLogisticsQuery);
+            updateLogisticsStmt.setDouble(1, logistics.getDistance());
+            updateLogisticsStmt.setDouble(2, logistics.getNormalCost());
+            updateLogisticsStmt.setString(3, logistics.getStatus().name());
+            updateLogisticsStmt.setInt(4, logistics.getScheduleID());
+            updateLogisticsStmt.setInt(5, logistics.getLogisticsID());
+            updateLogisticsStmt.executeUpdate();
+        } catch (SQLException err) {
+            if (connection != null && logistics.getStatus().name() == "CANCELLED") {
+                connection.rollback();
+            }
+            throw err;
+        } finally {
+            if (checkPendingLogisticsStmt != null) checkPendingLogisticsStmt.close();
+            if (updateStatusStmt != null) updateStatusStmt.close();
+            if (updateLogisticsStmt != null) updateLogisticsStmt.close();
+            if (connection != null) connection.setAutoCommit(true);
+        }
+    }
+
+help me debug this beta, i have this error:
+Exception in thread "AWT-EventQueue-0" java.lang.ClassCastException: class java.lang.Double cannot be cast to class java.lang.Integer (java.lang.Double and java.lang.Integer are in module java.base of loader 'bootstrap')
+        at Views.LogisticsPanel.updateRecordButton(LogisticsPanel.java:119)
+        at Views.LogisticsPanel$3.actionPerformed(LogisticsPanel.java:60)
