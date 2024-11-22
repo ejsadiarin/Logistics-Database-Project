@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import Controllers.VehicleController;
 import Models.Vehicle;
+import Views.VehiclePanel;
 
 public class UpdateVehicleForm extends javax.swing.JDialog {
     private VehicleController controller;
@@ -173,9 +174,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         String maxLoadWeight = weightField.getText();
         int statusIndex = statusComboBox.getSelectedIndex();
 
-        Date maintenanceDate = Date.valueOf(maintenanceDateString);
-
-        boolean success = controller.updateRecord(vehicleID, plateNumber, fuelEconomy, maintenanceDate, maxLoadWeight, statusIndex);
+        boolean success = controller.updateRecord(vehicleID, plateNumber, fuelEconomy, maintenanceDateString, maxLoadWeight, statusIndex);
         if (success) {
             parentPanel.refresh();
             dispose();

@@ -133,17 +133,16 @@ public class VehiclePanel extends javax.swing.JPanel {
             (int) vehicleTable.getValueAt(selectedRow, 0), // vehicleID
             (String) vehicleTable.getValueAt(selectedRow, 1), // plate number
             String.valueOf(vehicleTable.getValueAt(selectedRow, 2)), // fuel economy
-            vehicleTable.getValueAt(selectedRow, 3).toString(), // last maintenance date converted to String
+            vehicleTable.getValueAt(selectedRow, 3) != null ? vehicleTable.getValueAt(selectedRow, 3).toString() : "", // last maintenance date converted to String
             String.valueOf(vehicleTable.getValueAt(selectedRow, 4)) // max load weight
         );
         dialog.setVisible(true);
     }                                                  
 
     private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
-            controller.deleteRecord((int)vehicleTable.getValueAt(vehicleTable.getSelectedRow(), 0));
-            refresh();
+        controller.deleteRecord((int)vehicleTable.getValueAt(vehicleTable.getSelectedRow(), 0));
+        refresh();
     }                                                     
-
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton deleteRecordButton;

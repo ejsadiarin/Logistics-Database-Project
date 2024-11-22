@@ -142,9 +142,8 @@ public class NewVehicleForm extends javax.swing.JDialog {
         if (evt.getSource() == confirmButton) {
             try {
                 String maintenanceDateString = maintenanceField.getText();
-                Date maintenanceDate = Date.valueOf(maintenanceDateString);
 
-                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), maintenanceDate, weightField.getText());
+                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), maintenanceDateString, weightField.getText());
                 if (success) {
                     if (parentPanel != null) {
                         parentPanel.refresh();

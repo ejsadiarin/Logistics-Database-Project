@@ -1,3 +1,5 @@
+USE `ccinfom`;
+
 INSERT INTO drivers (lastname, firstname, rate, contact_number, status) VALUES
 ('Doe', 'John', 150.00, '1234567890', 'AVAILABLE'),
 ('Smith', 'Jane', 200.00, '0987654321', 'IN_TRANSIT'),
