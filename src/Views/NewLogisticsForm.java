@@ -3,9 +3,11 @@ package Views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Controllers.LogisticsController;
+import Controllers.ScheduleController;
 
 public class NewLogisticsForm extends javax.swing.JDialog implements ActionListener {
-    private LogisticsController controller;
+    private LogisticsController logisticsController;
+    private ScheduleController scheduleController;
     private LogisticsPanel parentPanel;
 
     /**
@@ -13,7 +15,8 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
      */
     public NewLogisticsForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.controller = new LogisticsController();
+        this.logisticsController = new LogisticsController();
+        this.scheduleController = new ScheduleController();
         initComponents();
     }
 
@@ -39,6 +42,7 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
 
         schedulingIDTable.setModel(new javax.swing.table.DefaultTableModel(
             // TODO: display scheduling table here
+            // scheduleController.getScheduleTableData -- filter to display only ids
             new Object [][] {
 
             },
@@ -122,7 +126,7 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == confirmButton) {
-            boolean success = controller.createRecord(distanceField.getText(), normalcostField.getText(), (int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0));
+            boolean success = logisticsController.createRecord(distanceField.getText(), normalcostField.getText(), (int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0));
             if (success) {
                 this.parentPanel.refresh();
                 dispose();
@@ -173,7 +177,7 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
         });
     }
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify
     private javax.swing.JButton confirmButton;
     private javax.swing.JTextField distanceField;
     private javax.swing.JLabel distanceLabel;

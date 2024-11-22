@@ -121,7 +121,7 @@ public class LogisticsPanel extends javax.swing.JPanel {
         }
 
         // WARN: how will we do the UI for this "form" or popup for "Change Status" since we only need to change the status and nothing else?
-        // UpdateLogisticsForm dialog = new UpdateLogisticsForm(new javax.swing.JFrame(), true);
+        // ChangeLogisticStatusForm dialog = new ChangeLogisticStatusForm(new javax.swing.JFrame(), true);
         // dialog.setParentPanel(this);
         // dialog.setFields(
         //     (int)logisticsTable.getValueAt(selectedRow, 0), // logistics_id
