@@ -141,19 +141,23 @@ public class NewVehicleForm extends javax.swing.JDialog {
         if (evt.getSource() == confirmButton) {
             try {
                 String maintenanceDateString = maintenanceField.getText();
-                Date maintenanceDate = Date.valueOf(maintenanceDateString);
+                Date maintenanceDate = null;
+                if (maintenanceDateString != null && !maintenanceDateString.trim().isEmpty()) {
+                    maintenanceDate = Date.valueOf(maintenanceDateString);
+                }
 
-                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), maintenanceDate, weightField.getText());
+                boolean success = controller.createRecord(plateField.getText(), economyField.getText(), maintenanceDateString, weightField.getText());
                 if (success) {
                     if (parentPanel != null) {
                         parentPanel.refresh();
                     }
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Failed to create customer.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Failed to create vehicle.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
                 System.out.println(e);
+                JOptionPane.showMessageDialog(this, "Invalid input. Please check your data.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }                                             
