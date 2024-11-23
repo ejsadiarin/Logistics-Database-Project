@@ -206,6 +206,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         int statusIndex = statusComboBox.getSelectedIndex();
 
         boolean success = controller.updateRecord(vehicleID, plateNumber, fuelEconomy, maintenanceDateString, maxLoadWeight, statusIndex);
+
         if (success) {
             parentPanel.refresh();
             dispose();

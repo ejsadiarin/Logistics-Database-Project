@@ -2,6 +2,11 @@ package Views;
 
 import javax.swing.JPanel;
 
+import java.sql.SQLException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class MainFrame extends javax.swing.JFrame implements java.awt.event.ActionListener{
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel SidePanel;
@@ -14,10 +19,11 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
     private javax.swing.JButton selectVehicle;
     private javax.swing.JButton viewReports;
     private ReportPanel reportPanel;
+    private ScheduledExecutorService scheduler;
     
     public MainFrame() {
         initComponents();
-        
+        startCronJobs(); // Start scheduled tasks
     }
 
     private void initComponents() {
@@ -98,6 +104,27 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
         );
 
         pack();
+    }
+
+    private void startCronJobs() {
+        scheduler = Executors.newScheduledThreadPool(1);
+
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                System.out.println("Running vehicle maintenance job...");
+                Services.Cronjobs.checkAndUpdateVehicleMaintenance();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, 0, 5, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void dispose() {
+        if (scheduler != null) {
+            scheduler.shutdown();
+        }
+        super.dispose();
     }
 
     public void setMainPanel(JPanel panel) {

@@ -141,11 +141,7 @@ public class CustomerPanel extends JPanel {
         int selectedRow = customerTable.getSelectedRow();
         if (selectedRow >= 0) {
             int customerID = (int) customerTable.getValueAt(selectedRow, 0);
-            try {
                 controller.deleteRecord(customerID);
-            } catch (Exception e) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Customer has an associated logistics or delivery request record", "Cannot Delete Customer", javax.swing.JOptionPane.ERROR_MESSAGE);
-            }
             refresh();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Please select a record to delete.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
