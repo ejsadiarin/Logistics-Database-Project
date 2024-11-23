@@ -77,7 +77,7 @@ public class NewDriverForm extends JDialog implements ActionListener {
 
         rateLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         rateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        rateLabel.setText("Rate");
+        rateLabel.setText("Salary");
 
         rateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 

@@ -34,7 +34,7 @@ public class DriverPanel extends JPanel implements ActionListener {
         driverTable.setModel(new javax.swing.table.DefaultTableModel(
             controller.getDriverTableData(),
             new String [] {
-                "DriverID", "First Name", "Last Name", "Rate (cost/km)", "Contact Number", "Status"
+                "DriverID", "First Name", "Last Name", "Salary", "Contact Number", "Status"
             }
         ) {
             Class[] types = new Class [] {

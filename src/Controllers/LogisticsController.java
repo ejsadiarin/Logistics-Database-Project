@@ -90,7 +90,7 @@ public class LogisticsController {
     public double calculateNormalCost(int scheduleID, double distance) {
         try {
             double[] ratesPerKM = schedDAO.getRateAndEconomy(scheduleID);
-            return (distance * ratesPerKM[0]) + (distance * ratesPerKM[1]);
+            return (10 * ratesPerKM[1]) + (distance * ratesPerKM[1]);
         } catch (Exception e) {
             System.err.println(e);
             return -1;

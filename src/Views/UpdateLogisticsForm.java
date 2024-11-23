@@ -1,5 +1,8 @@
 package Views;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import Controllers.LogisticsController;
 
 public class UpdateLogisticsForm extends javax.swing.JDialog {

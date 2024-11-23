@@ -7,6 +7,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Controllers.LogisticsController;
 import Controllers.ScheduleController;
@@ -88,6 +90,20 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 setNormalCost(logisticsController.calculateNormalCost((int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0), ((Number)distanceField.getValue()).doubleValue()));
+            }
+        });
+
+        // Add ListSelectionListener to the JTable's selection model
+        schedulingIDTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {  // Make sure the change is not still being adjusted
+                    int selectedRow = schedulingIDTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        System.out.println("Selected Row: " + selectedRow);
+                        setNormalCost(logisticsController.calculateNormalCost((int)schedulingIDTable.getValueAt(schedulingIDTable.getSelectedRow(), 0), ((Number)distanceField.getValue()).doubleValue()));
+                    }
+                }
             }
         });
         
