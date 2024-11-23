@@ -1,12 +1,10 @@
 package Services;
 
+import Database.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-
-import Database.DatabaseConnection;
 
 public class Cronjobs {
 
@@ -68,33 +66,22 @@ public class Cronjobs {
         }
     }
 
-    // TODO: need queries:
-    // date-based:
-    // - check if vehicle's assigned schedule date - vehicle's last_maintenance_date is >= 6 months, if true then vehicle's status will be 'NEEDS_MAINTENANCE', otherwise just leave it (prerequisite: status should be 'AVAILABLE' first before this check)
-    // - if above is true: 
-    //      - update vehicle status to 'NEEDS_MAINTENANCE'
-    // - to update status back to 'AVAILABLE', needs manual intervention
-    //
-    // manual-based set status to 'NEEDS_MAINTENANCE':
-    // - check if vehicle status is 'AVAILABLE', if true/yes then can set status to 'NEEDS_MAINTENANCE'
-    // - to update status back to 'AVAILABLE', needs manual intervention
-    //
     public static void checkAndUpdateVehicleMaintenance() throws SQLException {
         String updateVehicleStatusQuery =
-            "UPDATE vehicles " +
-            "SET status = 'NEEDS_MAINTENANCE' " +
-            "WHERE status = 'AVAILABLE' " +
-            "  AND vehicle_id IN (" +
+            "UPDATE vehicles v " +
+            "JOIN (" +
             "    SELECT s.vehicle_id " +
             "    FROM schedules s " +
-            "    JOIN vehicles v ON s.vehicle_id = v.vehicle_id " +
-            "    WHERE s.date >= DATE_ADD(v.last_maintenance_date, INTERVAL 6 MONTH) " +
+            "    JOIN vehicles v2 ON s.vehicle_id = v2.vehicle_id " +
+            "    WHERE s.date >= DATE_ADD(v2.last_maintenance_date, INTERVAL 6 MONTH) " +
             "      AND s.date = (SELECT MAX(s2.date) FROM schedules s2 WHERE s2.vehicle_id = s.vehicle_id)" +
-            "  )";
-
+            ") AS subquery ON v.vehicle_id = subquery.vehicle_id " +
+            "SET v.status = 'NEEDS_MAINTENANCE' " +
+            "WHERE v.status = 'AVAILABLE'";
+    
         Connection connection = null;
         PreparedStatement updateStmt = null;
-
+    
         try {
             connection = DatabaseConnection.getConnection();
             updateStmt = connection.prepareStatement(updateVehicleStatusQuery);

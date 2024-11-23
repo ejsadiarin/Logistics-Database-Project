@@ -1,11 +1,10 @@
 package Controllers;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import Models.Logistics;
 import Services.LogisticsDAO;
 import Services.ScheduleDAO;
+import java.sql.SQLException;
+import java.util.List;
 
 public class LogisticsController {
     private final LogisticsDAO dao;
@@ -85,11 +84,8 @@ public class LogisticsController {
                 dao.cascadeInTransit(recordToUpdate);
             } 
             else if (currentRecord.getStatus() == Logistics.Status.IN_TRANSIT && newStatus == Logistics.Status.ARRIVED) {
-                Logistics recordToUpdate = new Logistics(
-                    logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
-                );
-                dao.arrivedUpdate();
-            } 
+                dao.arrivedUpdate(logisticsID);
+            }
             else {
                 Logistics updatedRecord = new Logistics(
                     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID

@@ -1,11 +1,10 @@
 package Services;
 
+import Database.DatabaseConnection;
+import Models.Logistics;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import Database.DatabaseConnection;
-import Models.Logistics;
 
 public class LogisticsDAO {
     private Connection connection;
@@ -223,18 +222,51 @@ public class LogisticsDAO {
     // - update Logistics status to 'ARRIVED'
     // - update Driver status to 'AVAILABLE'
     // - update Vehicle status to 'AVAILABLE' --> then to be checked if it needs maintenance
-    // - update Vehicle last_maintenance_date gg to 'AVAILABLE' --> then to be checked if it needs maintenance
-    public void arrivedUpdate() {
-        String update = "";
+    // - update Vehicle last_maintenance_date to NOW --> Date type
+
+    public void arrivedUpdate(int logisticsID) throws SQLException {
+        String updateLogisticsStatusQuery = "UPDATE logistics SET status = 'ARRIVED' WHERE logistics_id = ?";
+        String updateDriverStatusQuery = "UPDATE drivers SET status = 'AVAILABLE' WHERE driver_id = (SELECT driver_id FROM schedules WHERE schedule_id = (SELECT schedule_id FROM logistics WHERE logistics_id = ?))";
+        String updateVehicleStatusQuery = "UPDATE vehicles SET status = 'AVAILABLE', last_maintenance_date = NOW() WHERE vehicle_id = (SELECT vehicle_id FROM schedules WHERE schedule_id = (SELECT schedule_id FROM logistics WHERE logistics_id = ?))";
 
         Connection connection = null;
+        PreparedStatement updateLogisticsStatusStmt = null;
+        PreparedStatement updateDriverStatusStmt = null;
+        PreparedStatement updateVehicleStatusStmt = null;
 
         try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+
+            // Update logistics status to 'ARRIVED'
+            updateLogisticsStatusStmt = connection.prepareStatement(updateLogisticsStatusQuery);
+            updateLogisticsStatusStmt.setInt(1, logisticsID);
+            updateLogisticsStatusStmt.executeUpdate();
+
+            // Update driver status to 'AVAILABLE'
+            updateDriverStatusStmt = connection.prepareStatement(updateDriverStatusQuery);
+            updateDriverStatusStmt.setInt(1, logisticsID);
+            updateDriverStatusStmt.executeUpdate();
+
+            // Update vehicle status to 'AVAILABLE' and last maintenance date to NOW
+            updateVehicleStatusStmt = connection.prepareStatement(updateVehicleStatusQuery);
+            updateVehicleStatusStmt.setInt(1, logisticsID);
+            updateVehicleStatusStmt.executeUpdate();
+
+            Services.Cronjobs.checkAndUpdateVehicleMaintenance();
+
+            connection.commit();
         } catch (SQLException err) {
+            if (connection != null) {
+                connection.rollback();
+            }
             err.printStackTrace();
             throw err;
         } finally {
+            if (updateLogisticsStatusStmt != null) updateLogisticsStatusStmt.close();
+            if (updateDriverStatusStmt != null) updateDriverStatusStmt.close();
+            if (updateVehicleStatusStmt != null) updateVehicleStatusStmt.close();
+            if (connection != null) connection.setAutoCommit(true);
         }
-    } 
-
+    }
 }
