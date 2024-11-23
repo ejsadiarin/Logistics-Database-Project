@@ -89,11 +89,58 @@ public class CustomerDAO {
         }
     }
 
-    public void deleteCustomer(int customerID) throws SQLException {
-        String query = "DELETE FROM customers WHERE customer_id = ?";
-        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
-            stmt.setInt(1, customerID);
-            stmt.executeUpdate();
+    public void deleteCustomerTransaction(int customerID) throws SQLException {
+        String checkLogisticsQuery = 
+            "SELECT COUNT(*) FROM logistics l " +
+            "JOIN schedules s ON l.schedule_id = s.schedule_id " +
+            "JOIN requests r ON s.request_id = r.request_id " +
+            "WHERE r.customer_id = ?";
+        String checkRequestsQuery = 
+            "SELECT COUNT(*) FROM requests WHERE customer_id = ?";
+        String deleteCustomerQuery = 
+            "DELETE FROM customers WHERE customer_id = ?";
+
+        Connection connection = null;
+        PreparedStatement checkLogisticsStmt = null;
+        PreparedStatement checkRequestsStmt = null;
+        PreparedStatement deleteCustomerStmt = null;
+
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+
+            // check if customer has associated logistics records
+            checkLogisticsStmt = connection.prepareStatement(checkLogisticsQuery);
+            checkLogisticsStmt.setInt(1, customerID);
+            ResultSet logisticsResult = checkLogisticsStmt.executeQuery();
+            if (logisticsResult.next() && logisticsResult.getInt(1) > 0) {
+                throw new SQLException("Customer has associated logistics records.");
+            }
+
+            // check if customer has associated delivery requests
+            checkRequestsStmt = connection.prepareStatement(checkRequestsQuery);
+            checkRequestsStmt.setInt(1, customerID);
+            ResultSet requestsResult = checkRequestsStmt.executeQuery();
+            if (requestsResult.next() && requestsResult.getInt(1) > 0) {
+                throw new SQLException("Customer has associated delivery requests.");
+            }
+
+            // delete the customer record
+            deleteCustomerStmt = connection.prepareStatement(deleteCustomerQuery);
+            deleteCustomerStmt.setInt(1, customerID);
+            deleteCustomerStmt.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            if (connection != null) {
+                connection.rollback();
+            }
+            throw e;
+        } finally {
+            if (checkLogisticsStmt != null) checkLogisticsStmt.close();
+            if (checkRequestsStmt != null) checkRequestsStmt.close();
+            if (deleteCustomerStmt != null) deleteCustomerStmt.close();
+            if (connection != null) connection.setAutoCommit(true);
         }
     }
-}
+} 
