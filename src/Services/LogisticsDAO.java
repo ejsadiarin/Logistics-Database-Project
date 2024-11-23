@@ -89,11 +89,14 @@ public class LogisticsDAO {
             "DELETE FROM requests WHERE request_id = (SELECT request_id FROM schedules WHERE schedule_id = ?)";
         String deleteScheduleQuery =
             "DELETE FROM schedules WHERE schedule_id = ?";
+        String changeStatusToCancelled =
+            "UPDATE logistics SET status = 'CANCELLED' WHERE logistics_id = ?";
 
         Connection connection = null;
         PreparedStatement updateLogisticsScheduleStmt = null;
         PreparedStatement deleteRequestStmt = null;
         PreparedStatement deleteScheduleStmt = null;
+        PreparedStatement changeStatusToCancelledStmt = null;
 
         try {
             connection = getConnection();
@@ -113,6 +116,11 @@ public class LogisticsDAO {
             deleteScheduleStmt = connection.prepareStatement(deleteScheduleQuery);
             deleteScheduleStmt.setInt(1, logistics.getScheduleID());
             deleteScheduleStmt.executeUpdate();
+
+            // change status to cancel
+            changeStatusToCancelledStmt = connection.prepareStatement(changeStatusToCancelled);
+            changeStatusToCancelledStmt.setInt(1, logistics.getLogisticsID());
+            changeStatusToCancelledStmt.executeUpdate();
 
             connection.commit();
         } catch (SQLException e) {
