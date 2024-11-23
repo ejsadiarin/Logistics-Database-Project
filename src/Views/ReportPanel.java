@@ -4,14 +4,16 @@ import Controllers.ReportController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 public class ReportPanel extends JPanel implements ActionListener {
     private JComboBox<String> reportTypeComboBox;
-    private JTextField yearField;
-    private JTextField monthField;
+    private JFormattedTextField yearField;
+    private JFormattedTextField monthField;
     private JButton generateButton;
     private JTable reportTable;
     private JScrollPane scrollPane;
@@ -36,14 +38,28 @@ public class ReportPanel extends JPanel implements ActionListener {
             "Vehicle Completed Trips Report by Year", 
             "Vehicle Completed Trips Report by Month"
         });
-        controlPanel.add(reportTypeComboBox);
 
+        MaskFormatter monthMask, yearMask;
+        try {
+            // Mask for phone number (e.g., "###-###-####")
+            monthMask = new MaskFormatter("##");
+            yearMask = new MaskFormatter("####");
+            yearField = new JFormattedTextField(yearMask);
+            yearField.setColumns(4);
+            monthField = new JFormattedTextField(monthMask);
+            monthField.setColumns(2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            yearField = new JFormattedTextField(4);
+            monthField = new JFormattedTextField(2);
+        }
+
+        controlPanel.add(reportTypeComboBox);
+        
         controlPanel.add(new JLabel("Year:"));
-        yearField = new JTextField(4);
         controlPanel.add(yearField);
 
         controlPanel.add(new JLabel("Month:"));
-        monthField = new JTextField(2);
         controlPanel.add(monthField);
 
         generateButton = new JButton("Generate Report");
@@ -55,6 +71,8 @@ public class ReportPanel extends JPanel implements ActionListener {
         reportTable = new JTable();
         scrollPane = new JScrollPane(reportTable);
         add(scrollPane, BorderLayout.CENTER);
+
+        MaskFormatter mask;
     }
 
     @Override

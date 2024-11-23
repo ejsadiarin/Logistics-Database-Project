@@ -1,18 +1,22 @@
 package Views;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Controllers.LogisticsController;
 
-public class UpdateLogisticsForm extends javax.swing.JDialog {
+public class UpdateLogisticsForm extends javax.swing.JDialog implements PropertyChangeListener {
 
     /**
      * Creates new form UpdateLogisticsForm
      */
     public UpdateLogisticsForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.controller = new LogisticsController();
+        this.logisticsController = new LogisticsController();
         initComponents();
     }
 
@@ -50,6 +54,8 @@ public class UpdateLogisticsForm extends javax.swing.JDialog {
         normalcostField.setEditable(false);
 
         distanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+
+        distanceField.addPropertyChangeListener("value", this);
 
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +111,7 @@ public class UpdateLogisticsForm extends javax.swing.JDialog {
     }                               
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        boolean success = this.controller.updateRecord(logisticsID,
+        boolean success = this.logisticsController.updateRecord(logisticsID,
                                                         ((Number)distanceField.getValue()).doubleValue(),
                                                         normalcostField.getText(),
                                                         scheduleID,
@@ -113,8 +119,24 @@ public class UpdateLogisticsForm extends javax.swing.JDialog {
         if (success) {
             this.parentPanel.refresh();
             dispose();
+        } else {
+            JOptionPane.showMessageDialog(
+            null,                 // Parent component (null makes it centered on the screen)
+            "Error: Invalid changes were detected!",         // Message to display
+            "Update Error",              // Title of the popup
+            JOptionPane.ERROR_MESSAGE  // Type of message (error)
+        );
         }
     }                                             
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        setNormalCost(logisticsController.calculateNormalCost(this.scheduleID, ((Number)distanceField.getValue()).doubleValue()));
+    }
+
+    private void setNormalCost(double cost) {
+        normalcostField.setText(String.valueOf(cost));
+    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton confirmButton;
@@ -127,6 +149,6 @@ public class UpdateLogisticsForm extends javax.swing.JDialog {
     private LogisticsPanel parentPanel;
     private int scheduleID;
     private int logisticsID;
-    private LogisticsController controller;
+    private LogisticsController logisticsController;
     // End of variables declaration                   
 }
