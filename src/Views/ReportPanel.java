@@ -14,6 +14,7 @@ public class ReportPanel extends JPanel implements ActionListener {
     private JComboBox<String> reportTypeComboBox;
     private JFormattedTextField yearField;
     private JFormattedTextField monthField;
+    private JTextField idField;
     private JButton generateButton;
     private JTable reportTable;
     private JScrollPane scrollPane;
@@ -36,12 +37,13 @@ public class ReportPanel extends JPanel implements ActionListener {
             "Driver Completed Trips Report by Year", 
             "Driver Completed Trips Report by Month", 
             "Vehicle Completed Trips Report by Year", 
-            "Vehicle Completed Trips Report by Month"
+            "Vehicle Completed Trips Report by Month",
+            "Completed Trips by Driver ID",
+            "Completed Trips by Vehicle ID"
         });
 
         MaskFormatter monthMask, yearMask;
         try {
-            // Mask for phone number (e.g., "###-###-####")
             monthMask = new MaskFormatter("##");
             yearMask = new MaskFormatter("####");
             yearField = new JFormattedTextField(yearMask);
@@ -54,6 +56,8 @@ public class ReportPanel extends JPanel implements ActionListener {
             monthField = new JFormattedTextField(2);
         }
 
+        idField = new JTextField(10);
+
         controlPanel.add(reportTypeComboBox);
         
         controlPanel.add(new JLabel("Year:"));
@@ -61,6 +65,9 @@ public class ReportPanel extends JPanel implements ActionListener {
 
         controlPanel.add(new JLabel("Month:"));
         controlPanel.add(monthField);
+
+        controlPanel.add(new JLabel("ID:"));
+        controlPanel.add(idField);
 
         generateButton = new JButton("Generate Report");
         generateButton.addActionListener(this);
@@ -78,6 +85,7 @@ public class ReportPanel extends JPanel implements ActionListener {
         String reportType = (String) reportTypeComboBox.getSelectedItem();
         String year = yearField.getText();
         String month = monthField.getText();
+        String id = idField.getText();
 
         List<Object[]> data = null;
         String[] columnNames = null;
@@ -88,17 +96,23 @@ public class ReportPanel extends JPanel implements ActionListener {
             data = reportController.getSalesReportByMonth(year, month);
             columnNames = new String[] {"SalesDate", "TotalSales", "SalesCount", "TotalProfit"};
         } else if (reportType.equals("Driver Completed Trips Report by Year")) {
-            data = reportController.getDriverCompletedTripsReportByYear(year);
+            data = reportController.getDriverCompletedTripsReportByYear(year, id);
             columnNames = new String[] {"DriverID", "DriverName", "Year", "TotalTrips", "TotalKilometers"};
         } else if (reportType.equals("Driver Completed Trips Report by Month")) {
-            data = reportController.getDriverCompletedTripsReportByMonth(year, month);
+            data = reportController.getDriverCompletedTripsReportByMonth(year, month, id);
             columnNames = new String[] {"DriverID", "DriverName", "Month", "TotalTrips", "TotalKilometers"};
         } else if (reportType.equals("Vehicle Completed Trips Report by Year")) {
-            data = reportController.getVehicleCompletedTripsReportByYear(year);
+            data = reportController.getVehicleCompletedTripsReportByYear(year, id);
             columnNames = new String[] {"VehicleID", "VehicleName", "Year", "TotalTrips", "TotalKilometers"};
         } else if (reportType.equals("Vehicle Completed Trips Report by Month")) {
-            data = reportController.getVehicleCompletedTripsReportByMonth(year, month);
+            data = reportController.getVehicleCompletedTripsReportByMonth(year, month, id);
             columnNames = new String[] {"VehicleID", "VehicleName", "Month", "TotalTrips", "TotalKilometers"};
+        } else if (reportType.equals("Completed Trips by Driver ID")) {
+            data = reportController.getCompletedTripsByDriver(id);
+            columnNames = new String[] {"LogisticsID", "Date", "Distance", "Status"};
+        } else if (reportType.equals("Completed Trips by Vehicle ID")) {
+            data = reportController.getCompletedTripsByVehicle(id);
+            columnNames = new String[] {"LogisticsID", "Date", "Distance", "Status"};
         }
 
         if (data != null && columnNames != null) {
@@ -106,27 +120,31 @@ public class ReportPanel extends JPanel implements ActionListener {
             for (Object[] row : data) {
                 model.addRow(row);
             }
-            addSummaryRow(model, columnNames, year, month, reportType);
+            addSummaryRow(model, columnNames, id, reportType, year, month);
             reportTable.setModel(model);
         } else {
             JOptionPane.showMessageDialog(this, "Error generating report", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void addSummaryRow(DefaultTableModel model, String[] columnNames, String year, String month, String reportType) {
+    private void addSummaryRow(DefaultTableModel model, String[] columnNames, String id, String reportType, String year, String month) {
         Object[] summaryData = null;
         if (reportType.equals("Sales Report by Year")) {
             summaryData = reportController.getSalesSummaryByYear(year);
         } else if (reportType.equals("Sales Report by Month")) {
             summaryData = reportController.getSalesSummaryByMonth(year, month);
         } else if (reportType.equals("Driver Completed Trips Report by Year")) {
-            summaryData = reportController.getDriverSummaryYear(year);
+            summaryData = reportController.getDriverSummaryYear(id);
         } else if (reportType.equals("Driver Completed Trips Report by Month")) {
-            summaryData = reportController.getDriverSummaryMonth(year, month);
+            summaryData = reportController.getDriverSummaryMonth(id, year, month);
         } else if (reportType.equals("Vehicle Completed Trips Report by Year")) {
-            summaryData = reportController.getVehicleSummaryYear(year);
+            summaryData = reportController.getVehicleSummaryYear(id);
         } else if (reportType.equals("Vehicle Completed Trips Report by Month")) {
-            summaryData = reportController.getVehicleSummaryMonth(year, month);
+            summaryData = reportController.getVehicleSummaryMonth(id, year, month);
+        } else if (reportType.equals("Completed Trips by Driver ID")) {
+            summaryData = reportController.getDriverSummaryYear(id);
+        } else if (reportType.equals("Completed Trips by Vehicle ID")) {
+            summaryData = reportController.getVehicleSummaryYear(id);
         }
 
         Object[] summaryRow = new Object[columnNames.length];
