@@ -65,7 +65,7 @@ public class CustomerController {
         }
     }
 
-    public boolean deleteRecord(int customerID) throws SQLException {
+    public boolean deleteRecord(int customerID) {
         try {
             dao.deleteCustomerTransaction(customerID);
             return true;

@@ -24,7 +24,7 @@ public class ScheduleController{
         List<Schedule> data;
         int dataRows;
         try {
-            data = dao.getAllSchedules();
+            data = dao.getAllSchedulesWithNoLogistics();
             dataRows = data.size();
         } catch (SQLException e) {
             System.err.println(e);

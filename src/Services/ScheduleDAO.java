@@ -34,6 +34,28 @@ public class ScheduleDAO {
         return result;
     }
 
+    public List<Schedule> getAllSchedulesWithNoLogistics() throws SQLException {
+        List<Schedule> schedules = new ArrayList<>();
+        String query = "SELECT s.schedule_id, s.date, s.driver_id, s.vehicle_id, s.request_id " +
+                        "FROM schedules s " +
+                        "LEFT JOIN logistics l ON s.schedule_id = l.schedule_id " +
+                        "WHERE l.schedule_id IS NULL;";
+        try (Statement stmt = getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                schedules.add(new Schedule(
+                    rs.getInt("schedule_id"),
+                    rs.getTimestamp("date"),
+                    rs.getInt("driver_id"),
+                    rs.getInt("vehicle_id"),
+                    rs.getInt("request_id")
+                ));
+            }
+        }
+        return schedules;
+    }
+
+
     public void addSchedule(Schedule schedule) throws SQLException {
         String query = "INSERT INTO schedules (schedule_id, date, driver_id, vehicle_id, request_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(query)) {

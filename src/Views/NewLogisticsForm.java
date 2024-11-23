@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -106,6 +107,7 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
                 }
             }
         });
+        schedulingIDTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(this);
