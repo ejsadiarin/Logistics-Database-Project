@@ -8,6 +8,8 @@ import Services.VehicleDAO;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class LogisticsController {
     private final LogisticsDAO dao;
     private final ScheduleDAO schedDAO;
@@ -86,6 +88,22 @@ public class LogisticsController {
             else if (currentRecord.getStatus() == Logistics.Status.IN_TRANSIT && newStatus == Logistics.Status.ARRIVED) {
                 dao.arrivedUpdate(logisticsID);
                 vehicleDAO.checkAndUpdateVehicleMaintenance(scheduleID);
+            }
+            else if (currentRecord.getStatus() == Logistics.Status.IN_TRANSIT && newStatus == Logistics.Status.CANCELLED) {
+                javax.swing.JOptionPane.showMessageDialog(
+                    null, 
+                    "You cannot cancel records with status " + Logistics.Status.IN_TRANSIT, 
+                    "Cannot cancel logistic status in-transit", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+            }
+            else if (currentRecord.getStatus() == Logistics.Status.IN_TRANSIT && newStatus == Logistics.Status.PENDING) {
+                javax.swing.JOptionPane.showMessageDialog(
+                    null, 
+                    "You cannot revert status to " + Logistics.Status.IN_TRANSIT, 
+                    "Cannot revert logistic status in-transit", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+                );
             }
             else {
                 Logistics updatedRecord = new Logistics(

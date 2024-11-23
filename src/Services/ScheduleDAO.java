@@ -69,43 +69,33 @@ public class ScheduleDAO {
     }
 
     public void addScheduleTransaction(Schedule schedule) throws SQLException {
-        String checkVehicleQuery = "SELECT v.vehicle_id FROM vehicles v JOIN requests r ON v.max_load_weight >= r.load_weight WHERE r.request_id = ? AND v.status = 'AVAILABLE' LIMIT 1";
-        String checkDriverQuery = "SELECT driver_id FROM drivers WHERE status = 'AVAILABLE' LIMIT 1";
         String newScheduleQuery = "INSERT INTO schedules (schedule_id, date, driver_id, vehicle_id, request_id) VALUES (?, ?, ?, ?, ?)";
+        String checkVehicleWeight = "SELECT v.vehicle_id FROM vehicles v JOIN requests r ON v.max_load_weight >= r.load_weight WHERE v.vehicle_id = ? AND r.request_id = ? LIMIT 1";
 
         Connection connection = null;
         PreparedStatement checkVehicleStmt = null;
-        PreparedStatement checkDriverStmt = null;
         PreparedStatement newScheduleQueryStmt = null;
         ResultSet vehicleResultSet = null;
-        ResultSet driverResultSet = null;
 
         try {
             connection = getConnection();
             connection.setAutoCommit(false);
 
             // check vehicle
-            checkVehicleStmt = connection.prepareStatement(checkVehicleQuery);
-            checkVehicleStmt.setInt(1, schedule.getRequestID());
+            checkVehicleStmt = connection.prepareStatement(checkVehicleWeight);
+            checkVehicleStmt.setInt(1, schedule.getVehicleID());
+            checkVehicleStmt.setInt(2, schedule.getRequestID());
             vehicleResultSet = checkVehicleStmt.executeQuery();
             if (!vehicleResultSet.next()) {
-                throw new SQLException("No available vehicle found for the given request.");
+                throw new SQLException("No available vehicle found that can handle the weight for the given request.");
             }
             int availableVehicleID = vehicleResultSet.getInt("vehicle_id");
-
-            // check driver
-            checkDriverStmt = connection.prepareStatement(checkDriverQuery);
-            driverResultSet = checkDriverStmt.executeQuery();
-            if (!driverResultSet.next()) {
-                throw new SQLException("No available driver found.");
-            }
-            int availableDriverID = driverResultSet.getInt("driver_id");
 
             // insert as new schedule record if "AVAILABLE" driver and vehicle
             newScheduleQueryStmt = connection.prepareStatement(newScheduleQuery);
             newScheduleQueryStmt.setInt(1, schedule.getScheduleID());
             newScheduleQueryStmt.setTimestamp(2, schedule.getDate());
-            newScheduleQueryStmt.setInt(3, availableDriverID);
+            newScheduleQueryStmt.setInt(3, schedule.getDriverID());
             newScheduleQueryStmt.setInt(4, availableVehicleID);
             newScheduleQueryStmt.setInt(5, schedule.getRequestID());
             newScheduleQueryStmt.executeUpdate();
@@ -118,9 +108,7 @@ public class ScheduleDAO {
             throw err;
         } finally {
             if (vehicleResultSet != null) vehicleResultSet.close();
-            if (driverResultSet != null) driverResultSet.close();
             if (checkVehicleStmt != null) checkVehicleStmt.close();
-            if (checkDriverStmt != null) checkDriverStmt.close();
             if (newScheduleQueryStmt != null) newScheduleQueryStmt.close();
             if (connection != null) connection.setAutoCommit(true);
         }
