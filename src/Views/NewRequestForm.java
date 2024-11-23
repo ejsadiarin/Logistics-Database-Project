@@ -31,7 +31,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
     private JTextField productField;
     private JLabel productLabel;
     private JScrollPane scrollPane;
-    private JTextField weightField;
+    private JFormattedTextField weightField;
     private JLabel weightLabel;
     private RequestController controller;
     private RequestPanel parentPanel;
@@ -50,7 +50,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
         productField = new JTextField();
         originField = new JTextField();
         destinationField = new JTextField();
-        weightField = new JTextField();
+        weightField = new JFormattedTextField();
         dateLabel = new JLabel();
         productLabel = new JLabel();
         originLabel = new JLabel();
@@ -107,6 +107,9 @@ public class NewRequestForm extends JDialog implements ActionListener {
 
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(this);
+
+        weightField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,7 +181,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
             productField.getText(),
             originField.getText(),
             destinationField.getText(),
-            weightField.getText(),
+            ((Number)weightField.getValue()).doubleValue(),
             (int)customerIDTable.getValueAt(customerIDTable.getSelectedRow(), 0));
             if(success) {
                 this.parentPanel.refresh();

@@ -67,12 +67,12 @@ public class RequestController {
         return tableData;
     }
 
-    public boolean createRecord(String requestedDate, String product, String origin, String destination, String loadWeight, int customerID) {
+    public boolean createRecord(String requestedDate, String product, String origin, String destination, double loadWeight, int customerID) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date date = sdf.parse(requestedDate);
             java.sql.Date sqlDate = new Date(date.getTime());
-            Request newRecord = new Request(0, sqlDate, product, origin, destination, Double.parseDouble(loadWeight), customerID);
+            Request newRecord = new Request(0, sqlDate, product, origin, destination, loadWeight, customerID);
             dao.addRequestWithTransaction(newRecord);
             return true;
         } catch (SQLException e) {

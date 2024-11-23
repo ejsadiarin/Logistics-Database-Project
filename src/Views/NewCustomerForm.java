@@ -49,12 +49,14 @@ public class NewCustomerForm extends javax.swing.JDialog {
         billingLabel = new javax.swing.JLabel();
         billingField = new javax.swing.JTextField();
         amountLabel = new javax.swing.JLabel();
-        amountField = new javax.swing.JTextField();
+        amountField = new javax.swing.JFormattedTextField();
         dateLabel = new javax.swing.JLabel();
         dateField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("New Customer Record");
+
+        amountField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +185,7 @@ public class NewCustomerForm extends javax.swing.JDialog {
                 String dateText = dateField.getText();
                 Date dateParsed = Date.valueOf(dateText);
 
-                boolean success = controller.createRecord(companyField.getText(), customerField.getText(), companyField.getText(), billingField.getText(), amountField.getText(), dateParsed);
+                boolean success = controller.createRecord(companyField.getText(), customerField.getText(), companyField.getText(), billingField.getText(), ((Number)amountField.getValue()).doubleValue(), dateParsed);
                 if (success) {
                     if (parentPanel != null) {
                         parentPanel.refresh();
@@ -245,7 +247,7 @@ public class NewCustomerForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JTextField amountField;
+    private javax.swing.JFormattedTextField amountField;
     private javax.swing.JLabel amountLabel;
     private javax.swing.JTextField billingField;
     private javax.swing.JLabel billingLabel;
