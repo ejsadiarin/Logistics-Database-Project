@@ -10,16 +10,16 @@
 >   - [ ] trigger for schedules' date should update status (on vehicle, driver, and logistics) to "IN_TRANSIT", 
 >   - [ ] trigger for setting logistics status to arrived when vehicle becomes "AVAILABLE" from being "IN_TRANSIT"
 > - implement the other transactions (put all in DAO)
->   - [ ] create new request record (requests table)
+>   - [x] create new request record (requests table)
 >   - [x] create new schedule record (schedules table)
 >   - [x] create new logistics record (logistics table)
 >   - [x] cancelling existing logistics record (logistics table)
 >   - [x] removing vehicle
->   - [ ] firing driver
+>   - [x] firing driver
 >   - [ ] deleting customer
 > - see business rules for validation
 > - how will we demo our project/user flow of system (from record creation to whole logistics process until arrived)
-> - [ ] reports for driver and vehicle completed trips (both year/month)
+> - [x] reports for driver and vehicle completed trips (both year/month)
 
 
 

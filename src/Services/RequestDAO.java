@@ -36,7 +36,7 @@ public class RequestDAO {
 
             ResultSet resultSet = checkStmt.executeQuery();
             if (resultSet.next()) {
-                insertStmt.setDate(1, request.getRequestedDate()); // Use java.sql.Date
+                insertStmt.setDate(1, request.getRequestedDate()); 
                 insertStmt.setString(2, request.getProduct());
                 insertStmt.setString(3, request.getOrigin());
                 insertStmt.setString(4, request.getDestination());

@@ -41,7 +41,7 @@ END;
 
 -- Trigger to update a vehicles status to "NEEDS_MAINTENANCE" when the last maintenance date was 6 months ago
 CREATE TRIGGER check_vehicle_maintenance_date
-AFTER uPDATE ON logistics
+AFTER UPDATE ON logistics
 FOR EACH ROW
 BEGIN
     -- Check if the logistics order was marked as "ARRIVED"
@@ -63,4 +63,3 @@ BEGIN
         END IF;
     END IF;
 END;
-
