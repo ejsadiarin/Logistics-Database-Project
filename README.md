@@ -44,9 +44,6 @@ javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java src/**/*.java
 # or
 javac -cp lib/mysql-connector-j-9.1.0.jar -d bin src/*.java src/Models/*.java src/Views/*.java src/Controllers/*.java src/Database/*.java src/Services/*.java
 ```
-```powershell
-Get-ChildItem -Recurse -Path "src" -Filter "*.java" | ForEach-Object { javac -cp "lib\mysql-connector-j-9.1.0.jar;bin" -d bin $_.FullName}
-```
 
 - run
 ```bash
