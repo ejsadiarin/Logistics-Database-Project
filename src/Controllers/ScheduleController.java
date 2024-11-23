@@ -96,7 +96,7 @@ public class ScheduleController{
         int dataRows;
         try {
             RequestDAO requestDAO = new RequestDAO();
-            data = requestDAO.getAllRequests(); // TODO: Get all requests without schedules
+            data = requestDAO.getAllRequests();
             dataRows = data.size();
         } catch (Exception e) {
             System.err.println(e);

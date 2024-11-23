@@ -127,4 +127,37 @@ public class VehicleDAO {
             connection.setAutoCommit(true);
         }
     }
+
+
+    public void checkAndUpdateVehicleMaintenance(int scheduleID) throws SQLException {
+        String updateVehicleStatusQuery =
+                "UPDATE vehicles v " +
+                "JOIN (" +
+                "    SELECT s.vehicle_id " +
+                "    FROM schedules s " +
+                "    JOIN vehicles v2 ON s.vehicle_id = v2.vehicle_id " +
+                "    WHERE s.date >= DATE_ADD(v2.last_maintenance_date, INTERVAL 6 MONTH) " +
+                "    AND s.date = (SELECT MAX(s2.date) FROM schedules s2 WHERE s2.vehicle_id = s.vehicle_id) " +
+                "    AND s.schedule_id = ? " + // This line ensures we only update the selected vehicle
+                ") AS subquery ON v.vehicle_id = subquery.vehicle_id " +
+                "SET v.status = 'NEEDS_MAINTENANCE' " +
+                "WHERE v.status = 'AVAILABLE'";
+    
+        Connection connection = null;
+        PreparedStatement updateStmt = null;
+    
+        try {
+            connection = DatabaseConnection.getConnection();
+            updateStmt = connection.prepareStatement(updateVehicleStatusQuery);
+            updateStmt.setInt(1, scheduleID); // Set the scheduleID to filter the vehicle
+            int rowsUpdated = updateStmt.executeUpdate();
+            System.out.println(rowsUpdated + " vehicles updated to 'NEEDS_MAINTENANCE'");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (updateStmt != null) updateStmt.close();
+            if (connection != null) connection.close();
+        }
+    }
 }

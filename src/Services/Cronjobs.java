@@ -66,33 +66,4 @@ public class Cronjobs {
         }
     }
 
-    public static void checkAndUpdateVehicleMaintenance() throws SQLException {
-        String updateVehicleStatusQuery =
-            "UPDATE vehicles v " +
-            "JOIN (" +
-            "    SELECT s.vehicle_id " +
-            "    FROM schedules s " +
-            "    JOIN vehicles v2 ON s.vehicle_id = v2.vehicle_id " +
-            "    WHERE s.date >= DATE_ADD(v2.last_maintenance_date, INTERVAL 6 MONTH) " +
-            "      AND s.date = (SELECT MAX(s2.date) FROM schedules s2 WHERE s2.vehicle_id = s.vehicle_id)" +
-            ") AS subquery ON v.vehicle_id = subquery.vehicle_id " +
-            "SET v.status = 'NEEDS_MAINTENANCE' " +
-            "WHERE v.status = 'AVAILABLE'";
-    
-        Connection connection = null;
-        PreparedStatement updateStmt = null;
-    
-        try {
-            connection = DatabaseConnection.getConnection();
-            updateStmt = connection.prepareStatement(updateVehicleStatusQuery);
-            int rowsUpdated = updateStmt.executeUpdate();
-            System.out.println(rowsUpdated + " vehicles updated to 'NEEDS_MAINTENANCE'");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            if (updateStmt != null) updateStmt.close();
-            if (connection != null) connection.close();
-        }
-    }
 }

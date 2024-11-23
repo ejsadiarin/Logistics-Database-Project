@@ -3,16 +3,20 @@ package Controllers;
 import Models.Logistics;
 import Services.LogisticsDAO;
 import Services.ScheduleDAO;
+import Services.VehicleDAO;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public class LogisticsController {
     private final LogisticsDAO dao;
     private final ScheduleDAO schedDAO;
+    private final VehicleDAO vehicleDAO;
     
     public LogisticsController() {
         dao = new LogisticsDAO();
         schedDAO = new ScheduleDAO();
+        vehicleDAO = new VehicleDAO();
     }
 
     public Object[][] getLogisticsTableData() {
@@ -67,10 +71,6 @@ public class LogisticsController {
                 throw new SQLException("Logistics record not found.");
             }
 
-            // Logistics updatedRecord = new Logistics(
-            //     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
-            // );
-
             if (currentRecord.getStatus() == Logistics.Status.PENDING && newStatus == Logistics.Status.CANCELLED) {
                 Logistics recordToCancel = new Logistics(
                     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
@@ -85,6 +85,7 @@ public class LogisticsController {
             } 
             else if (currentRecord.getStatus() == Logistics.Status.IN_TRANSIT && newStatus == Logistics.Status.ARRIVED) {
                 dao.arrivedUpdate(logisticsID);
+                vehicleDAO.checkAndUpdateVehicleMaintenance(scheduleID);
             }
             else {
                 Logistics updatedRecord = new Logistics(

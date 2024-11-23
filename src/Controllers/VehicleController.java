@@ -64,7 +64,7 @@ public class VehicleController {
                 lastMaintenanceDate = Date.valueOf(lastMaintenanceDateStr);
             }
             Vehicle updatedRecord = new Vehicle(vehicleID, plateNumber, fuelEconomy, lastMaintenanceDate, maxLoadWeight, Vehicle.Status.values()[statusIndex]);
-            // TODO: if previous status is set to 'AVAILABLE' then can use updateMaintenanceRecord() only if the selected status is 'NEEDS_MAINTENANCE'
+            // if previous status is set to 'AVAILABLE' then can use updateMaintenanceRecord() only if the selected status is 'NEEDS_MAINTENANCE'
             dao.updateVehicle(updatedRecord);
             return true;
         } catch (SQLException e) {

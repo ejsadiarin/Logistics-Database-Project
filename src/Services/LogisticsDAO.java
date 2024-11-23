@@ -218,12 +218,6 @@ public class LogisticsDAO {
         }
     }
 
-    // TODO: needs Arrived cronjob
-    // - update Logistics status to 'ARRIVED'
-    // - update Driver status to 'AVAILABLE'
-    // - update Vehicle status to 'AVAILABLE' --> then to be checked if it needs maintenance
-    // - update Vehicle last_maintenance_date to NOW --> Date type
-
     public void arrivedUpdate(int logisticsID) throws SQLException {
         String updateLogisticsStatusQuery = "UPDATE logistics SET status = 'ARRIVED' WHERE logistics_id = ?";
         String updateDriverStatusQuery = "UPDATE drivers SET status = 'AVAILABLE' WHERE driver_id = (SELECT driver_id FROM schedules WHERE schedule_id = (SELECT schedule_id FROM logistics WHERE logistics_id = ?))";
@@ -252,8 +246,6 @@ public class LogisticsDAO {
             updateVehicleStatusStmt = connection.prepareStatement(updateVehicleStatusQuery);
             updateVehicleStatusStmt.setInt(1, logisticsID);
             updateVehicleStatusStmt.executeUpdate();
-
-            Services.Cronjobs.checkAndUpdateVehicleMaintenance();
 
             connection.commit();
         } catch (SQLException err) {

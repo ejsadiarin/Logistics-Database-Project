@@ -68,7 +68,6 @@ public class ScheduleDAO {
         }
     }
 
-    // TODO: cant create logisiics order if may logistics order na yung schedule
     public void addScheduleTransaction(Schedule schedule) throws SQLException {
         String checkVehicleQuery = "SELECT v.vehicle_id FROM vehicles v JOIN requests r ON v.max_load_weight >= r.load_weight WHERE r.request_id = ? AND v.status = 'AVAILABLE' LIMIT 1";
         String checkDriverQuery = "SELECT driver_id FROM drivers WHERE status = 'AVAILABLE' LIMIT 1";
