@@ -1,5 +1,13 @@
 package Views;
 
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+
+import org.w3c.dom.Text;
+
 import Controllers.VehicleController;
 
 public class UpdateVehicleForm extends javax.swing.JDialog {
@@ -38,7 +46,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
 
         this.controller = new VehicleController();
         confirmButton = new javax.swing.JButton();
-        plateField = new javax.swing.JTextField();
+        plateField = new javax.swing.JFormattedTextField();
         economyField = new javax.swing.JFormattedTextField();
         plateLabel = new javax.swing.JLabel();
         economyLabel = new javax.swing.JLabel();
@@ -63,6 +71,29 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
         plateLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         plateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         plateLabel.setText("Plate No.");
+        
+        // Add a custom input verifier to allow either 3 or 4 digits after the 3 letters
+        plateField.setInputVerifier(new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                String text = ((JFormattedTextField) input).getText();
+        
+                // Check if the text matches the pattern: 3 letters followed by 3 or 4 digits
+                if (text.length() >= 7 && text.length() <= 8) {
+                    String letters = text.substring(0, 3);  // First three characters should be letters
+                    String digits = text.substring(4);      // From position 4 onward should be digits (either 3 or 4 digits)
+        
+                    // Validate the first part (letters) and the second part (digits)
+                    if (letters.matches("[A-Za-z]{3}") && digits.matches("[0-9]{3,4}") && text.charAt(3) == ' ') {
+                        return true;  // Valid input
+                    }
+                }
+        
+                // If invalid, clear the field and allow focus to leave
+                ((JFormattedTextField) input).setText("AAA 0000"); // Clear the text field
+                return true;  // Always allow focus to leave
+            }
+        });
 
         economyLabel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         economyLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -168,7 +199,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     }// </editor-fold>                        
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        String plateNumber = plateField.getText();
+        String plateNumber = plateField.getText().toUpperCase();
         double fuelEconomy = ((Number)economyField.getValue()).doubleValue();
         String maintenanceDateString = maintenanceField.getText();
         double maxLoadWeight = ((Number)weightField.getValue()).doubleValue();
@@ -199,7 +230,7 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
     private javax.swing.JLabel economyLabel;
     private javax.swing.JFormattedTextField maintenanceField;
     private javax.swing.JLabel maintenanceLabel;
-    private javax.swing.JTextField plateField;
+    private javax.swing.JFormattedTextField plateField;
     private javax.swing.JLabel plateLabel;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JLabel statusLabel;
