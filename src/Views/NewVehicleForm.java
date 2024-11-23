@@ -186,7 +186,12 @@ public class NewVehicleForm extends javax.swing.JDialog {
                     }
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Failed to create customer.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                    null,                 // Parent component (null makes it centered on the screen)
+                    "Error: Cannot create vehicle",         // Message to display
+                    "Creation Failed",              // Title of the popup
+                    JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                    );
                 }
             } catch (Exception e) {
                 System.out.println(e);

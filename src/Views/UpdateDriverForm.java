@@ -8,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -179,6 +180,13 @@ public class UpdateDriverForm extends JDialog implements ActionListener {
             if(success) {
                 parentPanel.refresh();
                 dispose();
+            } else {
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot Update Record. Ensure all fields are correctly formatted.",         // Message to display
+                "Update Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                );
             }
         }
         else if (event.getSource() == cancelButton) {
