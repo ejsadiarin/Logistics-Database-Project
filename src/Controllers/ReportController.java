@@ -8,13 +8,13 @@ import java.util.List;
 public class ReportController {
 
     public List<Object[]> getSalesReportByYear(String year) {
-        String query = "SELECT DATE(c.date_paid) AS SalesDate, SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? GROUP BY DATE(c.date_paid) ORDER BY SalesDate";
+        String query = "SELECT DATE(c.date_paid) AS SalesDate, SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? AND l.status = 'ARRIVED' GROUP BY DATE(c.date_paid) ORDER BY SalesDate";
         return executeQuery(query, year);
 
     }
 
     public List<Object[]> getSalesReportByMonth(String year, String month) {
-        String query = "SELECT DATE(c.date_paid) AS SalesDate, SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? AND MONTH(c.date_paid) = ? GROUP BY DATE(c.date_paid) ORDER BY SalesDate";
+        String query = "SELECT DATE(c.date_paid) AS SalesDate, SUM(c.amount_paid) AS TotalSales, COUNT(c.amount_paid) AS SalesCount, SUM(c.amount_paid - l.normal_cost) AS TotalProfit FROM customers c JOIN requests r ON c.customer_id = r.customer_id JOIN schedules s ON r.request_id = s.request_id JOIN logistics l ON s.schedule_id = l.schedule_id WHERE YEAR(c.date_paid) = ? AND MONTH(c.date_paid) = ? AND l.status = 'ARRIVED' GROUP BY DATE(c.date_paid) ORDER BY SalesDate";
         return executeQuery(query, year, month);
     }
 
