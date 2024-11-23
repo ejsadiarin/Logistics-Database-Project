@@ -107,18 +107,7 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
     }
 
     private void startCronJobs() {
-        scheduler = Executors.newScheduledThreadPool(2);
-
-        // vehicle maintenance job
-        scheduler.scheduleAtFixedRate(() -> {
-            try {
-                System.out.println("Running vehicle maintenance job...");
-                Services.Cronjobs.checkAndUpdateVehicleMaintenance();
-            } catch (SQLException e) {
-                System.err.println("Error during vehicle maintenance job:");
-                e.printStackTrace();
-            }
-        }, 0, 5, TimeUnit.SECONDS);
+        scheduler = Executors.newScheduledThreadPool(1);
 
         // auto in_transit job
         scheduler.scheduleAtFixedRate(() -> {
@@ -129,7 +118,7 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
                 System.err.println("Error during auto in-transit job:");
                 e.printStackTrace();
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
 
