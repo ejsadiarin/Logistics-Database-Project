@@ -135,4 +135,106 @@ public class LogisticsDAO {
             if (connection != null) connection.setAutoCommit(true);
         }
     }
+
+    public void cascadeInTransit(Logistics logistics) throws SQLException {
+        String checkDriverAvailableQuery =
+            "SELECT d.driver_id " +
+            "FROM drivers d " +
+            "JOIN schedules s ON d.driver_id = s.driver_id " +
+            "WHERE s.schedule_id = ? AND d.status = 'AVAILABLE'";
+
+        String checkVehicleAvailableQuery =
+            "SELECT v.vehicle_id " +
+            "FROM vehicles v " +
+            "JOIN schedules s ON v.vehicle_id = s.vehicle_id " +
+            "WHERE s.schedule_id = ? AND v.status = 'AVAILABLE'";
+
+        String updateDriverInTransitQuery =
+            "UPDATE drivers " +
+            "SET status = 'IN_TRANSIT' " +
+            "WHERE driver_id = (SELECT driver_id FROM schedules WHERE schedule_id = ?)";
+
+        String updateVehicleInTransitQuery =
+            "UPDATE vehicles " +
+            "SET status = 'IN_TRANSIT' " +
+            "WHERE vehicle_id = (SELECT vehicle_id FROM schedules WHERE schedule_id = ?)";
+
+        String updateLogisticsInTransitQuery =
+            "UPDATE logistics " +
+            "SET status = 'IN_TRANSIT' " +
+            "WHERE logistics_id = ?";
+
+        Connection connection = null;
+        PreparedStatement checkDriverAvailableStmt = null;
+        PreparedStatement checkVehicleAvailableStmt = null;
+        PreparedStatement updateDriverStmt = null;
+        PreparedStatement updateVehicleStmt = null;
+        PreparedStatement updateLogisticsStmt = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            checkDriverAvailableStmt = connection.prepareStatement(checkDriverAvailableQuery);
+            checkDriverAvailableStmt.setInt(1, logistics.getScheduleID());
+            ResultSet driverResult = checkDriverAvailableStmt.executeQuery();
+            if (!driverResult.next()) {
+                throw new SQLException("Driver is not available.");
+            }
+
+            checkVehicleAvailableStmt = connection.prepareStatement(checkVehicleAvailableQuery);
+            checkVehicleAvailableStmt.setInt(1, logistics.getScheduleID());
+            ResultSet vehicleResult = checkVehicleAvailableStmt.executeQuery();
+            if (!vehicleResult.next()) {
+                throw new SQLException("Vehicle is not available.");
+            }
+
+            updateDriverStmt = connection.prepareStatement(updateDriverInTransitQuery);
+            updateDriverStmt.setInt(1, logistics.getScheduleID());
+            updateDriverStmt.executeUpdate();
+
+            updateVehicleStmt = connection.prepareStatement(updateVehicleInTransitQuery);
+            updateVehicleStmt.setInt(1, logistics.getScheduleID());
+            updateVehicleStmt.executeUpdate();
+
+            updateLogisticsStmt = connection.prepareStatement(updateLogisticsInTransitQuery);
+            updateLogisticsStmt.setInt(1, logistics.getLogisticsID());
+            updateLogisticsStmt.executeUpdate();
+
+            connection.commit();
+            System.out.println("Logistics, driver, and vehicle successfully updated to 'IN_TRANSIT'.");
+        } catch (SQLException err) {
+            if (connection != null) {
+                connection.rollback();
+            }
+            err.printStackTrace();
+            throw err;
+        } finally {
+            if (checkDriverAvailableStmt != null) checkDriverAvailableStmt.close();
+            if (checkVehicleAvailableStmt != null) checkVehicleAvailableStmt.close();
+            if (updateDriverStmt != null) updateDriverStmt.close();
+            if (updateVehicleStmt != null) updateVehicleStmt.close();
+            if (updateLogisticsStmt != null) updateLogisticsStmt.close();
+            if (connection != null) connection.setAutoCommit(true);
+        }
+    }
+
+    // TODO: needs Arrived cronjob
+    // - update Logistics status to 'ARRIVED'
+    // - update Driver status to 'AVAILABLE'
+    // - update Vehicle status to 'AVAILABLE' --> then to be checked if it needs maintenance
+    // - update Vehicle last_maintenance_date gg to 'AVAILABLE' --> then to be checked if it needs maintenance
+    public void arrivedUpdate() {
+        String update = "";
+
+        Connection connection = null;
+
+        try {
+        } catch (SQLException err) {
+            err.printStackTrace();
+            throw err;
+        } finally {
+        }
+    } 
+
 }
