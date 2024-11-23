@@ -107,17 +107,34 @@ public class MainFrame extends javax.swing.JFrame implements java.awt.event.Acti
     }
 
     private void startCronJobs() {
-        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler = Executors.newScheduledThreadPool(2);
 
+        // vehicle maintenance job
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running vehicle maintenance job...");
                 Services.Cronjobs.checkAndUpdateVehicleMaintenance();
             } catch (SQLException e) {
+                System.err.println("Error during vehicle maintenance job:");
                 e.printStackTrace();
             }
         }, 0, 5, TimeUnit.SECONDS);
+
+        // auto in_transit job
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                System.out.println("Running auto-in-transit job...");
+                Services.Cronjobs.autoInTransit();
+            } catch (SQLException e) {
+                System.err.println("Error during auto in-transit job:");
+                e.printStackTrace();
+            }
+        }, 0, 10, TimeUnit.SECONDS);
     }
+
+
+
+
 
     @Override
     public void dispose() {

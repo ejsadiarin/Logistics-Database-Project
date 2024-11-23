@@ -68,12 +68,23 @@ public class LogisticsController {
                 throw new SQLException("Logistics record not found.");
             }
 
+            // Logistics updatedRecord = new Logistics(
+            //     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
+            // );
+
             if (currentRecord.getStatus() == Logistics.Status.PENDING && newStatus == Logistics.Status.CANCELLED) {
                 Logistics recordToCancel = new Logistics(
                     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
                 );
                 dao.cancelLogisticsTransaction(recordToCancel);
-            } else {
+            } 
+            else if (currentRecord.getStatus() == Logistics.Status.PENDING && newStatus == Logistics.Status.IN_TRANSIT) {
+                Logistics recordToUpdate = new Logistics(
+                    logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
+                );
+                dao.cascadeInTransit(recordToUpdate);
+            } 
+            else {
                 Logistics updatedRecord = new Logistics(
                     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
                 );
