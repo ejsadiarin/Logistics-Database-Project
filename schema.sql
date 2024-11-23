@@ -16,7 +16,7 @@ CREATE TABLE drivers (
 DROP TABLE IF EXISTS `vehicles`;
 CREATE TABLE vehicles (
     vehicle_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    plate_number VARCHAR(7) NOT NULL,
+    plate_number VARCHAR(8) UNIQUE NOT NULL,
     fuel_economy FLOAT NOT NULL,
     last_maintenance_date DATE,
     max_load_weight FLOAT NOT NULL,

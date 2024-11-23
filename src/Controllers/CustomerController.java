@@ -65,11 +65,12 @@ public class CustomerController {
         }
     }
 
-    public boolean deleteRecord(int customerID) {
+    public boolean deleteRecord(int customerID) throws SQLException {
         try {
-            dao.deleteCustomer(customerID);
+            dao.deleteCustomerTransaction(customerID);
             return true;
         } catch (SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Customer has an associated logistics or delivery request record", "Cannot Delete Customer", javax.swing.JOptionPane.ERROR_MESSAGE);
             System.err.println("Error deleting customer: " + e.getMessage());
             return false;
         }
