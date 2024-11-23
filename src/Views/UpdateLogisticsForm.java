@@ -125,7 +125,7 @@ public class UpdateLogisticsForm extends javax.swing.JDialog implements Property
             "Error: Invalid changes were detected!",         // Message to display
             "Update Error",              // Title of the popup
             JOptionPane.ERROR_MESSAGE  // Type of message (error)
-        );
+            );
         }
     }                                             
 

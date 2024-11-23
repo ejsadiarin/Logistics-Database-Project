@@ -1,5 +1,7 @@
 package Views;
 
+import javax.swing.ListSelectionModel;
+
 import Controllers.LogisticsController;
 
 public class LogisticsPanel extends javax.swing.JPanel {
@@ -42,6 +44,7 @@ public class LogisticsPanel extends javax.swing.JPanel {
             }
         });
         logisticsTable.getTableHeader().setReorderingAllowed(false);
+        logisticsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePane.setViewportView(logisticsTable);
         if (logisticsTable.getColumnModel().getColumnCount() > 0) {
             logisticsTable.getColumnModel().getColumn(1).setResizable(false);
@@ -103,6 +106,7 @@ public class LogisticsPanel extends javax.swing.JPanel {
 
     private void updateRecordButton(java.awt.event.ActionEvent evt) {
         int selectedRow = logisticsTable.getSelectedRow();
+        String selectedRowStatus = logisticsTable.getValueAt(selectedRow, 3).toString();
         if (selectedRow == -1) {
             javax.swing.JOptionPane.showMessageDialog(
                 this, 
@@ -112,6 +116,15 @@ public class LogisticsPanel extends javax.swing.JPanel {
             );
             return;
         }
+        if (selectedRowStatus.equals("ARRIVED") || selectedRowStatus.equals("CANCELLED")) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, 
+                "You cannot update records with status " + selectedRowStatus, 
+                "Update not allowed", 
+                javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        } 
 
         UpdateLogisticsForm dialog = new UpdateLogisticsForm(new javax.swing.JFrame(), true);
         dialog.setParentPanel(this);

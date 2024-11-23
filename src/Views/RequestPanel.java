@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 public class RequestPanel extends JPanel implements ActionListener {
@@ -48,6 +49,7 @@ public class RequestPanel extends JPanel implements ActionListener {
             }
         });
         requestTable.getTableHeader().setReorderingAllowed(false);
+        requestTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePane.setViewportView(requestTable);
 
         newRequestButton.setText("New Delivery Request");

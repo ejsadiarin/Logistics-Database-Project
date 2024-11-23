@@ -41,10 +41,9 @@ public class CustomerController {
         return tableData;
     }
 
-    public boolean createRecord(String companyName, String customerName, String companyContact, String billingAddress, String amountPaid, Date datePaid) {
+    public boolean createRecord(String companyName, String customerName, String companyContact, String billingAddress, double amountPaid, Date datePaid) {
         try {
-            Double amountPaidDouble = Double.parseDouble(amountPaid);
-            Customer newRecord = new Customer(0, companyName, customerName, companyContact, billingAddress, amountPaidDouble, datePaid);
+            Customer newRecord = new Customer(0, companyName, customerName, companyContact, billingAddress, amountPaid, datePaid);
             dao.addCustomer(newRecord);
             return true;
         } catch (SQLException e) {
@@ -53,10 +52,9 @@ public class CustomerController {
         }
     }
 
-    public boolean updateRecord(int customerID, String companyName, String customerName, String companyContact, String billingAddress, String amountPaid, Date datePaid) {
+    public boolean updateRecord(int customerID, String companyName, String customerName, String companyContact, String billingAddress, double amountPaid, Date datePaid) {
         try {
-            Double amountPaidDouble = Double.parseDouble(amountPaid);
-            Customer updatedRecord = new Customer(customerID, companyName, customerName, companyContact, billingAddress, amountPaidDouble, datePaid);
+            Customer updatedRecord = new Customer(customerID, companyName, customerName, companyContact, billingAddress, amountPaid, datePaid);
             dao.updateCustomer(updatedRecord);
             return true;
         } catch (SQLException e) {

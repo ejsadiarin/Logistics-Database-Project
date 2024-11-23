@@ -16,28 +16,28 @@ TRUNCATE TABLE drivers;
 TRUNCATE TABLE customers;
 
 INSERT INTO drivers (lastname, firstname, rate, contact_number, status) VALUES
-('Smith', 'John', 50.00, '09123456789', 'AVAILABLE'),
-('Johnson', 'Emily', 55.00, '09234567890', 'IN_TRANSIT'),
-('Brown', 'Michael', 60.00, '09345678901', 'ON_LEAVE'),
-('Williams', 'Sophia', 58.00, '09456789012', 'AVAILABLE'),
-('Jones', 'James', 52.00, '09567890123', 'AVAILABLE'),
-('Garcia', 'Isabella', 63.00, '09678901234', 'IN_TRANSIT'),
-('Martinez', 'David', 57.00, '09789012345', 'UNAVAILABLE'),
-('Hernandez', 'Olivia', 59.00, '09890123456', 'AVAILABLE'),
-('Lopez', 'Liam', 54.00, '09901234567', 'ON_LEAVE'),
-('Gonzalez', 'Ava', 61.00, '09012345678', 'AVAILABLE');
+('Smith', 'John', 15000.00, '09123456789', 'AVAILABLE'),
+('Johnson', 'Emily', 15500.00, '09234567890', 'IN_TRANSIT'),
+('Brown', 'Michael', 16000.00, '09345678901', 'ON_LEAVE'),
+('Williams', 'Sophia', 15800.00, '09456789012', 'AVAILABLE'),
+('Jones', 'James', 15200.00, '09567890123', 'AVAILABLE'),
+('Garcia', 'Isabella', 16300.00, '09678901234', 'IN_TRANSIT'),
+('Martinez', 'David', 15700.00, '09789012345', 'UNAVAILABLE'),
+('Hernandez', 'Olivia', 15900.00, '09890123456', 'AVAILABLE'),
+('Lopez', 'Liam', 15400.00, '09901234567', 'ON_LEAVE'),
+('Gonzalez', 'Ava', 16100.00, '09012345678', 'AVAILABLE');
 
 INSERT INTO drivers (lastname, firstname, rate, contact_number, status) VALUES
-('Taylor', 'Charlotte', 62.00, '09111223344', 'IN_TRANSIT'),
-('Anderson', 'Daniel', 64.00, '09222334455', 'AVAILABLE'),
-('Thomas', 'Amelia', 65.00, '09333445566', 'AVAILABLE'),
-('Jackson', 'Ethan', 66.00, '09444556677', 'ON_LEAVE'),
-('White', 'Mia', 53.00, '09555667788', 'UNAVAILABLE'),
-('Harris', 'Benjamin', 68.00, '09666778899', 'IN_TRANSIT'),
-('Martin', 'Lucas', 70.00, '09777889900', 'AVAILABLE'),
-('Clark', 'Ella', 55.00, '09888990011', 'AVAILABLE'),
-('Rodriguez', 'Lily', 72.00, '09999001122', 'ON_LEAVE'),
-('Lewis', 'Alexander', 60.00, '09001122334', 'UNAVAILABLE');
+('Taylor', 'Charlotte', 16200.00, '09111223344', 'IN_TRANSIT'),
+('Anderson', 'Daniel', 16400.00, '09222334455', 'AVAILABLE'),
+('Thomas', 'Amelia', 16500.00, '09333445566', 'AVAILABLE'),
+('Jackson', 'Ethan', 16600.00, '09444556677', 'ON_LEAVE'),
+('White', 'Mia', 15300.00, '09555667788', 'UNAVAILABLE'),
+('Harris', 'Benjamin', 16800.00, '09666778899', 'IN_TRANSIT'),
+('Martin', 'Lucas', 17000.00, '09777889900', 'AVAILABLE'),
+('Clark', 'Ella', 15500.00, '09888990011', 'AVAILABLE'),
+('Rodriguez', 'Lily', 17200.00, '09999001122', 'ON_LEAVE'),
+('Lewis', 'Alexander', 16000.00, '09001122334', 'UNAVAILABLE');
 
 INSERT INTO vehicles (plate_number, fuel_economy, last_maintenance_date, max_load_weight, status) VALUES
 ('ABC 123', 5.00, '2024-10-10', 3000, 'AVAILABLE'),
@@ -100,11 +100,3 @@ INSERT INTO schedules (date, driver_id, vehicle_id, request_id) VALUES
 ('2024-09-06 10:00:00', 3, 3, 3),
 ('2024-08-15 11:00:00', 4, 4, 4),
 ('2024-07-26 12:00:00', 5, 5, 5);
-
--- Insert records into the logistics table with normal_cost based on formula
-INSERT INTO logistics (distance, normal_cost, status, schedule_id) VALUES
-(300, (5.00 * 300) + (5.00 * 300), 'IN_TRANSIT', 1),  -- Vehicle 1, Driver 1
-(450, (4.80 * 450) + (6.50 * 450), 'ARRIVED', 2),     -- Vehicle 2, Driver 2
-(600, (5.40 * 600) + (4.75 * 600), 'PENDING', 3),     -- Vehicle 3, Driver 3
-(200, (6.20 * 200) + (5.25 * 200), 'IN_TRANSIT', 4),  -- Vehicle 4, Driver 4
-(350, (5.10 * 350) + (6.00 * 350), 'CANCELLED', 5);   -- Vehicle 5, Driver 5

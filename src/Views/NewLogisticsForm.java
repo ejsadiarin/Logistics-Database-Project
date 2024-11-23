@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -167,6 +168,13 @@ public class NewLogisticsForm extends javax.swing.JDialog implements ActionListe
             if (success) {
                 this.parentPanel.refresh();
                 dispose();
+            } else {
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot create new logistics record",         // Message to display
+                "Creation Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+            );
             }
         }
     }

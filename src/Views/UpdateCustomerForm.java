@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -19,7 +20,7 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
     private JTextField customerField;
     private JTextField contactField;
     private JTextField billingField;
-    private JTextField amountField;
+    private JFormattedTextField amountField;
     private JTextField dateField;
     private JLabel companyLabel;
     private JLabel customerLabel;
@@ -58,7 +59,7 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
         customerField = new JTextField();
         contactField = new JTextField();
         billingField = new JTextField();
-        amountField = new JTextField();
+        amountField = new JFormattedTextField();
         dateField = new JTextField();
         companyLabel = new JLabel();
         customerLabel = new JLabel();
@@ -71,6 +72,8 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
         setTitle("Update Customer Record");
         setModal(true);
         setResizable(false);
+
+        amountField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         companyLabel.setText("Company Name:");
         customerLabel.setText("Customer Name:");
@@ -167,10 +170,10 @@ public class UpdateCustomerForm extends JDialog implements ActionListener {
                 String customerName = customerField.getText();
                 String contactNumber = contactField.getText();
                 String billingAddress = billingField.getText();
-                double amountPaid = Double.parseDouble(amountField.getText());
+                double amountPaid = ((Number)amountField.getValue()).doubleValue();
                 Date datePaid = Date.valueOf(dateField.getText()); // Parse date (yyyy-MM-dd)
 
-                boolean success = controller.updateRecord(customerID, companyName, customerName, contactNumber, billingAddress, String.valueOf(amountPaid), datePaid);
+                boolean success = controller.updateRecord(customerID, companyName, customerName, contactNumber, billingAddress, amountPaid, datePaid);
 
                 if (success) {
                     parentPanel.refresh();

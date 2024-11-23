@@ -8,6 +8,8 @@ import Controllers.ScheduleController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Rafael
@@ -180,7 +182,14 @@ public class NewSchedulingForm extends javax.swing.JDialog implements ActionList
             if(success) {
                 this.parentPanel.refresh();
                 dispose();
-            }
+            } else {
+            JOptionPane.showMessageDialog(
+            null,                 // Parent component (null makes it centered on the screen)
+            "Error: Cannot create schedule. Ensure that selected vehicle can handle the load weight",         // Message to display
+            "Creation Failed",              // Title of the popup
+            JOptionPane.ERROR_MESSAGE  // Type of message (error)
+            );
+        }
         }
     }
 

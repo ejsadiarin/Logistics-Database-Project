@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
 
 public class DriverPanel extends JPanel implements ActionListener {
     private JButton deleteRecordButton;
@@ -54,6 +55,7 @@ public class DriverPanel extends JPanel implements ActionListener {
         });
 
         driverTable.getTableHeader().setReorderingAllowed(false);
+        driverTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePane.setViewportView(driverTable);
 
         newRecordButton.setText("New Record");

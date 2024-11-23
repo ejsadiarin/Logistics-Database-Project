@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -30,7 +31,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
     private JTextField productField;
     private JLabel productLabel;
     private JScrollPane scrollPane;
-    private JTextField weightField;
+    private JFormattedTextField weightField;
     private JLabel weightLabel;
     private RequestController controller;
     private RequestPanel parentPanel;
@@ -49,7 +50,7 @@ public class NewRequestForm extends JDialog implements ActionListener {
         productField = new JTextField();
         originField = new JTextField();
         destinationField = new JTextField();
-        weightField = new JTextField();
+        weightField = new JFormattedTextField();
         dateLabel = new JLabel();
         productLabel = new JLabel();
         originLabel = new JLabel();
@@ -106,6 +107,9 @@ public class NewRequestForm extends JDialog implements ActionListener {
 
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(this);
+
+        weightField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,11 +181,18 @@ public class NewRequestForm extends JDialog implements ActionListener {
             productField.getText(),
             originField.getText(),
             destinationField.getText(),
-            weightField.getText(),
+            ((Number)weightField.getValue()).doubleValue(),
             (int)customerIDTable.getValueAt(customerIDTable.getSelectedRow(), 0));
             if(success) {
                 this.parentPanel.refresh();
                 dispose();
+            } else {
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot create request.",         // Message to display
+                "Creation Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                );
             }
         }
     }                

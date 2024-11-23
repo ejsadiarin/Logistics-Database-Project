@@ -3,6 +3,7 @@ package Views;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
@@ -211,13 +212,13 @@ public class UpdateVehicleForm extends javax.swing.JDialog {
             parentPanel.refresh();
             dispose();
         } else {
-            javax.swing.JOptionPane.showMessageDialog(
-                this,
-                "Failed to update vehicle record.",
-                "Update Failed",
-                javax.swing.JOptionPane.ERROR_MESSAGE
-            );
-        }
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot Update Record. Ensure all fields are correctly formatted.",         // Message to display
+                "Update Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                );
+            }
     }                                             
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
