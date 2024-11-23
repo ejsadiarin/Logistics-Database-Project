@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -123,7 +124,15 @@ public class DriverPanel extends JPanel implements ActionListener {
             dialog.setVisible(true);
         }
         else if (event.getSource() == deleteRecordButton) {
-            controller.deleteRecord((int)driverTable.getValueAt(driverTable.getSelectedRow(), 0));
+            boolean success = controller.deleteRecord((int)driverTable.getValueAt(driverTable.getSelectedRow(), 0));
+            if(!success) {
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot delete if driver is assigned to a schedule.",         // Message to display
+                "Deletion Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                );
+            }
             refresh();
         }
     }             

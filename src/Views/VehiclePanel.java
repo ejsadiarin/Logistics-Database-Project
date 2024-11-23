@@ -1,5 +1,6 @@
 package Views;
 
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 
 import Controllers.VehicleController;
@@ -143,7 +144,15 @@ public class VehiclePanel extends javax.swing.JPanel {
     }                                                  
 
     private void deleteRecordButtonDriverTableActions(java.awt.event.ActionEvent evt) {                                                      
-        controller.deleteRecord((int)vehicleTable.getValueAt(vehicleTable.getSelectedRow(), 0));
+        boolean success = controller.deleteRecord((int)vehicleTable.getValueAt(vehicleTable.getSelectedRow(), 0));
+        if(!success) {
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot delete if vehicle is assigned to a schedule.",         // Message to display
+                "Deletion Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                );
+            }
         refresh();
     }                                                     
 

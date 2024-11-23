@@ -1,5 +1,6 @@
 package Views;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
@@ -144,7 +145,15 @@ public class CustomerPanel extends JPanel {
         int selectedRow = customerTable.getSelectedRow();
         if (selectedRow >= 0) {
             int customerID = (int) customerTable.getValueAt(selectedRow, 0);
-                controller.deleteRecord(customerID);
+            boolean success = controller.deleteRecord(customerID);
+            if(!success) {
+                JOptionPane.showMessageDialog(
+                null,                 // Parent component (null makes it centered on the screen)
+                "Error: Cannot delete if customer has a request.",         // Message to display
+                "Deletion Failed",              // Title of the popup
+                JOptionPane.ERROR_MESSAGE  // Type of message (error)
+                );
+            }
             refresh();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Please select a record to delete.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);

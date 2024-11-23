@@ -88,7 +88,7 @@ public class LogisticsController {
                 Logistics recordToUpdate = new Logistics(
                     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
                 );
-                dao.arrivedUpdate()
+                dao.arrivedUpdate();
             } 
             else {
                 Logistics updatedRecord = new Logistics(
