@@ -71,8 +71,6 @@ public class ReportPanel extends JPanel implements ActionListener {
         reportTable = new JTable();
         scrollPane = new JScrollPane(reportTable);
         add(scrollPane, BorderLayout.CENTER);
-
-        MaskFormatter mask;
     }
 
     @Override
