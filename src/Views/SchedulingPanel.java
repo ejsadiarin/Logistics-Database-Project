@@ -1,5 +1,7 @@
 package Views;
 
+import javax.swing.ListSelectionModel;
+
 import Controllers.ScheduleController;
 
 public class SchedulingPanel extends javax.swing.JPanel {
@@ -41,6 +43,7 @@ public class SchedulingPanel extends javax.swing.JPanel {
             }
         });
         schedulingTable.getTableHeader().setReorderingAllowed(false);
+        schedulingTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePane.setViewportView(schedulingTable);
 
         newScheduleButton.setText("New Schedule");

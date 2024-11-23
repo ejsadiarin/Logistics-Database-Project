@@ -1,6 +1,8 @@
 package Views;
 
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+
 import Controllers.CustomerController;
 
 public class CustomerPanel extends JPanel {
@@ -51,6 +53,7 @@ public class CustomerPanel extends JPanel {
             }
         });
         customerTable.getTableHeader().setReorderingAllowed(false);
+        customerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         tablePane.setViewportView(customerTable);
 
         newRecordButton.setText("New Record");

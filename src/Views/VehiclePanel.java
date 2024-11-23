@@ -1,5 +1,7 @@
 package Views;
 
+import javax.swing.ListSelectionModel;
+
 import Controllers.VehicleController;
 
 public class VehiclePanel extends javax.swing.JPanel {
@@ -50,6 +52,7 @@ public class VehiclePanel extends javax.swing.JPanel {
             }
         });
         vehicleTable.getTableHeader().setReorderingAllowed(false);
+        vehicleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePane.setViewportView(vehicleTable);
 
         newRecordButton.setText("New Record");

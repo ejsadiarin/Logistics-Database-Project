@@ -1,5 +1,7 @@
 package Views;
 
+import javax.swing.ListSelectionModel;
+
 import Controllers.LogisticsController;
 
 public class LogisticsPanel extends javax.swing.JPanel {
@@ -42,6 +44,7 @@ public class LogisticsPanel extends javax.swing.JPanel {
             }
         });
         logisticsTable.getTableHeader().setReorderingAllowed(false);
+        logisticsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePane.setViewportView(logisticsTable);
         if (logisticsTable.getColumnModel().getColumnCount() > 0) {
             logisticsTable.getColumnModel().getColumn(1).setResizable(false);
