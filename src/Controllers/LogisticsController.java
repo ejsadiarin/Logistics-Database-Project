@@ -84,6 +84,12 @@ public class LogisticsController {
                 );
                 dao.cascadeInTransit(recordToUpdate);
             } 
+            else if (currentRecord.getStatus() == Logistics.Status.IN_TRANSIT && newStatus == Logistics.Status.ARRIVED) {
+                Logistics recordToUpdate = new Logistics(
+                    logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID
+                );
+                dao.arrivedUpdate()
+            } 
             else {
                 Logistics updatedRecord = new Logistics(
                     logisticsID, distance, Double.valueOf(normalCost), newStatus, scheduleID

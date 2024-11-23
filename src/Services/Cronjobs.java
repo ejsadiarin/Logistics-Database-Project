@@ -108,9 +108,4 @@ public class Cronjobs {
             if (connection != null) connection.close();
         }
     }
-
-    // TODO: needs Arrived cronjob
-    // - update Logistics status to 'ARRIVED'
-    // - update Driver status to 'UNAVAILABLE' --> then to be checked if fired or not???
-    // - update Vehicle status to 'UNAVAILABLE' --> then to be checked if it needs maintenance
 }

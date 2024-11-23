@@ -218,4 +218,23 @@ public class LogisticsDAO {
             if (connection != null) connection.setAutoCommit(true);
         }
     }
+
+    // TODO: needs Arrived cronjob
+    // - update Logistics status to 'ARRIVED'
+    // - update Driver status to 'AVAILABLE'
+    // - update Vehicle status to 'AVAILABLE' --> then to be checked if it needs maintenance
+    // - update Vehicle last_maintenance_date gg to 'AVAILABLE' --> then to be checked if it needs maintenance
+    public void arrivedUpdate() {
+        String update = "";
+
+        Connection connection = null;
+
+        try {
+        } catch (SQLException err) {
+            err.printStackTrace();
+            throw err;
+        } finally {
+        }
+    } 
+
 }
